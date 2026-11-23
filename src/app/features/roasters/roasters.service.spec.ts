@@ -5,7 +5,7 @@ import { environment } from '../../../environments/environment';
 import { RoasterInput } from './roaster.model';
 import { RoastersService } from './roasters.service';
 
-const BASE_URL = `${environment.apiUrl}/v1.0/roasters`;
+const BASE_URL = `${environment.apiUrl}/v1.0/coffee-roasters`;
 
 const input: RoasterInput = {
   name: 'Origin Roasters',

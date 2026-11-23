@@ -12,4 +12,8 @@ export const routes: Routes = [
     loadChildren: () =>
       import('./features/roasters/roasters.routes').then((m) => m.ROASTERS_ROUTES),
   },
+  {
+    path: 'coffees',
+    loadChildren: () => import('./features/coffees/coffees.routes').then((m) => m.COFFEES_ROUTES),
+  },
 ];
