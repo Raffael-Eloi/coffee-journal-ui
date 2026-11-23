@@ -1,4 +1,4 @@
-region           = "westus3"
+region           = "westus2"
 environment_name = "prod"
 application_name = "coffee-journal-ui"
 owner            = "raffael-eloi"
