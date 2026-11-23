@@ -1,3 +1,394 @@
-/* You can add global styles to this file, and also import other style files */
-
 @import 'tailwindcss';
+
+/*
+ * Design system: "Artisan Specialty Roast" (Stitch project "Coffee Shop Journal App").
+ *
+ * Accessibility deviations from the Stitch tokens (WCAG AA):
+ * - Text and button fills use terracotta (#8e4d2a, 6.5:1 on white) instead of caramel (#c87d55, 3.2:1).
+ *   Caramel stays for decoration: hover borders, focus ring, star icons.
+ * - Muted text uses husk (#6d5d53, 6.3:1) instead of #8d7b68 (3.8:1).
+ * - Form control borders use outline (#827470) instead of the hairline (#e8e0d5), which is below 3:1.
+ */
+@theme {
+  --color-canvas: #faf7f2;
+  --color-surface: #ffffff;
+  --color-hairline: #e8e0d5;
+  --color-outline: #827470;
+  --color-ink: #1c1c19;
+  --color-on-surface-variant: #504440;
+  --color-container: #f0ede9;
+  --color-container-low: #f6f3ee;
+  --color-espresso: #2c1810;
+  --color-espresso-hover: #3e2723;
+  --color-caramel: #c87d55;
+  --color-terracotta: #8e4d2a;
+  --color-terracotta-hover: #713714;
+  --color-husk: #6d5d53;
+  --color-error: #ba1a1a;
+  --color-error-container: #ffdad6;
+  --color-light-roast: #faf0e6;
+  --color-light-roast-line: #f0dfc8;
+  --color-light-roast-text: #a85a32;
+  --color-medium-roast: #efeae5;
+  --color-medium-roast-text: #6f4e37;
+
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
+
+  --shadow-ambient: 0 8px 24px -4px rgb(44 24 16 / 0.08), 0 2px 6px -1px rgb(44 24 16 / 0.03);
+  --shadow-ambient-hover: 0 12px 28px -6px rgb(44 24 16 / 0.12);
+}
+
+@layer base {
+  body {
+    background-color: var(--color-canvas);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.625rem;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    color: var(--color-espresso);
+  }
+
+  h1 {
+    font-size: 1.75rem;
+    line-height: 2.25rem;
+    font-weight: 600;
+  }
+
+  h2 {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+    font-weight: 500;
+  }
+
+  @media (min-width: 48rem) {
+    h1 {
+      font-size: 2.25rem;
+      line-height: 2.75rem;
+      letter-spacing: -0.01em;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+      line-height: 2rem;
+    }
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-caramel);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 4px rgb(200 125 85 / 0.15);
+  }
+}
+
+@layer components {
+  /* Buttons */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.25rem;
+    padding: 0.5rem 1.25rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 150ms, border-color 150ms;
+  }
+
+  .btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .btn-primary {
+    background-color: var(--color-espresso);
+    color: #ffffff;
+  }
+
+  .btn-primary:hover:not(:disabled) {
+    background-color: var(--color-espresso-hover);
+  }
+
+  .btn-action {
+    background-color: var(--color-terracotta);
+    color: #ffffff;
+  }
+
+  .btn-action:hover:not(:disabled) {
+    background-color: var(--color-terracotta-hover);
+  }
+
+  .btn-ghost {
+    background-color: transparent;
+    border: 1px solid var(--color-outline);
+    color: var(--color-espresso);
+  }
+
+  .btn-ghost:hover:not(:disabled) {
+    border-color: var(--color-espresso);
+  }
+
+  .btn-danger {
+    background-color: var(--color-error);
+    color: #ffffff;
+  }
+
+  .link {
+    color: var(--color-terracotta);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    cursor: pointer;
+  }
+
+  .link:hover {
+    color: var(--color-terracotta-hover);
+  }
+
+  /* Main navigation (Stitch: pill links, active link filled with espresso) */
+  .nav-link {
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    font-size: 0.75rem;
+    line-height: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--color-on-surface-variant);
+    transition: background-color 150ms, color 150ms;
+  }
+
+  .nav-link:hover {
+    background-color: var(--color-container);
+    color: var(--color-ink);
+  }
+
+  .nav-link.active,
+  .nav-link.active:hover {
+    background-color: var(--color-espresso);
+    color: #ffffff;
+  }
+
+  /* Surfaces */
+  .card {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-hairline);
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    transition: border-color 150ms, box-shadow 150ms;
+  }
+
+  .card:hover {
+    border-color: var(--color-caramel);
+    box-shadow: var(--shadow-ambient-hover);
+  }
+
+  /* Forms */
+  .field-label {
+    font-size: 0.75rem;
+    line-height: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--color-espresso);
+  }
+
+  .field-input {
+    width: 100%;
+    background-color: var(--color-container-low);
+    border: 1px solid var(--color-outline);
+    border-radius: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    color: var(--color-ink);
+    box-shadow: 0 1px 2px rgb(44 24 16 / 0.05);
+    transition: background-color 150ms;
+  }
+
+  .field-input:focus {
+    background-color: var(--color-surface);
+  }
+
+  /* Leading icon inside an input (see app-labeled-field) */
+  .field-glyph {
+    position: absolute;
+    left: 0.875rem;
+    pointer-events: none;
+    color: var(--color-husk);
+  }
+
+  .field-glyph ~ .field-input {
+    padding-left: 2.75rem;
+  }
+
+  /* Small uppercase label for nested sub-cards */
+  .field-label-sm {
+    font-size: 0.6875rem;
+    line-height: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-husk);
+  }
+
+  /* Button-style radio options (app-choice-group) */
+  .choice {
+    display: inline-flex;
+    flex: 1 1 5rem;
+    align-items: center;
+    justify-content: center;
+    padding: 0.375rem 0.75rem;
+    border: 1px solid var(--color-outline);
+    border-radius: 0.5rem;
+    background-color: var(--color-surface);
+    color: var(--color-on-surface-variant);
+    font-size: 0.75rem;
+    line-height: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 150ms, color 150ms;
+  }
+
+  .choice:hover {
+    background-color: var(--color-container);
+  }
+
+  .choice:has(input:checked) {
+    background-color: var(--color-espresso);
+    border-color: var(--color-espresso);
+    color: #ffffff;
+  }
+
+  .choice:has(input:focus-visible),
+  .segment-option:has(input:focus-visible) {
+    outline: 2px solid var(--color-caramel);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 4px rgb(200 125 85 / 0.15);
+  }
+
+  /* Two-option switch (app-yes-no-toggle) */
+  .segment {
+    display: inline-flex;
+    gap: 0.25rem;
+    padding: 0.25rem;
+    border-radius: 0.5rem;
+    background-color: var(--color-container);
+  }
+
+  .segment-option {
+    padding: 0.25rem 1rem;
+    border-radius: 0.375rem;
+    color: var(--color-on-surface-variant);
+    font-size: 0.75rem;
+    line-height: 1.5rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 150ms, color 150ms;
+  }
+
+  .segment-option:has(input:checked) {
+    background-color: var(--color-terracotta);
+    color: #ffffff;
+    box-shadow: 0 1px 2px rgb(44 24 16 / 0.15);
+  }
+
+  .field-input::placeholder {
+    color: var(--color-husk);
+  }
+
+  .field-error {
+    color: var(--color-error);
+    font-size: 0.875rem;
+    line-height: 1.375rem;
+  }
+
+  /* Star rating: empty stars use outline (4.1:1), filled stars use caramel (3.2:1), both above 3:1 for icons */
+  .star-label {
+    font-size: 1.75rem;
+    line-height: 2rem;
+    padding: 0 0.125rem;
+    color: var(--color-outline);
+    cursor: pointer;
+    border-radius: 0.25rem;
+  }
+
+  .star-label.star-on {
+    color: var(--color-caramel);
+  }
+
+  .star-label:has(input:focus-visible) {
+    outline: 2px solid var(--color-caramel);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 4px rgb(200 125 85 / 0.15);
+  }
+
+  /* Spec sheets */
+  .spec-list > div {
+    display: grid;
+    grid-template-columns: 10rem 1fr;
+    gap: 1rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--color-hairline);
+  }
+
+  .spec-label {
+    font-size: 0.6875rem;
+    line-height: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-husk);
+    padding-top: 0.25rem;
+  }
+
+  .spec-value {
+    font-size: 1.125rem;
+    line-height: 1.625rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--color-espresso);
+  }
+
+  /* Badges */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    border-radius: 9999px;
+    border: 1px solid transparent;
+    padding: 0.125rem 0.625rem;
+    font-size: 0.6875rem;
+    line-height: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    background-color: var(--color-medium-roast);
+    color: var(--color-medium-roast-text);
+  }
+
+  .badge-light {
+    background-color: var(--color-light-roast);
+    border-color: var(--color-light-roast-line);
+    color: var(--color-light-roast-text);
+  }
+
+  .badge-medium {
+    background-color: var(--color-medium-roast);
+    color: var(--color-medium-roast-text);
+  }
+
+  .badge-dark {
+    background-color: var(--color-espresso);
+    color: #ffffff;
+  }
+
+  .badge-rating {
+    background-color: var(--color-espresso);
+    color: #ffffff;
+  }
+
+  .badge-rating .star {
+    color: var(--color-caramel);
+  }
+}

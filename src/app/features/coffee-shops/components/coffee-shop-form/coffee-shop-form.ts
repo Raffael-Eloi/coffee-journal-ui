@@ -1,5 +1,10 @@
 import { Component, input, linkedSignal, output } from '@angular/core';
-import { form, FormField, FormRoot, required } from '@angular/forms/signals';
+import { form, FormField, FormRoot, max, min, required } from '@angular/forms/signals';
+import { FormSection } from '../../../../shared/ui/form-section/form-section';
+import { Icon } from '../../../../shared/ui/icon/icon';
+import { LabeledField } from '../../../../shared/ui/labeled-field/labeled-field';
+import { StarRating } from '../../../../shared/ui/star-rating/star-rating';
+import { YesNoToggle } from '../../../../shared/ui/yes-no-toggle/yes-no-toggle';
 import { CoffeeShopFormValue } from '../../coffee-shop.model';
 
 const EMPTY_VALUE: CoffeeShopFormValue = {
@@ -16,66 +21,67 @@ const EMPTY_VALUE: CoffeeShopFormValue = {
 
 @Component({
   selector: 'app-coffee-shop-form',
-  imports: [FormField, FormRoot],
+  imports: [FormField, FormRoot, FormSection, Icon, LabeledField, StarRating, YesNoToggle],
   template: `
-    <form class="flex max-w-xl flex-col gap-4" [formRoot]="shopForm">
-      <div class="flex flex-col gap-1">
-        <label for="name">Name</label>
-        <input id="name" type="text" [class]="inputClass" [formField]="shopForm.name" />
-        @if (shopForm.name().touched()) {
-          @for (error of shopForm.name().errors(); track error.kind) {
-            <p class="text-sm text-red-700" role="alert">{{ error.message }}</p>
-          }
-        }
-      </div>
+    <form class="flex flex-col gap-8" [formRoot]="shopForm">
+      <app-form-section number="01" title="The Café" caption="Venue profile">
+        <div class="grid gap-4 md:grid-cols-6">
+          <app-labeled-field
+            class="md:col-span-6"
+            label="Shop or venue"
+            controlId="name"
+            icon="store"
+            [errors]="shopForm.name().touched() ? shopForm.name().errors() : []"
+          >
+            <input id="name" type="text" class="field-input" [formField]="shopForm.name" />
+          </app-labeled-field>
 
-      <div class="flex flex-col gap-1">
-        <label for="website">Website</label>
-        <input id="website" type="url" [class]="inputClass" [formField]="shopForm.website" />
-      </div>
+          <app-labeled-field class="md:col-span-6" label="Website" controlId="website" icon="link">
+            <input id="website" type="url" class="field-input" [formField]="shopForm.website" />
+          </app-labeled-field>
 
-      <div class="flex flex-col gap-1">
-        <label for="rate">Rate</label>
-        <input id="rate" type="number" [class]="inputClass" [formField]="shopForm.rate" />
-      </div>
+          <app-labeled-field class="md:col-span-2" label="City" controlId="city" icon="pin">
+            <input id="city" type="text" class="field-input" [formField]="shopForm.city" />
+          </app-labeled-field>
 
-      <div class="flex flex-col gap-1">
-        <label for="review">Review</label>
-        <textarea id="review" rows="4" [class]="inputClass" [formField]="shopForm.review"></textarea>
-      </div>
+          <app-labeled-field class="md:col-span-2" label="State" controlId="state" icon="pin">
+            <input id="state" type="text" class="field-input" [formField]="shopForm.state" />
+          </app-labeled-field>
 
-      <div class="flex items-center gap-2">
-        <input id="recommend" type="checkbox" [formField]="shopForm.recommend" />
-        <label for="recommend">Recommend</label>
-      </div>
+          <app-labeled-field class="md:col-span-2" label="Country" controlId="country" icon="globe">
+            <input id="country" type="text" class="field-input" [formField]="shopForm.country" />
+          </app-labeled-field>
 
-      <div class="flex flex-col gap-1">
-        <label for="city">City</label>
-        <input id="city" type="text" [class]="inputClass" [formField]="shopForm.city" />
-      </div>
+          <app-labeled-field class="md:col-span-6" label="Location" controlId="location" icon="pin">
+            <input id="location" type="text" class="field-input" [formField]="shopForm.location" />
+          </app-labeled-field>
+        </div>
+      </app-form-section>
 
-      <div class="flex flex-col gap-1">
-        <label for="state">State</label>
-        <input id="state" type="text" [class]="inputClass" [formField]="shopForm.state" />
-      </div>
+      <app-form-section number="02" title="Experience & Verdict" caption="Atmosphere & flow">
+        <div class="grid items-center gap-6 rounded-xl bg-container-low p-4 md:grid-cols-2">
+          <div class="flex flex-col gap-1">
+            <app-star-rating [formField]="shopForm.rate" />
+            @if (shopForm.rate().touched()) {
+              @for (error of shopForm.rate().errors(); track error.kind) {
+                <p class="field-error" role="alert">{{ error.message }}</p>
+              }
+            }
+          </div>
+          <app-yes-no-toggle label="Recommend to others?" align="end" [formField]="shopForm.recommend" />
+        </div>
 
-      <div class="flex flex-col gap-1">
-        <label for="country">Country</label>
-        <input id="country" type="text" [class]="inputClass" [formField]="shopForm.country" />
-      </div>
+        <app-labeled-field label="Personal impressions & notes" controlId="review">
+          <textarea id="review" rows="4" class="field-input" [formField]="shopForm.review"></textarea>
+        </app-labeled-field>
+      </app-form-section>
 
-      <div class="flex flex-col gap-1">
-        <label for="location">Location</label>
-        <input id="location" type="text" [class]="inputClass" [formField]="shopForm.location" />
+      <div class="flex justify-end">
+        <button type="submit" class="btn btn-primary gap-2" [disabled]="saving()">
+          <app-icon name="check" [size]="16" />
+          {{ saving() ? 'Saving…' : 'Save' }}
+        </button>
       </div>
-
-      <button
-        type="submit"
-        class="self-start rounded bg-stone-900 px-4 py-2 text-white disabled:opacity-60"
-        [disabled]="saving()"
-      >
-        {{ saving() ? 'Saving…' : 'Save' }}
-      </button>
     </form>
   `,
 })
@@ -83,8 +89,6 @@ export class CoffeeShopForm {
   readonly initialValue = input<CoffeeShopFormValue>();
   readonly saving = input(false);
   readonly submitted = output<CoffeeShopFormValue>();
-
-  protected readonly inputClass = 'rounded border border-stone-500 bg-white px-3 py-2';
 
   private readonly data = linkedSignal<CoffeeShopFormValue>(
     () => this.initialValue() ?? EMPTY_VALUE,
@@ -94,6 +98,8 @@ export class CoffeeShopForm {
     this.data,
     (path) => {
       required(path.name, { message: 'Name is required' });
+      min(path.rate, 1, { message: 'Rate must be between 1 and 5' });
+      max(path.rate, 5, { message: 'Rate must be between 1 and 5' });
     },
     {
       submission: {

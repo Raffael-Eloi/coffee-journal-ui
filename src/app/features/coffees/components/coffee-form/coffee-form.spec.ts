@@ -55,6 +55,11 @@ describe('CoffeeForm', () => {
 
     fill(el, '#name', 'Ethiopia Guji');
     fill(el, '#roasterId', 'r1');
+    el.querySelectorAll<HTMLInputElement>('app-star-rating input[type="radio"]')[3].click();
+    // Roast level: the second choice group, option "Light"; process: first group, option "Natural".
+    const groups = el.querySelectorAll('app-choice-group');
+    groups[0].querySelectorAll<HTMLInputElement>('input[type="radio"]')[1].click();
+    groups[1].querySelectorAll<HTMLInputElement>('input[type="radio"]')[0].click();
     el.querySelectorAll('button').forEach((b) => {
       if (b.textContent?.includes('Add price')) b.click();
     });
@@ -69,6 +74,9 @@ describe('CoffeeForm', () => {
     expect(submitted.length).toBe(1);
     expect(submitted[0].name).toBe('Ethiopia Guji');
     expect(submitted[0].roasterId).toBe('r1');
+    expect(submitted[0].rate).toBe(4);
+    expect(submitted[0].process).toBe('Natural');
+    expect(submitted[0].roastLevel).toBe('Light');
     expect(submitted[0].prices).toEqual([{ grams: 250, price: 15 }]);
   });
 

@@ -1,25 +1,32 @@
-import { Component, input } from '@angular/core';
+import { Component, computed, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Coffee } from '../../coffee.model';
+import { roastBadgeClass } from '../../roast-level';
 
 @Component({
   selector: 'app-coffee-card',
   imports: [RouterLink],
   template: `
-    <article class="rounded border border-stone-300 bg-white p-4">
-      <h2 class="text-lg font-semibold">
-        <a class="underline" [routerLink]="['/coffees', coffee().id]">{{ coffee().name }}</a>
+    <article class="card flex h-full flex-col gap-2">
+      <h2>
+        <a class="hover:text-terracotta" [routerLink]="['/coffees', coffee().id]">
+          {{ coffee().name }}
+        </a>
       </h2>
       @if (roasterName()) {
-        <p class="text-sm text-stone-700">{{ roasterName() }}</p>
+        <p class="text-husk">{{ roasterName() }}</p>
       }
-      <p class="text-sm text-stone-700">
-        Rate: {{ coffee().rate }}
+      <p class="mt-auto flex flex-wrap items-center gap-2">
+        <span class="badge badge-rating">
+          <span class="star" aria-hidden="true">★</span>
+          <span class="sr-only">Rate:</span>
+          {{ coffee().rate }}
+        </span>
         @if (coffee().roastLevel) {
-          · {{ coffee().roastLevel }} roast
+          <span [class]="roastClass()">{{ coffee().roastLevel }}</span>
         }
         @if (coffee().recommend) {
-          · Recommended
+          <span class="badge badge-light">Recommended</span>
         }
       </p>
     </article>
@@ -28,4 +35,6 @@ import { Coffee } from '../../coffee.model';
 export class CoffeeCard {
   readonly coffee = input.required<Coffee>();
   readonly roasterName = input<string>();
+
+  protected readonly roastClass = computed(() => roastBadgeClass(this.coffee().roastLevel));
 }

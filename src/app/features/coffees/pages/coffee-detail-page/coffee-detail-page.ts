@@ -8,42 +8,58 @@ import { CoffeesService } from '../../coffees.service';
   selector: 'app-coffee-detail-page',
   imports: [RouterLink, NgOptimizedImage],
   template: `
-    <a class="underline" routerLink="/coffees">← Coffees</a>
+    <a class="link" routerLink="/coffees">← Coffees</a>
 
     @if (coffee.isLoading()) {
-      <p class="mt-4" role="status">Loading…</p>
+      <p class="mt-4 text-husk" role="status">Loading…</p>
     } @else if (coffee.error()) {
-      <p class="mt-4 text-red-700" role="alert">Could not load this coffee.</p>
+      <p class="mt-4 text-error" role="alert">Could not load this coffee.</p>
     } @else if (coffee.value(); as c) {
-      <h1 class="mt-4 text-2xl font-semibold">{{ c.name }}</h1>
+      <h1 class="mt-4">{{ c.name }}</h1>
       @if (roaster.value(); as r) {
-        <p class="text-stone-700">
-          by <a class="underline" [routerLink]="['/roasters', r.id]">{{ r.name }}</a>
+        <p class="text-husk">
+          by <a class="link" [routerLink]="['/roasters', r.id]">{{ r.name }}</a>
         </p>
       }
       <p class="mt-2">{{ c.description }}</p>
 
-      <dl class="mt-4 grid max-w-xl grid-cols-[max-content_1fr] gap-x-4 gap-y-2">
-        <dt class="font-semibold">Rate</dt>
-        <dd>{{ c.rate }}</dd>
-        <dt class="font-semibold">Recommended</dt>
-        <dd>{{ c.recommend ? 'Yes' : 'No' }}</dd>
-        <dt class="font-semibold">Origin</dt>
-        <dd>{{ c.origin }}</dd>
-        <dt class="font-semibold">Process</dt>
-        <dd>{{ c.process }}</dd>
-        <dt class="font-semibold">Roast level</dt>
-        <dd>{{ c.roastLevel }}</dd>
-        <dt class="font-semibold">Variety</dt>
-        <dd>{{ c.variety }}</dd>
-        <dt class="font-semibold">Tasting notes</dt>
-        <dd>{{ c.tastingNotes }}</dd>
-        <dt class="font-semibold">Review</dt>
-        <dd>{{ c.review }}</dd>
+      <dl class="spec-list mt-6 max-w-3xl">
+        <div>
+          <dt class="spec-label">Rate</dt>
+          <dd class="spec-value">{{ c.rate }}</dd>
+        </div>
+        <div>
+          <dt class="spec-label">Recommended</dt>
+          <dd class="spec-value">{{ c.recommend ? 'Yes' : 'No' }}</dd>
+        </div>
+        <div>
+          <dt class="spec-label">Origin</dt>
+          <dd class="spec-value">{{ c.origin }}</dd>
+        </div>
+        <div>
+          <dt class="spec-label">Process</dt>
+          <dd class="spec-value">{{ c.process }}</dd>
+        </div>
+        <div>
+          <dt class="spec-label">Roast level</dt>
+          <dd class="spec-value">{{ c.roastLevel }}</dd>
+        </div>
+        <div>
+          <dt class="spec-label">Variety</dt>
+          <dd class="spec-value">{{ c.variety }}</dd>
+        </div>
+        <div>
+          <dt class="spec-label">Tasting notes</dt>
+          <dd class="spec-value font-normal">{{ c.tastingNotes }}</dd>
+        </div>
+        <div>
+          <dt class="spec-label">Review</dt>
+          <dd class="spec-value font-normal">{{ c.review }}</dd>
+        </div>
       </dl>
 
       @if (c.prices.length > 0) {
-        <h2 class="mt-4 text-lg font-semibold">Prices</h2>
+        <h2 class="mt-8">Prices</h2>
         <ul>
           @for (price of c.prices; track price.id) {
             <li>{{ price.grams }} g — {{ price.price }}</li>
@@ -52,33 +68,33 @@ import { CoffeesService } from '../../coffees.service';
       }
 
       @if (c.images.length > 0) {
-        <ul class="mt-4 flex flex-wrap gap-4">
+        <ul class="mt-6 flex flex-wrap gap-4">
           @for (image of c.images; track image.id) {
             <li>
-              <img [ngSrc]="image.url" width="240" height="180" [alt]="'Photo of ' + c.name" />
+              <img class="rounded-lg border border-hairline" [ngSrc]="image.url" width="240" height="180" [alt]="'Photo of ' + c.name" />
             </li>
           }
         </ul>
       }
 
       <div class="mt-6 flex items-center gap-4">
-        <a class="rounded bg-stone-900 px-4 py-2 text-white" [routerLink]="['/coffees', c.id, 'edit']">
+        <a class="btn btn-primary" [routerLink]="['/coffees', c.id, 'edit']">
           Edit
         </a>
 
         @if (confirmingDelete()) {
           <span>Delete this coffee?</span>
-          <button type="button" class="rounded bg-red-800 px-4 py-2 text-white" (click)="remove()">
+          <button type="button" class="btn btn-danger" (click)="remove()">
             Confirm delete
           </button>
-          <button type="button" class="underline" (click)="confirmingDelete.set(false)">Cancel</button>
+          <button type="button" class="link" (click)="confirmingDelete.set(false)">Cancel</button>
         } @else {
-          <button type="button" class="underline" (click)="confirmingDelete.set(true)">Delete</button>
+          <button type="button" class="link" (click)="confirmingDelete.set(true)">Delete</button>
         }
       </div>
 
       @if (deleteError()) {
-        <p class="mt-2 text-red-700" role="alert">Could not delete this coffee.</p>
+        <p class="mt-2 text-error" role="alert">Could not delete this coffee.</p>
       }
     }
   `,

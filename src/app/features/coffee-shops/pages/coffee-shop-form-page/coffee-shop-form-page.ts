@@ -1,5 +1,6 @@
 import { Component, computed, inject, input, resource, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
+import { FormPageHeader } from '../../../../shared/ui/form-page-header/form-page-header';
 import { CoffeeShopForm } from '../../components/coffee-shop-form/coffee-shop-form';
 import { CoffeeShop, CoffeeShopFormValue } from '../../coffee-shop.model';
 import { CoffeeShopsService } from '../../coffee-shops.service';
@@ -10,27 +11,31 @@ function toFormValue({ id, images, roasterId, ...value }: CoffeeShop): CoffeeSho
 
 @Component({
   selector: 'app-coffee-shop-form-page',
-  imports: [RouterLink, CoffeeShopForm],
+  imports: [RouterLink, FormPageHeader, CoffeeShopForm],
   template: `
-    <a class="underline" routerLink="/coffee-shops">← Coffee shops</a>
-    <h1 class="mt-4 mb-4 text-2xl font-semibold">
-      {{ id() === undefined ? 'Add coffee shop' : 'Edit coffee shop' }}
-    </h1>
-
-    @if (shop.error()) {
-      <p class="text-red-700" role="alert">Could not load this coffee shop.</p>
-    } @else if (id() === undefined || initialValue()) {
-      <app-coffee-shop-form
-        [initialValue]="initialValue()"
-        [saving]="saving()"
-        (submitted)="save($event)"
+    <div class="mx-auto flex max-w-3xl flex-col gap-8">
+      <a class="link self-start" routerLink="/coffee-shops">← Coffee shops</a>
+      <app-form-page-header
+        eyebrow="Coffee shop"
+        [title]="id() === undefined ? 'Add coffee shop' : 'Edit coffee shop'"
+        description="Record a café and what you thought of it."
       />
-      @if (saveError()) {
-        <p class="mt-2 text-red-700" role="alert">Could not save this coffee shop.</p>
+
+      @if (shop.error()) {
+        <p class="text-error" role="alert">Could not load this coffee shop.</p>
+      } @else if (id() === undefined || initialValue()) {
+        <app-coffee-shop-form
+          [initialValue]="initialValue()"
+          [saving]="saving()"
+          (submitted)="save($event)"
+        />
+        @if (saveError()) {
+          <p class="mt-2 text-error" role="alert">Could not save this coffee shop.</p>
+        }
+      } @else {
+        <p role="status">Loading…</p>
       }
-    } @else {
-      <p role="status">Loading…</p>
-    }
+    </div>
   `,
 })
 export class CoffeeShopFormPage {

@@ -8,23 +8,23 @@ import { RoastersService } from '../../roasters.service';
   imports: [RouterLink, RoasterCard],
   template: `
     <div class="flex items-center justify-between">
-      <h1 class="text-2xl font-semibold">Roasters</h1>
-      <a class="rounded bg-stone-900 px-4 py-2 text-white" routerLink="/roasters/new">
+      <h1>Roasters</h1>
+      <a class="btn btn-action" routerLink="/roasters/new">
         Add roaster
       </a>
     </div>
 
     @if (roasters.isLoading()) {
-      <p class="mt-4" role="status">Loading…</p>
+      <p class="mt-4 text-husk" role="status">Loading…</p>
     } @else if (roasters.error()) {
-      <p class="mt-4 text-red-700" role="alert">Could not load roasters.</p>
-      <button type="button" class="mt-2 underline" (click)="roasters.reload()">Try again</button>
+      <p class="mt-4 text-error" role="alert">Could not load roasters.</p>
+      <button type="button" class="link mt-2" (click)="roasters.reload()">Try again</button>
     } @else {
       @let list = roasters.value() ?? [];
       @if (list.length === 0) {
-        <p class="mt-4">No roasters yet.</p>
+        <p class="mt-6 text-husk">No roasters yet.</p>
       } @else {
-        <ul class="mt-4 grid gap-4 sm:grid-cols-2">
+        <ul class="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           @for (roaster of list; track roaster.id) {
             <li><app-roaster-card [roaster]="roaster" /></li>
           }

@@ -22,7 +22,9 @@ describe('CoffeeShopForm', () => {
     await fixture.whenStable();
 
     expect(submitted).toEqual([]);
-    expect(el.querySelector('[role="alert"]')?.textContent).toContain('Name is required');
+    const alerts = Array.from(el.querySelectorAll('[role="alert"]')).map((a) => a.textContent).join(' ');
+    expect(alerts).toContain('Name is required');
+    expect(alerts).toContain('Rate must be between 1 and 5');
   });
 
   it('emits the value when the name is filled', async () => {
@@ -32,6 +34,7 @@ describe('CoffeeShopForm', () => {
     const name = el.querySelector<HTMLInputElement>('#name')!;
     name.value = 'Blue Door';
     name.dispatchEvent(new Event('input'));
+    el.querySelectorAll<HTMLInputElement>('app-star-rating input[type="radio"]')[3].click();
     await fixture.whenStable();
 
     submit(el);
@@ -39,5 +42,6 @@ describe('CoffeeShopForm', () => {
 
     expect(submitted.length).toBe(1);
     expect(submitted[0].name).toBe('Blue Door');
+    expect(submitted[0].rate).toBe(4);
   });
 });

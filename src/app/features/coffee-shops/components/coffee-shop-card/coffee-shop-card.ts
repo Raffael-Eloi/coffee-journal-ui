@@ -6,15 +6,21 @@ import { CoffeeShop } from '../../coffee-shop.model';
   selector: 'app-coffee-shop-card',
   imports: [RouterLink],
   template: `
-    <article class="rounded border border-stone-300 bg-white p-4">
-      <h2 class="text-lg font-semibold">
-        <a class="underline" [routerLink]="['/coffee-shops', shop().id]">{{ shop().name }}</a>
+    <article class="card flex h-full flex-col gap-2">
+      <h2>
+        <a class="hover:text-terracotta" [routerLink]="['/coffee-shops', shop().id]">
+          {{ shop().name }}
+        </a>
       </h2>
-      <p class="text-sm text-stone-700">{{ shop().city }}, {{ shop().country }}</p>
-      <p class="text-sm text-stone-700">
-        Rate: {{ shop().rate }}
+      <p class="text-husk">{{ shop().city }}, {{ shop().country }}</p>
+      <p class="mt-auto flex flex-wrap items-center gap-2">
+        <span class="badge badge-rating">
+          <span class="star" aria-hidden="true">★</span>
+          <span class="sr-only">Rate:</span>
+          {{ shop().rate }}
+        </span>
         @if (shop().recommend) {
-          · Recommended
+          <span class="badge badge-light">Recommended</span>
         }
       </p>
     </article>

@@ -9,21 +9,21 @@ import { CoffeesService } from '../../coffees.service';
   imports: [RouterLink, CoffeeCard],
   template: `
     <div class="flex items-center justify-between">
-      <h1 class="text-2xl font-semibold">Coffees</h1>
-      <a class="rounded bg-stone-900 px-4 py-2 text-white" routerLink="/coffees/new">Add coffee</a>
+      <h1>Coffees</h1>
+      <a class="btn btn-action" routerLink="/coffees/new">Add coffee</a>
     </div>
 
     @if (coffees.isLoading()) {
-      <p class="mt-4" role="status">Loading…</p>
+      <p class="mt-4 text-husk" role="status">Loading…</p>
     } @else if (coffees.error()) {
-      <p class="mt-4 text-red-700" role="alert">Could not load coffees.</p>
-      <button type="button" class="mt-2 underline" (click)="coffees.reload()">Try again</button>
+      <p class="mt-4 text-error" role="alert">Could not load coffees.</p>
+      <button type="button" class="link mt-2" (click)="coffees.reload()">Try again</button>
     } @else {
       @let list = coffees.value() ?? [];
       @if (list.length === 0) {
-        <p class="mt-4">No coffees yet.</p>
+        <p class="mt-6 text-husk">No coffees yet.</p>
       } @else {
-        <ul class="mt-4 grid gap-4 sm:grid-cols-2">
+        <ul class="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           @for (coffee of list; track coffee.id) {
             <li>
               <app-coffee-card [coffee]="coffee" [roasterName]="roasterNames().get(coffee.roasterId)" />

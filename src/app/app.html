@@ -1,12 +1,42 @@
-<header class="border-b border-stone-300 bg-white px-6 py-4">
-  <nav aria-label="Main" class="flex items-center gap-6">
-    <span class="text-lg font-semibold">Coffee Journal</span>
-    <a routerLink="/coffee-shops" routerLinkActive="font-semibold underline">Coffee shops</a>
-    <a routerLink="/roasters" routerLinkActive="font-semibold underline">Roasters</a>
-    <a routerLink="/coffees" routerLinkActive="font-semibold underline">Coffees</a>
-  </nav>
+<header class="sticky top-0 z-50 bg-canvas/90 shadow-[0_1px_8px_rgba(44,24,16,0.06)] backdrop-blur-md">
+  <div
+    class="mx-auto flex min-h-20 max-w-6xl flex-wrap items-center justify-between gap-x-6 gap-y-2 px-5 py-3 md:px-12"
+  >
+    <div class="flex flex-wrap items-center gap-x-6 gap-y-2">
+      <a class="flex items-center gap-4" routerLink="/" aria-label="Coffee Journal, home">
+        <img ngSrc="logo.png" width="32" height="32" alt="" priority />
+        <span class="flex flex-col">
+          <span class="font-display text-xl leading-none font-medium tracking-tight text-espresso">
+            Coffee Journal
+          </span>
+          <span class="mt-1 text-[0.6875rem] leading-[0.875rem] font-semibold tracking-wider text-terracotta uppercase">
+            Specialty Tasting Log
+          </span>
+        </span>
+      </a>
+
+      <nav aria-label="Main" class="flex items-center gap-2">
+        <a class="nav-link" routerLink="/coffee-shops" routerLinkActive="active" ariaCurrentWhenActive="page">
+          Coffee shops
+        </a>
+        <a class="nav-link" routerLink="/roasters" routerLinkActive="active" ariaCurrentWhenActive="page">
+          Roasters
+        </a>
+        <a class="nav-link" routerLink="/coffees" routerLinkActive="active" ariaCurrentWhenActive="page">
+          Coffees
+        </a>
+      </nav>
+    </div>
+  </div>
 </header>
 
-<main class="mx-auto max-w-4xl px-6 py-6">
+<main class="mx-auto w-full max-w-6xl flex-1 px-5 py-8 md:px-12">
   <router-outlet />
 </main>
+
+<footer class="mt-auto bg-container-low">
+  <div class="mx-auto flex max-w-6xl items-center gap-4 px-5 py-6 md:px-12">
+    <img class="opacity-70" ngSrc="logo.png" width="24" height="24" alt="" />
+    <span class="font-display text-xl text-on-surface-variant">Coffee Journal</span>
+  </div>
+</footer>

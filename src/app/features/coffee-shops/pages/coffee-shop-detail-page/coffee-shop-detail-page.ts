@@ -7,34 +7,45 @@ import { CoffeeShopsService } from '../../coffee-shops.service';
   selector: 'app-coffee-shop-detail-page',
   imports: [RouterLink, NgOptimizedImage],
   template: `
-    <a class="underline" routerLink="/coffee-shops">← Coffee shops</a>
+    <a class="link" routerLink="/coffee-shops">← Coffee shops</a>
 
     @if (shop.isLoading()) {
-      <p class="mt-4" role="status">Loading…</p>
+      <p class="mt-4 text-husk" role="status">Loading…</p>
     } @else if (shop.error()) {
-      <p class="mt-4 text-red-700" role="alert">Could not load this coffee shop.</p>
+      <p class="mt-4 text-error" role="alert">Could not load this coffee shop.</p>
     } @else if (shop.value(); as s) {
-      <h1 class="mt-4 text-2xl font-semibold">{{ s.name }}</h1>
-      <p class="text-stone-700">{{ s.city }}, {{ s.state }}, {{ s.country }}</p>
+      <h1 class="mt-4">{{ s.name }}</h1>
+      <p class="text-husk">{{ s.city }}, {{ s.state }}, {{ s.country }}</p>
 
-      <dl class="mt-4 grid max-w-xl grid-cols-[max-content_1fr] gap-x-4 gap-y-2">
-        <dt class="font-semibold">Rate</dt>
-        <dd>{{ s.rate }}</dd>
-        <dt class="font-semibold">Recommended</dt>
-        <dd>{{ s.recommend ? 'Yes' : 'No' }}</dd>
-        <dt class="font-semibold">Website</dt>
-        <dd>{{ s.website }}</dd>
-        <dt class="font-semibold">Location</dt>
-        <dd>{{ s.location }}</dd>
-        <dt class="font-semibold">Review</dt>
-        <dd>{{ s.review }}</dd>
+      <dl class="spec-list mt-6 max-w-3xl">
+        <div>
+          <dt class="spec-label">Rate</dt>
+          <dd class="spec-value">{{ s.rate }}</dd>
+        </div>
+        <div>
+          <dt class="spec-label">Recommended</dt>
+          <dd class="spec-value">{{ s.recommend ? 'Yes' : 'No' }}</dd>
+        </div>
+        <div>
+          <dt class="spec-label">Website</dt>
+          <dd class="spec-value">{{ s.website }}</dd>
+        </div>
+        <div>
+          <dt class="spec-label">Location</dt>
+          <dd class="spec-value">{{ s.location }}</dd>
+        </div>
+        <div>
+          <dt class="spec-label">Review</dt>
+          <dd class="spec-value font-normal">{{ s.review }}</dd>
+        </div>
       </dl>
 
       @if (s.images.length > 0) {
-        <ul class="mt-4 flex flex-wrap gap-4">
+        <ul class="mt-6 flex flex-wrap gap-4">
           @for (image of s.images; track image.id) {
             <li>
               <img
+                class="rounded-lg border border-hairline"
                 [ngSrc]="image.url"
                 width="240"
                 height="180"
@@ -46,23 +57,23 @@ import { CoffeeShopsService } from '../../coffee-shops.service';
       }
 
       <div class="mt-6 flex items-center gap-4">
-        <a class="rounded bg-stone-900 px-4 py-2 text-white" [routerLink]="['/coffee-shops', s.id, 'edit']">
+        <a class="btn btn-primary" [routerLink]="['/coffee-shops', s.id, 'edit']">
           Edit
         </a>
 
         @if (confirmingDelete()) {
           <span>Delete this coffee shop?</span>
-          <button type="button" class="rounded bg-red-800 px-4 py-2 text-white" (click)="remove()">
+          <button type="button" class="btn btn-danger" (click)="remove()">
             Confirm delete
           </button>
-          <button type="button" class="underline" (click)="confirmingDelete.set(false)">Cancel</button>
+          <button type="button" class="link" (click)="confirmingDelete.set(false)">Cancel</button>
         } @else {
-          <button type="button" class="underline" (click)="confirmingDelete.set(true)">Delete</button>
+          <button type="button" class="link" (click)="confirmingDelete.set(true)">Delete</button>
         }
       </div>
 
       @if (deleteError()) {
-        <p class="mt-2 text-red-700" role="alert">Could not delete this coffee shop.</p>
+        <p class="mt-2 text-error" role="alert">Could not delete this coffee shop.</p>
       }
     }
   `,

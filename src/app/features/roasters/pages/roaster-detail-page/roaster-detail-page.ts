@@ -7,52 +7,62 @@ import { RoastersService } from '../../roasters.service';
   selector: 'app-roaster-detail-page',
   imports: [RouterLink, NgOptimizedImage],
   template: `
-    <a class="underline" routerLink="/roasters">← Roasters</a>
+    <a class="link" routerLink="/roasters">← Roasters</a>
 
     @if (roaster.isLoading()) {
-      <p class="mt-4" role="status">Loading…</p>
+      <p class="mt-4 text-husk" role="status">Loading…</p>
     } @else if (roaster.error()) {
-      <p class="mt-4 text-red-700" role="alert">Could not load this roaster.</p>
+      <p class="mt-4 text-error" role="alert">Could not load this roaster.</p>
     } @else if (roaster.value(); as r) {
-      <h1 class="mt-4 text-2xl font-semibold">{{ r.name }}</h1>
+      <h1 class="mt-4">{{ r.name }}</h1>
 
       @if (r.logoUrl) {
-        <img class="mt-2" [ngSrc]="r.logoUrl" width="120" height="120" [alt]="r.name + ' logo'" />
+        <img class="mt-2 rounded-lg border border-hairline" [ngSrc]="r.logoUrl" width="120" height="120" [alt]="r.name + ' logo'" />
       }
 
-      <dl class="mt-4 grid max-w-xl grid-cols-[max-content_1fr] gap-x-4 gap-y-2">
-        <dt class="font-semibold">Rate</dt>
-        <dd>{{ r.rate }}</dd>
-        <dt class="font-semibold">Recommended</dt>
-        <dd>{{ r.recommend ? 'Yes' : 'No' }}</dd>
-        <dt class="font-semibold">Membership option</dt>
-        <dd>{{ r.hasMembershipOption ? 'Yes' : 'No' }}</dd>
+      <dl class="spec-list mt-6 max-w-3xl">
+        <div>
+          <dt class="spec-label">Rate</dt>
+          <dd class="spec-value">{{ r.rate }}</dd>
+        </div>
+        <div>
+          <dt class="spec-label">Recommended</dt>
+          <dd class="spec-value">{{ r.recommend ? 'Yes' : 'No' }}</dd>
+        </div>
+        <div>
+          <dt class="spec-label">Membership option</dt>
+          <dd class="spec-value">{{ r.hasMembershipOption ? 'Yes' : 'No' }}</dd>
+        </div>
         @if (r.website) {
-          <dt class="font-semibold">Website</dt>
-          <dd>{{ r.website }}</dd>
+          <div>
+            <dt class="spec-label">Website</dt>
+            <dd class="spec-value">{{ r.website }}</dd>
+          </div>
         }
-        <dt class="font-semibold">Review</dt>
-        <dd>{{ r.review }}</dd>
+        <div>
+          <dt class="spec-label">Review</dt>
+          <dd class="spec-value font-normal">{{ r.review }}</dd>
+        </div>
       </dl>
 
       <div class="mt-6 flex items-center gap-4">
-        <a class="rounded bg-stone-900 px-4 py-2 text-white" [routerLink]="['/roasters', r.id, 'edit']">
+        <a class="btn btn-primary" [routerLink]="['/roasters', r.id, 'edit']">
           Edit
         </a>
 
         @if (confirmingDelete()) {
           <span>Delete this roaster?</span>
-          <button type="button" class="rounded bg-red-800 px-4 py-2 text-white" (click)="remove()">
+          <button type="button" class="btn btn-danger" (click)="remove()">
             Confirm delete
           </button>
-          <button type="button" class="underline" (click)="confirmingDelete.set(false)">Cancel</button>
+          <button type="button" class="link" (click)="confirmingDelete.set(false)">Cancel</button>
         } @else {
-          <button type="button" class="underline" (click)="confirmingDelete.set(true)">Delete</button>
+          <button type="button" class="link" (click)="confirmingDelete.set(true)">Delete</button>
         }
       </div>
 
       @if (deleteError()) {
-        <p class="mt-2 text-red-700" role="alert">Could not delete this roaster.</p>
+        <p class="mt-2 text-error" role="alert">Could not delete this roaster.</p>
       }
     }
   `,

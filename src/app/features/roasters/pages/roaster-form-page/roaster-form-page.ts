@@ -1,5 +1,6 @@
 import { Component, computed, inject, input, resource, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
+import { FormPageHeader } from '../../../../shared/ui/form-page-header/form-page-header';
 import { RoasterForm } from '../../components/roaster-form/roaster-form';
 import { Roaster, RoasterFormValue, RoasterInput } from '../../roaster.model';
 import { RoastersService } from '../../roasters.service';
@@ -14,27 +15,31 @@ function toInput({ website, logoUrl, ...rest }: RoasterFormValue): RoasterInput 
 
 @Component({
   selector: 'app-roaster-form-page',
-  imports: [RouterLink, RoasterForm],
+  imports: [RouterLink, FormPageHeader, RoasterForm],
   template: `
-    <a class="underline" routerLink="/roasters">← Roasters</a>
-    <h1 class="mt-4 mb-4 text-2xl font-semibold">
-      {{ id() === undefined ? 'Add roaster' : 'Edit roaster' }}
-    </h1>
-
-    @if (roaster.error()) {
-      <p class="text-red-700" role="alert">Could not load this roaster.</p>
-    } @else if (id() === undefined || initialValue()) {
-      <app-roaster-form
-        [initialValue]="initialValue()"
-        [saving]="saving()"
-        (submitted)="save($event)"
+    <div class="mx-auto flex max-w-3xl flex-col gap-8">
+      <a class="link self-start" routerLink="/roasters">← Roasters</a>
+      <app-form-page-header
+        eyebrow="Roaster"
+        [title]="id() === undefined ? 'Add roaster' : 'Edit roaster'"
+        description="Record a roaster and what you thought of it."
       />
-      @if (saveError()) {
-        <p class="mt-2 text-red-700" role="alert">Could not save this roaster.</p>
+
+      @if (roaster.error()) {
+        <p class="text-error" role="alert">Could not load this roaster.</p>
+      } @else if (id() === undefined || initialValue()) {
+        <app-roaster-form
+          [initialValue]="initialValue()"
+          [saving]="saving()"
+          (submitted)="save($event)"
+        />
+        @if (saveError()) {
+          <p class="mt-2 text-error" role="alert">Could not save this roaster.</p>
+        }
+      } @else {
+        <p role="status">Loading…</p>
       }
-    } @else {
-      <p role="status">Loading…</p>
-    }
+    </div>
   `,
 })
 export class RoasterFormPage {

@@ -8,23 +8,23 @@ import { CoffeeShopsService } from '../../coffee-shops.service';
   imports: [RouterLink, CoffeeShopCard],
   template: `
     <div class="flex items-center justify-between">
-      <h1 class="text-2xl font-semibold">Coffee shops</h1>
-      <a class="rounded bg-stone-900 px-4 py-2 text-white" routerLink="/coffee-shops/new">
+      <h1>Coffee shops</h1>
+      <a class="btn btn-action" routerLink="/coffee-shops/new">
         Add coffee shop
       </a>
     </div>
 
     @if (shops.isLoading()) {
-      <p class="mt-4" role="status">Loading…</p>
+      <p class="mt-4 text-husk" role="status">Loading…</p>
     } @else if (shops.error()) {
-      <p class="mt-4 text-red-700" role="alert">Could not load coffee shops.</p>
-      <button type="button" class="mt-2 underline" (click)="shops.reload()">Try again</button>
+      <p class="mt-4 text-error" role="alert">Could not load coffee shops.</p>
+      <button type="button" class="link mt-2" (click)="shops.reload()">Try again</button>
     } @else {
       @let list = shops.value() ?? [];
       @if (list.length === 0) {
-        <p class="mt-4">No coffee shops yet.</p>
+        <p class="mt-6 text-husk">No coffee shops yet.</p>
       } @else {
-        <ul class="mt-4 grid gap-4 sm:grid-cols-2">
+        <ul class="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           @for (shop of list; track shop.id) {
             <li><app-coffee-shop-card [shop]="shop" /></li>
           }

@@ -1,5 +1,11 @@
 import { Component, input, linkedSignal, output } from '@angular/core';
-import { form, FormField, FormRoot, required } from '@angular/forms/signals';
+import { form, FormField, FormRoot, max, min, required } from '@angular/forms/signals';
+import { ChoiceGroup } from '../../../../shared/ui/choice-group/choice-group';
+import { FormSection } from '../../../../shared/ui/form-section/form-section';
+import { Icon } from '../../../../shared/ui/icon/icon';
+import { LabeledField } from '../../../../shared/ui/labeled-field/labeled-field';
+import { StarRating } from '../../../../shared/ui/star-rating/star-rating';
+import { YesNoToggle } from '../../../../shared/ui/yes-no-toggle/yes-no-toggle';
 import { Roaster } from '../../../roasters/roaster.model';
 import { CoffeeFormValue } from '../../coffee.model';
 
@@ -20,136 +26,154 @@ const EMPTY_VALUE: CoffeeFormValue = {
 
 @Component({
   selector: 'app-coffee-form',
-  imports: [FormField, FormRoot],
+  imports: [
+    FormField,
+    FormRoot,
+    ChoiceGroup,
+    FormSection,
+    Icon,
+    LabeledField,
+    StarRating,
+    YesNoToggle,
+  ],
   template: `
-    <form class="flex max-w-xl flex-col gap-4" [formRoot]="coffeeForm">
-      <div class="flex flex-col gap-1">
-        <label for="name">Name</label>
-        <input id="name" type="text" [class]="inputClass" [formField]="coffeeForm.name" />
-        @if (coffeeForm.name().touched()) {
-          @for (error of coffeeForm.name().errors(); track error.kind) {
-            <p class="text-sm text-red-700" role="alert">{{ error.message }}</p>
-          }
-        }
-      </div>
+    <form class="flex flex-col gap-8" [formRoot]="coffeeForm">
+      <app-form-section number="01" title="The Coffee" caption="Origin & profile">
+        <div class="grid gap-4 md:grid-cols-2">
+          <app-labeled-field
+            class="md:col-span-2"
+            label="Coffee name / lot"
+            controlId="name"
+            icon="coffee"
+            [errors]="coffeeForm.name().touched() ? coffeeForm.name().errors() : []"
+          >
+            <input id="name" type="text" class="field-input" [formField]="coffeeForm.name" />
+          </app-labeled-field>
 
-      <div class="flex flex-col gap-1">
-        <label for="roasterId">Roaster</label>
-        <select id="roasterId" [class]="inputClass" [formField]="coffeeForm.roasterId">
-          <option value="">Select a roaster</option>
-          @for (roaster of roasters(); track roaster.id) {
-            <option [value]="roaster.id">{{ roaster.name }}</option>
-          }
-        </select>
-        @if (coffeeForm.roasterId().touched()) {
-          @for (error of coffeeForm.roasterId().errors(); track error.kind) {
-            <p class="text-sm text-red-700" role="alert">{{ error.message }}</p>
-          }
-        }
-      </div>
+          <app-labeled-field
+            class="md:col-span-2"
+            label="Roaster"
+            controlId="roasterId"
+            icon="flame"
+            [errors]="coffeeForm.roasterId().touched() ? coffeeForm.roasterId().errors() : []"
+          >
+            <select id="roasterId" class="field-input" [formField]="coffeeForm.roasterId">
+              <option value="">Select a roaster</option>
+              @for (roaster of roasters(); track roaster.id) {
+                <option [value]="roaster.id">{{ roaster.name }}</option>
+              }
+            </select>
+          </app-labeled-field>
 
-      <div class="flex flex-col gap-1">
-        <label for="description">Description</label>
-        <textarea
-          id="description"
-          rows="3"
-          [class]="inputClass"
-          [formField]="coffeeForm.description"
-        ></textarea>
-      </div>
+          <app-labeled-field class="md:col-span-2" label="Description" controlId="description">
+            <textarea
+              id="description"
+              rows="3"
+              class="field-input"
+              [formField]="coffeeForm.description"
+            ></textarea>
+          </app-labeled-field>
 
-      <div class="flex flex-col gap-1">
-        <label for="origin">Origin</label>
-        <input id="origin" type="text" [class]="inputClass" [formField]="coffeeForm.origin" />
-      </div>
+          <app-labeled-field label="Origin" controlId="origin" icon="globe">
+            <input id="origin" type="text" class="field-input" [formField]="coffeeForm.origin" />
+          </app-labeled-field>
 
-      <div class="flex flex-col gap-1">
-        <label for="process">Process</label>
-        <input id="process" type="text" [class]="inputClass" [formField]="coffeeForm.process" />
-      </div>
+          <app-labeled-field label="Variety" controlId="variety" icon="note">
+            <input id="variety" type="text" class="field-input" [formField]="coffeeForm.variety" />
+          </app-labeled-field>
 
-      <div class="flex flex-col gap-1">
-        <label for="roastLevel">Roast level</label>
-        <input
-          id="roastLevel"
-          type="text"
-          [class]="inputClass"
-          [formField]="coffeeForm.roastLevel"
-        />
-      </div>
+          <app-choice-group
+            class="md:col-span-2"
+            label="Process"
+            [options]="processes"
+            [formField]="coffeeForm.process"
+          />
 
-      <div class="flex flex-col gap-1">
-        <label for="variety">Variety</label>
-        <input id="variety" type="text" [class]="inputClass" [formField]="coffeeForm.variety" />
-      </div>
+          <app-choice-group
+            class="md:col-span-2"
+            label="Roast level"
+            [options]="roastLevels"
+            [formField]="coffeeForm.roastLevel"
+          />
+        </div>
+      </app-form-section>
 
-      <div class="flex flex-col gap-1">
-        <label for="tastingNotes">Tasting notes</label>
-        <textarea
-          id="tastingNotes"
-          rows="3"
-          [class]="inputClass"
-          [formField]="coffeeForm.tastingNotes"
-        ></textarea>
-      </div>
+      <app-form-section number="02" title="Experience & Verdict" caption="Tasting">
+        <div class="grid items-center gap-6 rounded-xl bg-container-low p-4 md:grid-cols-2">
+          <div class="flex flex-col gap-1">
+            <app-star-rating [formField]="coffeeForm.rate" />
+            @if (coffeeForm.rate().touched()) {
+              @for (error of coffeeForm.rate().errors(); track error.kind) {
+                <p class="field-error" role="alert">{{ error.message }}</p>
+              }
+            }
+          </div>
+          <app-yes-no-toggle label="Recommend to others?" align="end" [formField]="coffeeForm.recommend" />
+        </div>
 
-      <div class="flex flex-col gap-1">
-        <label for="rate">Rate</label>
-        <input id="rate" type="number" [class]="inputClass" [formField]="coffeeForm.rate" />
-      </div>
+        <app-labeled-field label="Tasting notes" controlId="tastingNotes">
+          <textarea
+            id="tastingNotes"
+            rows="3"
+            class="field-input"
+            [formField]="coffeeForm.tastingNotes"
+          ></textarea>
+        </app-labeled-field>
 
-      <div class="flex flex-col gap-1">
-        <label for="review">Review</label>
-        <textarea id="review" rows="4" [class]="inputClass" [formField]="coffeeForm.review"></textarea>
-      </div>
+        <app-labeled-field label="Personal impressions & notes" controlId="review">
+          <textarea id="review" rows="4" class="field-input" [formField]="coffeeForm.review"></textarea>
+        </app-labeled-field>
+      </app-form-section>
 
-      <div class="flex items-center gap-2">
-        <input id="recommend" type="checkbox" [formField]="coffeeForm.recommend" />
-        <label for="recommend">Recommend</label>
-      </div>
-
-      <fieldset class="flex flex-col gap-2">
-        <legend class="font-semibold">Prices</legend>
+      <app-form-section number="03" title="Prices" caption="Retail bags">
         @for (price of coffeeForm.prices; track $index) {
-          <div class="flex items-end gap-2">
-            <div class="flex flex-col gap-1">
-              <label [for]="'grams-' + $index">Grams</label>
-              <input
-                [id]="'grams-' + $index"
-                type="number"
-                [class]="inputClass"
-                [formField]="price.grams"
-              />
+          <div class="flex flex-col gap-4 rounded-xl bg-canvas p-4">
+            <div class="flex items-center justify-between border-b border-container pb-2">
+              <span class="flex items-center gap-1 text-xs font-semibold tracking-wide text-espresso uppercase">
+                <app-icon name="coffee" [size]="16" />
+                Bag {{ $index + 1 }}
+              </span>
+              <button
+                type="button"
+                class="rounded p-1 text-husk hover:bg-container hover:text-error"
+                [attr.aria-label]="'Remove price ' + ($index + 1)"
+                (click)="removePrice($index)"
+              >
+                <app-icon name="close" [size]="16" />
+              </button>
             </div>
-            <div class="flex flex-col gap-1">
-              <label [for]="'price-' + $index">Price</label>
-              <input
-                [id]="'price-' + $index"
-                type="number"
-                [class]="inputClass"
-                [formField]="price.price"
-              />
+            <div class="grid gap-4 md:grid-cols-2">
+              <app-labeled-field label="Grams" [controlId]="'grams-' + $index">
+                <input
+                  [id]="'grams-' + $index"
+                  type="number"
+                  class="field-input"
+                  [formField]="price.grams"
+                />
+              </app-labeled-field>
+              <app-labeled-field label="Price" [controlId]="'price-' + $index">
+                <input
+                  [id]="'price-' + $index"
+                  type="number"
+                  class="field-input"
+                  [formField]="price.price"
+                />
+              </app-labeled-field>
             </div>
-            <button
-              type="button"
-              class="px-2 py-2 underline"
-              [attr.aria-label]="'Remove price ' + ($index + 1)"
-              (click)="removePrice($index)"
-            >
-              Remove
-            </button>
           </div>
         }
-        <button type="button" class="self-start underline" (click)="addPrice()">Add price</button>
-      </fieldset>
+        <button type="button" class="btn btn-ghost gap-2 self-start" (click)="addPrice()">
+          <app-icon name="plus" [size]="16" />
+          Add price
+        </button>
+      </app-form-section>
 
-      <button
-        type="submit"
-        class="self-start rounded bg-stone-900 px-4 py-2 text-white disabled:opacity-60"
-        [disabled]="saving()"
-      >
-        {{ saving() ? 'Saving…' : 'Save' }}
-      </button>
+      <div class="flex justify-end">
+        <button type="submit" class="btn btn-primary gap-2" [disabled]="saving()">
+          <app-icon name="check" [size]="16" />
+          {{ saving() ? 'Saving…' : 'Save' }}
+        </button>
+      </div>
     </form>
   `,
 })
@@ -159,7 +183,8 @@ export class CoffeeForm {
   readonly saving = input(false);
   readonly submitted = output<CoffeeFormValue>();
 
-  protected readonly inputClass = 'rounded border border-stone-500 bg-white px-3 py-2';
+  protected readonly processes = ['Washed', 'Natural', 'Honey'];
+  protected readonly roastLevels = ['Light', 'Medium', 'Dark'];
 
   private readonly data = linkedSignal<CoffeeFormValue>(() => this.initialValue() ?? EMPTY_VALUE);
 
@@ -168,6 +193,8 @@ export class CoffeeForm {
     (path) => {
       required(path.name, { message: 'Name is required' });
       required(path.roasterId, { message: 'Roaster is required' });
+      min(path.rate, 1, { message: 'Rate must be between 1 and 5' });
+      max(path.rate, 5, { message: 'Rate must be between 1 and 5' });
     },
     {
       submission: {
