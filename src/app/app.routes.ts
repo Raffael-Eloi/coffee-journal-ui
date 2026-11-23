@@ -7,4 +7,9 @@ export const routes: Routes = [
     loadChildren: () =>
       import('./features/coffee-shops/coffee-shops.routes').then((m) => m.COFFEE_SHOPS_ROUTES),
   },
+  {
+    path: 'roasters',
+    loadChildren: () =>
+      import('./features/roasters/roasters.routes').then((m) => m.ROASTERS_ROUTES),
+  },
 ];
