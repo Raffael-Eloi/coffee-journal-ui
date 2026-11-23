@@ -1,0 +1,6 @@
+region           = "westus3"
+environment_name = "prod"
+application_name = "coffee-journal-ui"
+owner            = "raffael-eloi"
+managed_by       = "terraform"
+cost_center      = "raffalab"
