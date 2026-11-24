@@ -1,4 +1,4 @@
-import { NgOptimizedImage } from '@angular/common';
+import { CurrencyPipe, NgOptimizedImage } from '@angular/common';
 import { Component, inject, input, resource, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { RoastersService } from '../../../roasters/roasters.service';
@@ -6,7 +6,7 @@ import { CoffeesService } from '../../coffees.service';
 
 @Component({
   selector: 'app-coffee-detail-page',
-  imports: [RouterLink, NgOptimizedImage],
+  imports: [RouterLink, NgOptimizedImage, CurrencyPipe],
   template: `
     <a class="link" routerLink="/coffees">← Coffees</a>
 
@@ -62,7 +62,7 @@ import { CoffeesService } from '../../coffees.service';
         <h2 class="mt-8">Prices</h2>
         <ul>
           @for (price of c.prices; track price.id) {
-            <li>{{ price.grams }} g — {{ price.price }}</li>
+            <li>{{ price.grams }} g — {{ price.price | currency: price.currency }}</li>
           }
         </ul>
       }
@@ -71,22 +71,24 @@ import { CoffeesService } from '../../coffees.service';
         <ul class="mt-6 flex flex-wrap gap-4">
           @for (image of c.images; track image.id) {
             <li>
-              <img class="rounded-lg border border-hairline" [ngSrc]="image.url" width="240" height="180" [alt]="'Photo of ' + c.name" />
+              <img
+                class="rounded-lg border border-hairline"
+                [ngSrc]="image.url"
+                width="240"
+                height="180"
+                [alt]="'Photo of ' + c.name"
+              />
             </li>
           }
         </ul>
       }
 
       <div class="mt-6 flex items-center gap-4">
-        <a class="btn btn-primary" [routerLink]="['/coffees', c.id, 'edit']">
-          Edit
-        </a>
+        <a class="btn btn-primary" [routerLink]="['/coffees', c.id, 'edit']"> Edit </a>
 
         @if (confirmingDelete()) {
           <span>Delete this coffee?</span>
-          <button type="button" class="btn btn-danger" (click)="remove()">
-            Confirm delete
-          </button>
+          <button type="button" class="btn btn-danger" (click)="remove()">Confirm delete</button>
           <button type="button" class="link" (click)="confirmingDelete.set(false)">Cancel</button>
         } @else {
           <button type="button" class="link" (click)="confirmingDelete.set(true)">Delete</button>

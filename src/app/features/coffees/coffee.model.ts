@@ -1,7 +1,11 @@
+/** ISO 4217 codes the API stores. */
+export type Currency = 'BRL' | 'USD';
+
 export interface CoffeePrice {
   id: string;
   grams: number;
   price: number;
+  currency: Currency;
 }
 
 export interface CoffeeImage {
@@ -33,10 +37,5 @@ export type CoffeeInput = Omit<Coffee, 'id' | 'prices' | 'images'> & {
   prices: CoffeePriceInput[];
 };
 
-export type Currency = '$' | 'R$';
-
-/** A price row in the form. The currency is only a UI choice: the API does not store it yet. */
-export type CoffeeFormPrice = CoffeePriceInput & { currency: Currency };
-
 /** Values edited in the form. */
-export type CoffeeFormValue = Omit<CoffeeInput, 'prices'> & { prices: CoffeeFormPrice[] };
+export type CoffeeFormValue = CoffeeInput;

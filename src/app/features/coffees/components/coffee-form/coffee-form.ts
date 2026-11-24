@@ -7,7 +7,7 @@ import { LabeledField } from '../../../../shared/ui/labeled-field/labeled-field'
 import { StarRating } from '../../../../shared/ui/star-rating/star-rating';
 import { YesNoToggle } from '../../../../shared/ui/yes-no-toggle/yes-no-toggle';
 import { Roaster } from '../../../roasters/roaster.model';
-import { CoffeeFormValue, CoffeeInput, Currency } from '../../coffee.model';
+import { CoffeeFormValue, Currency } from '../../coffee.model';
 
 const PRESET_SIZES = [
   { grams: 150, label: '150 g' },
@@ -115,7 +115,11 @@ const EMPTY_VALUE: CoffeeFormValue = {
               }
             }
           </div>
-          <app-yes-no-toggle label="Recommend to others?" align="end" [formField]="coffeeForm.recommend" />
+          <app-yes-no-toggle
+            label="Recommend to others?"
+            align="end"
+            [formField]="coffeeForm.recommend"
+          />
         </div>
 
         <app-labeled-field label="Tasting notes" controlId="tastingNotes">
@@ -128,7 +132,12 @@ const EMPTY_VALUE: CoffeeFormValue = {
         </app-labeled-field>
 
         <app-labeled-field label="Personal impressions & notes" controlId="review">
-          <textarea id="review" rows="4" class="field-input" [formField]="coffeeForm.review"></textarea>
+          <textarea
+            id="review"
+            rows="4"
+            class="field-input"
+            [formField]="coffeeForm.review"
+          ></textarea>
         </app-labeled-field>
       </app-form-section>
 
@@ -136,7 +145,9 @@ const EMPTY_VALUE: CoffeeFormValue = {
         @for (price of coffeeForm.prices; track $index; let row = $index) {
           <div class="flex flex-col gap-4 rounded-xl bg-canvas p-4">
             <div class="flex items-center justify-between border-b border-container pb-2">
-              <span class="flex items-center gap-1 text-xs font-semibold tracking-wide text-espresso uppercase">
+              <span
+                class="flex items-center gap-1 text-xs font-semibold tracking-wide text-espresso uppercase"
+              >
                 <app-icon name="coffee" [size]="16" />
                 Bag {{ $index + 1 }}
               </span>
@@ -175,8 +186,8 @@ const EMPTY_VALUE: CoffeeFormValue = {
                   [attr.aria-label]="'Currency for bag ' + (row + 1)"
                   [formField]="price.currency"
                 >
-                  @for (currency of currencies; track currency) {
-                    <option [value]="currency">{{ currency }}</option>
+                  @for (currency of currencies; track currency.code) {
+                    <option [value]="currency.code">{{ currency.symbol }}</option>
                   }
                 </select>
                 <input
@@ -210,11 +221,14 @@ export class CoffeeForm {
   readonly roasters = input.required<Roaster[]>();
   readonly initialValue = input<CoffeeFormValue>();
   readonly saving = input(false);
-  readonly submitted = output<CoffeeInput>();
+  readonly submitted = output<CoffeeFormValue>();
 
   protected readonly processes = ['Washed', 'Natural', 'Honey'];
   protected readonly roastLevels = ['Light', 'Medium', 'Dark'];
-  protected readonly currencies: readonly Currency[] = ['$', 'R$'];
+  protected readonly currencies: readonly { code: Currency; symbol: string }[] = [
+    { code: 'USD', symbol: '$' },
+    { code: 'BRL', symbol: 'R$' },
+  ];
 
   /** Preset bag sizes, plus the current size when a saved price uses another one. */
   protected sizeOptions(current: number): { grams: number; label: string }[] {
@@ -238,10 +252,9 @@ export class CoffeeForm {
         action: async (field) => {
           const value = field().value();
           // Copy price rows to plain objects: Signal Forms tags array items with a tracking symbol.
-          // The currency is dropped because the API has no field for it.
           this.submitted.emit({
             ...value,
-            prices: value.prices.map(({ grams, price }) => ({ grams, price })),
+            prices: value.prices.map(({ grams, price, currency }) => ({ grams, price, currency })),
           });
         },
       },
@@ -251,7 +264,7 @@ export class CoffeeForm {
   protected addPrice(): void {
     this.data.update((value) => ({
       ...value,
-      prices: [...value.prices, { grams: 250, price: 0, currency: '$' }],
+      prices: [...value.prices, { grams: 250, price: 0, currency: 'USD' }],
     }));
   }
 

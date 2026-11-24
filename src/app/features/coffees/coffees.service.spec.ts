@@ -19,7 +19,7 @@ const input: CoffeeInput = {
   roastLevel: 'Light',
   variety: 'Heirloom',
   tastingNotes: 'Berry',
-  prices: [{ grams: 250, price: 15 }],
+  prices: [{ grams: 250, price: 15, currency: 'BRL' }],
 };
 
 describe('CoffeesService', () => {
