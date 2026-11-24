@@ -3,11 +3,11 @@ import { Router, RouterLink } from '@angular/router';
 import { FormPageHeader } from '../../../../shared/ui/form-page-header/form-page-header';
 import { RoastersService } from '../../../roasters/roasters.service';
 import { CoffeeForm } from '../../components/coffee-form/coffee-form';
-import { Coffee, CoffeeFormValue } from '../../coffee.model';
+import { Coffee, CoffeeFormValue, CoffeeInput } from '../../coffee.model';
 import { CoffeesService } from '../../coffees.service';
 
 function toFormValue({ id, images, prices, ...rest }: Coffee): CoffeeFormValue {
-  return { ...rest, prices: prices.map(({ grams, price }) => ({ grams, price })) };
+  return { ...rest, prices: prices.map(({ grams, price }) => ({ grams, price, currency: '$' })) };
 }
 
 @Component({
@@ -64,7 +64,7 @@ export class CoffeeFormPage {
   protected readonly saving = signal(false);
   protected readonly saveError = signal(false);
 
-  protected async save(value: CoffeeFormValue): Promise<void> {
+  protected async save(value: CoffeeInput): Promise<void> {
     this.saving.set(true);
     this.saveError.set(false);
     try {

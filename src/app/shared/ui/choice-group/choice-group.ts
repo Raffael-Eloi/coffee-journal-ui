@@ -1,10 +1,21 @@
-import { Component, computed, input, model, output, signal } from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  ElementRef,
+  input,
+  model,
+  output,
+  signal,
+  untracked,
+  viewChild,
+} from '@angular/core';
 import { FormValueControl } from '@angular/forms/signals';
 
 let nextGroupId = 0;
 
 /**
- * A row of button-style options plus an "Other" option that reveals a free-text input.
+ * A row of button-style options plus an "Other" option that turns into a free-text input in the same row.
  * Bound with `[formField]` to a string, so values outside `options` still work.
  */
 @Component({
@@ -26,29 +37,43 @@ let nextGroupId = 0;
             {{ option }}
           </label>
         }
-        <label class="choice">
-          <input
-            type="radio"
-            class="sr-only"
-            [name]="groupName"
-            [checked]="isOther()"
-            [disabled]="disabled() || readonly()"
-            (change)="chooseOther()"
-          />
-          Other
-        </label>
+        @if (isOther()) {
+          <!-- "Other" turns into a text input in the same row; the hidden radio keeps the group semantics. -->
+          <span class="flex items-center">
+            <input
+              type="radio"
+              class="sr-only"
+              [name]="groupName"
+              [checked]="true"
+              [disabled]="disabled() || readonly()"
+              tabindex="-1"
+              aria-hidden="true"
+            />
+            <input
+              #otherInput
+              type="text"
+              class="field-input w-44"
+              [attr.aria-label]="label() + ' (other)'"
+              placeholder="Other"
+              [value]="value()"
+              [disabled]="disabled() || readonly()"
+              (input)="onOtherInput($event)"
+            />
+          </span>
+        } @else {
+          <label class="choice">
+            <input
+              type="radio"
+              class="sr-only"
+              [name]="groupName"
+              [checked]="false"
+              [disabled]="disabled() || readonly()"
+              (change)="chooseOther()"
+            />
+            Other
+          </label>
+        }
       </div>
-      @if (isOther()) {
-        <input
-          type="text"
-          class="field-input"
-          [attr.aria-label]="label() + ' (other)'"
-          [placeholder]="'Other ' + label().toLowerCase()"
-          [value]="value()"
-          [disabled]="disabled() || readonly()"
-          (input)="onOtherInput($event)"
-        />
-      }
     </fieldset>
   `,
 })
@@ -62,6 +87,15 @@ export class ChoiceGroup implements FormValueControl<string> {
 
   protected readonly groupName = `choice-group-${nextGroupId++}`;
   private readonly otherChosen = signal(false);
+  private readonly otherInput = viewChild<ElementRef<HTMLInputElement>>('otherInput');
+
+  constructor() {
+    // Move focus into the text input right after the user picks "Other" (not when a saved value loads).
+    effect(() => {
+      const input = this.otherInput();
+      if (input && untracked(this.otherChosen)) input.nativeElement.focus();
+    });
+  }
 
   /** "Other" is active when chosen, or when the value is not one of the options. */
   protected readonly isOther = computed(

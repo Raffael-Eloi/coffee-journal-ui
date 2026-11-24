@@ -7,7 +7,14 @@ import { LabeledField } from '../../../../shared/ui/labeled-field/labeled-field'
 import { StarRating } from '../../../../shared/ui/star-rating/star-rating';
 import { YesNoToggle } from '../../../../shared/ui/yes-no-toggle/yes-no-toggle';
 import { Roaster } from '../../../roasters/roaster.model';
-import { CoffeeFormValue } from '../../coffee.model';
+import { CoffeeFormValue, CoffeeInput, Currency } from '../../coffee.model';
+
+const PRESET_SIZES = [
+  { grams: 150, label: '150 g' },
+  { grams: 250, label: '250 g' },
+  { grams: 500, label: '500 g' },
+  { grams: 1000, label: '1 kg' },
+];
 
 const EMPTY_VALUE: CoffeeFormValue = {
   name: '',
@@ -126,7 +133,7 @@ const EMPTY_VALUE: CoffeeFormValue = {
       </app-form-section>
 
       <app-form-section number="03" title="Prices" caption="Retail bags">
-        @for (price of coffeeForm.prices; track $index) {
+        @for (price of coffeeForm.prices; track $index; let row = $index) {
           <div class="flex flex-col gap-4 rounded-xl bg-canvas p-4">
             <div class="flex items-center justify-between border-b border-container pb-2">
               <span class="flex items-center gap-1 text-xs font-semibold tracking-wide text-espresso uppercase">
@@ -142,24 +149,46 @@ const EMPTY_VALUE: CoffeeFormValue = {
                 <app-icon name="close" [size]="16" />
               </button>
             </div>
-            <div class="grid gap-4 md:grid-cols-2">
-              <app-labeled-field label="Grams" [controlId]="'grams-' + $index">
+            <fieldset class="flex flex-col gap-2">
+              <legend class="field-label">Bag size</legend>
+              <div class="flex flex-wrap gap-2">
+                @for (option of sizeOptions(price.grams().value()); track option.grams) {
+                  <label class="choice">
+                    <input
+                      type="radio"
+                      class="sr-only"
+                      [attr.name]="'size-' + row"
+                      [checked]="price.grams().value() === option.grams"
+                      (change)="price.grams().value.set(option.grams)"
+                    />
+                    {{ option.label }}
+                  </label>
+                }
+              </div>
+            </fieldset>
+            <app-labeled-field class="md:max-w-xs" label="Price" [controlId]="'price-' + row">
+              <div
+                class="flex overflow-hidden rounded-lg border border-outline bg-container-low shadow-sm focus-within:bg-surface"
+              >
+                <select
+                  class="border-r border-outline bg-transparent py-2 pr-2 pl-3 font-semibold text-espresso"
+                  [attr.aria-label]="'Currency for bag ' + (row + 1)"
+                  [formField]="price.currency"
+                >
+                  @for (currency of currencies; track currency) {
+                    <option [value]="currency">{{ currency }}</option>
+                  }
+                </select>
                 <input
-                  [id]="'grams-' + $index"
+                  [id]="'price-' + row"
                   type="number"
-                  class="field-input"
-                  [formField]="price.grams"
-                />
-              </app-labeled-field>
-              <app-labeled-field label="Price" [controlId]="'price-' + $index">
-                <input
-                  [id]="'price-' + $index"
-                  type="number"
-                  class="field-input"
+                  step="0.01"
+                  placeholder="0.00"
+                  class="min-w-0 flex-1 bg-transparent px-3 py-2 text-ink"
                   [formField]="price.price"
                 />
-              </app-labeled-field>
-            </div>
+              </div>
+            </app-labeled-field>
           </div>
         }
         <button type="button" class="btn btn-ghost gap-2 self-start" (click)="addPrice()">
@@ -181,10 +210,18 @@ export class CoffeeForm {
   readonly roasters = input.required<Roaster[]>();
   readonly initialValue = input<CoffeeFormValue>();
   readonly saving = input(false);
-  readonly submitted = output<CoffeeFormValue>();
+  readonly submitted = output<CoffeeInput>();
 
   protected readonly processes = ['Washed', 'Natural', 'Honey'];
   protected readonly roastLevels = ['Light', 'Medium', 'Dark'];
+  protected readonly currencies: readonly Currency[] = ['$', 'R$'];
+
+  /** Preset bag sizes, plus the current size when a saved price uses another one. */
+  protected sizeOptions(current: number): { grams: number; label: string }[] {
+    return current > 0 && !PRESET_SIZES.some((size) => size.grams === current)
+      ? [...PRESET_SIZES, { grams: current, label: `${current} g` }]
+      : PRESET_SIZES;
+  }
 
   private readonly data = linkedSignal<CoffeeFormValue>(() => this.initialValue() ?? EMPTY_VALUE);
 
@@ -201,6 +238,7 @@ export class CoffeeForm {
         action: async (field) => {
           const value = field().value();
           // Copy price rows to plain objects: Signal Forms tags array items with a tracking symbol.
+          // The currency is dropped because the API has no field for it.
           this.submitted.emit({
             ...value,
             prices: value.prices.map(({ grams, price }) => ({ grams, price })),
@@ -211,7 +249,10 @@ export class CoffeeForm {
   );
 
   protected addPrice(): void {
-    this.data.update((value) => ({ ...value, prices: [...value.prices, { grams: 0, price: 0 }] }));
+    this.data.update((value) => ({
+      ...value,
+      prices: [...value.prices, { grams: 250, price: 0, currency: '$' }],
+    }));
   }
 
   protected removePrice(index: number): void {

@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { Roaster } from '../../../roasters/roaster.model';
-import { CoffeeFormValue } from '../../coffee.model';
+import { CoffeeInput } from '../../coffee.model';
 import { CoffeeForm } from './coffee-form';
 
 const roaster: Roaster = {
@@ -20,7 +20,7 @@ describe('CoffeeForm', () => {
   async function setup() {
     const fixture = TestBed.createComponent(CoffeeForm);
     fixture.componentRef.setInput('roasters', [roaster]);
-    const submitted: CoffeeFormValue[] = [];
+    const submitted: CoffeeInput[] = [];
     fixture.componentInstance.submitted.subscribe((value) => submitted.push(value));
     await fixture.whenStable();
     return { fixture, submitted, el: fixture.nativeElement as HTMLElement };
@@ -64,7 +64,9 @@ describe('CoffeeForm', () => {
       if (b.textContent?.includes('Add price')) b.click();
     });
     await fixture.whenStable();
-    fill(el, '#grams-0', '250');
+    // Bag size: the default is 250 g, so pick 500 g (third option); currency: R$ (second option).
+    el.querySelectorAll<HTMLInputElement>('input[name="size-0"]')[2].click();
+    fill(el, 'select[aria-label="Currency for bag 1"]', 'R$');
     fill(el, '#price-0', '15');
     await fixture.whenStable();
 
@@ -77,7 +79,7 @@ describe('CoffeeForm', () => {
     expect(submitted[0].rate).toBe(4);
     expect(submitted[0].process).toBe('Natural');
     expect(submitted[0].roastLevel).toBe('Light');
-    expect(submitted[0].prices).toEqual([{ grams: 250, price: 15 }]);
+    expect(submitted[0].prices).toEqual([{ grams: 500, price: 15 }]);
   });
 
   it('removes a price row', async () => {
@@ -87,11 +89,11 @@ describe('CoffeeForm', () => {
       if (b.textContent?.includes('Add price')) b.click();
     });
     await fixture.whenStable();
-    expect(el.querySelector('#grams-0')).not.toBeNull();
+    expect(el.querySelector('#price-0')).not.toBeNull();
 
     el.querySelector<HTMLButtonElement>('[aria-label="Remove price 1"]')!.click();
     await fixture.whenStable();
 
-    expect(el.querySelector('#grams-0')).toBeNull();
+    expect(el.querySelector('#price-0')).toBeNull();
   });
 });
