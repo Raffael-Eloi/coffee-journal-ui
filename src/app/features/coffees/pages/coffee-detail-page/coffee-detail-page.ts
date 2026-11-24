@@ -67,13 +67,13 @@ import { CoffeesService } from '../../coffees.service';
         </ul>
       }
 
-      @if (c.images.length > 0) {
+      @if (c.imageUrls.length > 0) {
         <ul class="mt-6 flex flex-wrap gap-4">
-          @for (image of c.images; track image.id) {
+          @for (url of c.imageUrls; track $index) {
             <li>
               <img
                 class="rounded-lg border border-hairline"
-                [ngSrc]="image.url"
+                [ngSrc]="url"
                 width="240"
                 height="180"
                 [alt]="'Photo of ' + c.name"

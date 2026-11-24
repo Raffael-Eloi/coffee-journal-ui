@@ -3,6 +3,7 @@ import { form, FormField, FormRoot, max, min, required } from '@angular/forms/si
 import { FormSection } from '../../../../shared/ui/form-section/form-section';
 import { Icon } from '../../../../shared/ui/icon/icon';
 import { LabeledField } from '../../../../shared/ui/labeled-field/labeled-field';
+import { LogoUploader } from '../../../../shared/ui/logo-uploader/logo-uploader';
 import { StarRating } from '../../../../shared/ui/star-rating/star-rating';
 import { YesNoToggle } from '../../../../shared/ui/yes-no-toggle/yes-no-toggle';
 import { RoasterFormValue } from '../../roaster.model';
@@ -19,7 +20,16 @@ const EMPTY_VALUE: RoasterFormValue = {
 
 @Component({
   selector: 'app-roaster-form',
-  imports: [FormField, FormRoot, FormSection, Icon, LabeledField, StarRating, YesNoToggle],
+  imports: [
+    FormField,
+    FormRoot,
+    FormSection,
+    Icon,
+    LabeledField,
+    LogoUploader,
+    StarRating,
+    YesNoToggle,
+  ],
   template: `
     <form class="flex flex-col gap-8" [formRoot]="roasterForm">
       <app-form-section number="01" title="The Roaster" caption="Roaster profile">
@@ -37,9 +47,7 @@ const EMPTY_VALUE: RoasterFormValue = {
             <input id="website" type="url" class="field-input" [formField]="roasterForm.website" />
           </app-labeled-field>
 
-          <app-labeled-field label="Logo URL" controlId="logoUrl" icon="link">
-            <input id="logoUrl" type="url" class="field-input" [formField]="roasterForm.logoUrl" />
-          </app-labeled-field>
+          <app-logo-uploader label="Logo" [formField]="roasterForm.logoUrl" />
 
           <app-yes-no-toggle
             label="Membership option"

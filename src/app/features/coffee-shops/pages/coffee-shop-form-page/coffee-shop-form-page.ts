@@ -5,7 +5,7 @@ import { CoffeeShopForm } from '../../components/coffee-shop-form/coffee-shop-fo
 import { CoffeeShop, CoffeeShopFormValue } from '../../coffee-shop.model';
 import { CoffeeShopsService } from '../../coffee-shops.service';
 
-function toFormValue({ id, images, roasterId, ...value }: CoffeeShop): CoffeeShopFormValue {
+function toFormValue({ id, roasterId, ...value }: CoffeeShop): CoffeeShopFormValue {
   return value;
 }
 

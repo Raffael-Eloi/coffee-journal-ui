@@ -18,6 +18,7 @@ const input: CoffeeShopInput = {
   state: 'Lisboa',
   country: 'Portugal',
   location: 'Rua 1',
+  imageUrls: ['https://cdn.example.com/a.png'],
 };
 
 describe('CoffeeShopsService', () => {

@@ -2,6 +2,7 @@ import { Component, input, linkedSignal, output } from '@angular/core';
 import { form, FormField, FormRoot, max, min, required } from '@angular/forms/signals';
 import { FormSection } from '../../../../shared/ui/form-section/form-section';
 import { Icon } from '../../../../shared/ui/icon/icon';
+import { ImageUploader } from '../../../../shared/ui/image-uploader/image-uploader';
 import { LabeledField } from '../../../../shared/ui/labeled-field/labeled-field';
 import { StarRating } from '../../../../shared/ui/star-rating/star-rating';
 import { YesNoToggle } from '../../../../shared/ui/yes-no-toggle/yes-no-toggle';
@@ -17,11 +18,21 @@ const EMPTY_VALUE: CoffeeShopFormValue = {
   state: '',
   country: '',
   location: '',
+  imageUrls: [],
 };
 
 @Component({
   selector: 'app-coffee-shop-form',
-  imports: [FormField, FormRoot, FormSection, Icon, LabeledField, StarRating, YesNoToggle],
+  imports: [
+    FormField,
+    FormRoot,
+    FormSection,
+    Icon,
+    ImageUploader,
+    LabeledField,
+    StarRating,
+    YesNoToggle,
+  ],
   template: `
     <form class="flex flex-col gap-8" [formRoot]="shopForm">
       <app-form-section number="01" title="The Café" caption="Venue profile">
@@ -74,6 +85,10 @@ const EMPTY_VALUE: CoffeeShopFormValue = {
         <app-labeled-field label="Personal impressions & notes" controlId="review">
           <textarea id="review" rows="4" class="field-input" [formField]="shopForm.review"></textarea>
         </app-labeled-field>
+      </app-form-section>
+
+      <app-form-section number="03" title="Photos" caption="The space & the cup">
+        <app-image-uploader label="Photos" [formField]="shopForm.imageUrls" />
       </app-form-section>
 
       <div class="flex justify-end">

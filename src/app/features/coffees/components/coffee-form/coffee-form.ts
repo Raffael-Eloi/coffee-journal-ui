@@ -3,6 +3,7 @@ import { form, FormField, FormRoot, max, min, required } from '@angular/forms/si
 import { ChoiceGroup } from '../../../../shared/ui/choice-group/choice-group';
 import { FormSection } from '../../../../shared/ui/form-section/form-section';
 import { Icon } from '../../../../shared/ui/icon/icon';
+import { ImageUploader } from '../../../../shared/ui/image-uploader/image-uploader';
 import { LabeledField } from '../../../../shared/ui/labeled-field/labeled-field';
 import { StarRating } from '../../../../shared/ui/star-rating/star-rating';
 import { YesNoToggle } from '../../../../shared/ui/yes-no-toggle/yes-no-toggle';
@@ -29,6 +30,7 @@ const EMPTY_VALUE: CoffeeFormValue = {
   variety: '',
   tastingNotes: '',
   prices: [],
+  imageUrls: [],
 };
 
 @Component({
@@ -39,6 +41,7 @@ const EMPTY_VALUE: CoffeeFormValue = {
     ChoiceGroup,
     FormSection,
     Icon,
+    ImageUploader,
     LabeledField,
     StarRating,
     YesNoToggle,
@@ -206,6 +209,10 @@ const EMPTY_VALUE: CoffeeFormValue = {
           <app-icon name="plus" [size]="16" />
           Add price
         </button>
+      </app-form-section>
+
+      <app-form-section number="04" title="Photos" caption="The bag & the brew">
+        <app-image-uploader label="Photos" [formField]="coffeeForm.imageUrls" />
       </app-form-section>
 
       <div class="flex justify-end">

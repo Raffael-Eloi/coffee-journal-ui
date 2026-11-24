@@ -20,6 +20,7 @@ const input: CoffeeInput = {
   variety: 'Heirloom',
   tastingNotes: 'Berry',
   prices: [{ grams: 250, price: 15, currency: 'BRL' }],
+  imageUrls: ['https://cdn.example.com/a.png'],
 };
 
 describe('CoffeesService', () => {

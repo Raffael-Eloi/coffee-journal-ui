@@ -6,7 +6,7 @@ import { CoffeeForm } from '../../components/coffee-form/coffee-form';
 import { Coffee, CoffeeFormValue } from '../../coffee.model';
 import { CoffeesService } from '../../coffees.service';
 
-function toFormValue({ id, images, prices, ...rest }: Coffee): CoffeeFormValue {
+function toFormValue({ id, prices, ...rest }: Coffee): CoffeeFormValue {
   return {
     ...rest,
     prices: prices.map(({ grams, price, currency }) => ({ grams, price, currency })),

@@ -88,13 +88,13 @@ const STARS = [1, 2, 3, 4, 5];
           }
         </header>
 
-        @if (shop.images?.length > 0) {
+        @if (shop.imageUrls.length > 0) {
           <ul class="grid grid-cols-1 gap-6 md:grid-cols-12">
-            @for (image of shop.images; track image.id; let i = $index) {
-              <li [class]="imageSpan(i, shop.images.length)">
+            @for (url of shop.imageUrls; track $index; let i = $index) {
+              <li [class]="imageSpan(i, shop.imageUrls.length)">
                 <img
                   class="h-64 w-full rounded-xl border border-hairline object-cover md:h-[420px]"
-                  [ngSrc]="image.url"
+                  [ngSrc]="url"
                   width="800"
                   height="600"
                   [alt]="'Photo ' + (i + 1) + ' of ' + shop.name"

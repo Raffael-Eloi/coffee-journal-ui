@@ -8,11 +8,6 @@ export interface CoffeePrice {
   currency: Currency;
 }
 
-export interface CoffeeImage {
-  id: string;
-  url: string;
-}
-
 export interface Coffee {
   id: string;
   name: string;
@@ -27,13 +22,13 @@ export interface Coffee {
   variety: string;
   tastingNotes: string;
   prices: CoffeePrice[];
-  images: CoffeeImage[];
+  imageUrls: string[];
 }
 
 export type CoffeePriceInput = Omit<CoffeePrice, 'id'>;
 
-/** Payload sent to the API when creating or updating a coffee. Images are not edited yet. */
-export type CoffeeInput = Omit<Coffee, 'id' | 'prices' | 'images'> & {
+/** Payload sent to the API when creating or updating a coffee. */
+export type CoffeeInput = Omit<Coffee, 'id' | 'prices'> & {
   prices: CoffeePriceInput[];
 };
 
