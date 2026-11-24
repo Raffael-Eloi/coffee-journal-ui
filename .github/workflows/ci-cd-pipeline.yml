@@ -39,6 +39,16 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Set API URL
+        env:
+          API_URL: ${{ vars.API_URL }}
+        run: |
+          cat > src/environments/environment.ts <<EOF
+          export const environment = {
+            apiUrl: '${API_URL}',
+          };
+          EOF
+
       - name: Build
         run: npm run build -- --configuration production
 
