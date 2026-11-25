@@ -108,14 +108,18 @@ const STARS = [1, 2, 3, 4, 5];
         <div class="grid gap-6 lg:grid-cols-12 lg:items-start">
           <div class="flex flex-col gap-6 lg:col-span-8">
             @if (e.imageUrl) {
-              <img
-                class="aspect-[4/3] w-full rounded-xl border border-hairline object-cover"
-                [ngSrc]="e.imageUrl"
-                width="800"
-                height="600"
-                priority
-                [alt]="'equipment.detail.photoAlt' | transloco: { name: e.name }"
-              />
+              <div
+                class="flex justify-center overflow-hidden rounded-xl border border-hairline bg-container"
+              >
+                <img
+                  class="h-auto max-h-96 w-auto max-w-full object-contain"
+                  [ngSrc]="e.imageUrl"
+                  width="800"
+                  height="600"
+                  priority
+                  [alt]="'equipment.detail.photoAlt' | transloco: { name: e.name }"
+                />
+              </div>
             }
 
             <section class="card flex flex-col gap-6">
