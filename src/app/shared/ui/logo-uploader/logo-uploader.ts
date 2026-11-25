@@ -5,13 +5,13 @@ import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 import { ImagesService } from '../../images/images.service';
 import { Icon } from '../icon/icon';
 
-/** Uploads a single image and keeps its URL (`label` is a translation key). Bound with `[formField]` to a `string` (`''` when empty). */
+/** Uploads a single image and keeps its URL. Bound with `[formField]` to a `string` (`''` when empty). */
 @Component({
   selector: 'app-logo-uploader',
   imports: [NgOptimizedImage, Icon, TranslocoPipe],
   template: `
     <fieldset class="flex flex-col gap-3">
-      <legend class="field-label">{{ label() | transloco }}</legend>
+      <legend class="field-label">{{ textGroup() + '.label' | transloco }}</legend>
 
       @if (value()) {
         <div class="relative self-start">
@@ -20,12 +20,12 @@ import { Icon } from '../icon/icon';
             [ngSrc]="value()"
             width="96"
             height="96"
-            [alt]="'ui.logoUploader.current' | transloco"
+            [alt]="textGroup() + '.current' | transloco"
           />
           <button
             type="button"
             class="absolute -top-2 -right-2 rounded-full border border-outline bg-surface p-1 text-husk hover:text-error"
-            [attr.aria-label]="'ui.logoUploader.remove' | transloco"
+            [attr.aria-label]="textGroup() + '.remove' | transloco"
             [disabled]="disabled() || readonly()"
             (click)="remove()"
           >
@@ -42,8 +42,8 @@ import { Icon } from '../icon/icon';
           (uploading()
             ? 'ui.imageUploader.uploading'
             : value()
-              ? 'ui.logoUploader.replace'
-              : 'ui.logoUploader.upload'
+              ? textGroup() + '.replace'
+              : textGroup() + '.upload'
           ) | transloco
         }}
         <input
@@ -54,7 +54,7 @@ import { Icon } from '../icon/icon';
           (change)="onFile($event)"
         />
       </label>
-      <p class="text-xs text-husk">{{ 'ui.logoUploader.hint' | transloco }}</p>
+      <p class="text-xs text-husk">{{ textGroup() + '.hint' | transloco }}</p>
 
       @if (uploading()) {
         <p class="text-husk" role="status">{{ 'ui.imageUploader.uploading' | transloco }}</p>
@@ -73,7 +73,8 @@ export class LogoUploader implements FormValueControl<string> {
   readonly touch = output<void>();
   readonly disabled = input(false);
   readonly readonly = input(false);
-  readonly label = input('ui.logoUploader.label');
+  /** Translation group with `label`, `upload`, `replace`, `remove`, `current` and `hint`; `ui.logoUploader` or `ui.photoUploader`. */
+  readonly textGroup = input('ui.logoUploader');
 
   protected readonly uploading = signal(false);
   protected readonly error = signal<string | null>(null);

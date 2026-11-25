@@ -8,7 +8,8 @@
     "main": "Principal",
     "coffeeShops": "Cafeterias",
     "roasters": "Torrefadores",
-    "coffees": "Cafés"
+    "coffees": "Cafés",
+    "equipment": "Equipamentos"
   },
   "common": {
     "loading": "Carregando…",
@@ -40,7 +41,14 @@
   "errors": {
     "nameRequired": "O nome é obrigatório",
     "roasterRequired": "O torrefador é obrigatório",
-    "rateRange": "A nota deve estar entre 1 e 5"
+    "rateRange": "A nota deve estar entre 1 e 5",
+    "brandRequired": "A marca é obrigatória",
+    "reviewRequired": "A avaliação é obrigatória",
+    "categoryRequired": "A categoria é obrigatória",
+    "frequencyRequired": "Escolha com que frequência você usa",
+    "tooLong": "O texto é muito longo",
+    "priceRange": "O preço deve estar entre 0,01 e 99.999.999,99",
+    "linkInvalid": "Informe um link que comece com http:// ou https://"
   },
   "options": {
     "process": {
@@ -56,6 +64,15 @@
     "country": {
       "United States": "Estados Unidos",
       "Brazil": "Brasil"
+    },
+    "frequency": {
+      "1": "Diariamente",
+      "2": "Semanalmente",
+      "3": "A cada duas semanas",
+      "4": "Mensalmente",
+      "5": "Raramente",
+      "6": "Não uso mais",
+      "7": "Nunca"
     }
   },
   "images": {
@@ -96,6 +113,14 @@
     "combobox": {
       "noResults": "Nenhum resultado",
       "more": "Mais {{count}}. Continue digitando para filtrar a lista."
+    },
+    "photoUploader": {
+      "label": "Foto",
+      "upload": "Enviar foto",
+      "replace": "Trocar foto",
+      "remove": "Remover foto",
+      "current": "Foto atual",
+      "hint": "JPEG, PNG ou WebP, até 5 MB."
     }
   },
   "coffeeShops": {
@@ -222,6 +247,58 @@
       "addPrice": "Adicionar preço",
       "photosTitle": "Fotos",
       "photosCaption": "O pacote e a bebida"
+    }
+  },
+  "equipment": {
+    "list": {
+      "eyebrow": "Equipamentos de preparo",
+      "title": "Equipamentos de café",
+      "subtitle": "Um catálogo pessoal de cafeteiras, moedores e ferramentas de extração.",
+      "add": "Adicionar equipamento",
+      "categoriesLabel": "Categorias",
+      "all": "Todos",
+      "loadError": "Não foi possível carregar os equipamentos.",
+      "empty": "Nenhum equipamento ainda.",
+      "noMatches": "Nenhum equipamento corresponde à busca."
+    },
+    "detail": {
+      "loadError": "Não foi possível carregar este equipamento.",
+      "confirmDelete": "Excluir este equipamento?",
+      "deleteError": "Não foi possível excluir este equipamento.",
+      "productLink": "Ver produto",
+      "photoAlt": "Foto de {{name}}",
+      "details": "Detalhes",
+      "category": "Categoria",
+      "brand": "Marca",
+      "model": "Modelo",
+      "frequency": "Uso",
+      "price": "Preço",
+      "purchased": "Comprado em"
+    },
+    "form": {
+      "eyebrow": "Equipamento",
+      "addTitle": "Adicionar equipamento",
+      "editTitle": "Editar equipamento",
+      "description": "Registre um equipamento e o que você acha dele.",
+      "back": "← Equipamentos",
+      "loadError": "Não foi possível carregar os dados deste formulário.",
+      "saveError": "Não foi possível salvar este equipamento.",
+      "gearTitle": "O equipamento",
+      "gearCaption": "Identificação e compra",
+      "name": "Nome",
+      "brand": "Marca",
+      "model": "Modelo",
+      "category": "Categoria",
+      "selectCategory": "Selecione uma categoria",
+      "frequency": "Com que frequência você usa?",
+      "selectFrequency": "Selecione a frequência",
+      "purchaseDate": "Data da compra",
+      "price": "Preço",
+      "currency": "Moeda",
+      "link": "Link do produto",
+      "verdictCaption": "Qualidade e custo-benefício",
+      "photoTitle": "Foto",
+      "photoCaption": "O equipamento em uso"
     }
   }
 }

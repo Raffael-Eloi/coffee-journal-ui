@@ -8,7 +8,8 @@
     "main": "Main",
     "coffeeShops": "Coffee shops",
     "roasters": "Roasters",
-    "coffees": "Coffees"
+    "coffees": "Coffees",
+    "equipment": "Equipment"
   },
   "common": {
     "loading": "Loading…",
@@ -40,7 +41,14 @@
   "errors": {
     "nameRequired": "Name is required",
     "roasterRequired": "Roaster is required",
-    "rateRange": "Rate must be between 1 and 5"
+    "rateRange": "Rate must be between 1 and 5",
+    "brandRequired": "Brand is required",
+    "reviewRequired": "Review is required",
+    "categoryRequired": "Category is required",
+    "frequencyRequired": "Choose how often you use it",
+    "tooLong": "Text is too long",
+    "priceRange": "Price must be between 0.01 and 99,999,999.99",
+    "linkInvalid": "Enter a link that starts with http:// or https://"
   },
   "options": {
     "process": {
@@ -56,6 +64,15 @@
     "country": {
       "United States": "United States",
       "Brazil": "Brazil"
+    },
+    "frequency": {
+      "1": "Daily",
+      "2": "Weekly",
+      "3": "Every two weeks",
+      "4": "Monthly",
+      "5": "Rarely",
+      "6": "Not used anymore",
+      "7": "Never"
     }
   },
   "images": {
@@ -96,6 +113,14 @@
     "combobox": {
       "noResults": "No results",
       "more": "{{count}} more. Keep typing to narrow the list."
+    },
+    "photoUploader": {
+      "label": "Photo",
+      "upload": "Upload photo",
+      "replace": "Replace photo",
+      "remove": "Remove photo",
+      "current": "Current photo",
+      "hint": "JPEG, PNG or WebP, up to 5 MB."
     }
   },
   "coffeeShops": {
@@ -222,6 +247,58 @@
       "addPrice": "Add price",
       "photosTitle": "Photos",
       "photosCaption": "The bag & the brew"
+    }
+  },
+  "equipment": {
+    "list": {
+      "eyebrow": "Brew gear",
+      "title": "Coffee equipment",
+      "subtitle": "A personal catalog of brewers, grinders and extraction tools.",
+      "add": "Add equipment",
+      "categoriesLabel": "Categories",
+      "all": "All",
+      "loadError": "Could not load equipment.",
+      "empty": "No equipment yet.",
+      "noMatches": "No equipment matches your search."
+    },
+    "detail": {
+      "loadError": "Could not load this equipment.",
+      "confirmDelete": "Delete this equipment?",
+      "deleteError": "Could not delete this equipment.",
+      "productLink": "View product",
+      "photoAlt": "Photo of {{name}}",
+      "details": "Details",
+      "category": "Category",
+      "brand": "Brand",
+      "model": "Model",
+      "frequency": "Use",
+      "price": "Price",
+      "purchased": "Purchased"
+    },
+    "form": {
+      "eyebrow": "Equipment",
+      "addTitle": "Add equipment",
+      "editTitle": "Edit equipment",
+      "description": "Record a piece of gear and what you think of it.",
+      "back": "← Equipment",
+      "loadError": "Could not load the data for this form.",
+      "saveError": "Could not save this equipment.",
+      "gearTitle": "The Gear",
+      "gearCaption": "Identity & purchase",
+      "name": "Name",
+      "brand": "Brand",
+      "model": "Model",
+      "category": "Category",
+      "selectCategory": "Select a category",
+      "frequency": "How often do you use it?",
+      "selectFrequency": "Select a frequency",
+      "purchaseDate": "Purchase date",
+      "price": "Price",
+      "currency": "Currency",
+      "link": "Product link",
+      "verdictCaption": "Quality & value",
+      "photoTitle": "Photo",
+      "photoCaption": "The gear in use"
     }
   }
 }
