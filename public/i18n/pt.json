@@ -52,6 +52,10 @@
       "Light": "Clara",
       "Medium": "Média",
       "Dark": "Escura"
+    },
+    "country": {
+      "United States": "Estados Unidos",
+      "Brazil": "Brasil"
     }
   },
   "images": {
@@ -88,6 +92,10 @@
       "remove": "Remover logo",
       "current": "Logo atual",
       "hint": "JPEG, PNG ou WebP, até 5 MB."
+    },
+    "combobox": {
+      "noResults": "Nenhum resultado",
+      "more": "Mais {{count}}. Continue digitando para filtrar a lista."
     }
   },
   "coffeeShops": {
@@ -120,7 +128,11 @@
       "location": "Endereço",
       "verdictCaption": "Ambiente e atendimento",
       "photosTitle": "Fotos",
-      "photosCaption": "O espaço e a xícara"
+      "photosCaption": "O espaço e a xícara",
+      "selectCountry": "Selecione um país",
+      "selectState": "Busque um estado",
+      "selectCity": "Busque uma cidade",
+      "geoError": "Não foi possível carregar a lista de estados e cidades."
     }
   },
   "roasters": {

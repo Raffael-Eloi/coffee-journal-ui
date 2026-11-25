@@ -52,6 +52,10 @@
       "Light": "Light",
       "Medium": "Medium",
       "Dark": "Dark"
+    },
+    "country": {
+      "United States": "United States",
+      "Brazil": "Brazil"
     }
   },
   "images": {
@@ -88,6 +92,10 @@
       "remove": "Remove logo",
       "current": "Current logo",
       "hint": "JPEG, PNG or WebP, up to 5 MB."
+    },
+    "combobox": {
+      "noResults": "No results",
+      "more": "{{count}} more. Keep typing to narrow the list."
     }
   },
   "coffeeShops": {
@@ -120,7 +128,11 @@
       "location": "Location",
       "verdictCaption": "Atmosphere & flow",
       "photosTitle": "Photos",
-      "photosCaption": "The space & the cup"
+      "photosCaption": "The space & the cup",
+      "selectCountry": "Select a country",
+      "selectState": "Search for a state",
+      "selectCity": "Search for a city",
+      "geoError": "Could not load the list of states and cities."
     }
   },
   "roasters": {

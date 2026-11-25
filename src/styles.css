@@ -218,7 +218,8 @@
     color: var(--color-husk);
   }
 
-  .field-glyph ~ .field-input {
+  .field-glyph ~ .field-input,
+  .field-glyph ~ app-combobox .field-input {
     padding-left: 2.75rem;
   }
 

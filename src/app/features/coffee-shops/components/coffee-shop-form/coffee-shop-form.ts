@@ -1,6 +1,9 @@
-import { Component, input, linkedSignal, output } from '@angular/core';
-import { form, FormField, FormRoot, max, min, required } from '@angular/forms/signals';
+import { Component, computed, inject, input, linkedSignal, output, resource } from '@angular/core';
+import { disabled, form, FormField, FormRoot, max, min, required } from '@angular/forms/signals';
+import { OptionLabelPipe } from '../../../../i18n/option-label.pipe';
+import { GEO_COUNTRIES, GeoService } from '../../../../shared/geo/geo.service';
 import { FormSection } from '../../../../shared/ui/form-section/form-section';
+import { Combobox } from '../../../../shared/ui/combobox/combobox';
 import { Icon } from '../../../../shared/ui/icon/icon';
 import { ImageUploader } from '../../../../shared/ui/image-uploader/image-uploader';
 import { LabeledField } from '../../../../shared/ui/labeled-field/labeled-field';
@@ -22,10 +25,17 @@ const EMPTY_VALUE: CoffeeShopFormValue = {
   imageUrls: [],
 };
 
+/** The options, plus the current value when it is not among them (for example a saved legacy value). */
+function withCurrent(options: readonly string[], current: string): string[] {
+  return current === '' || options.includes(current) ? [...options] : [...options, current];
+}
+
 @Component({
   selector: 'app-coffee-shop-form',
   imports: [
     TranslocoPipe,
+    OptionLabelPipe,
+    Combobox,
     FormField,
     FormRoot,
     FormSection,
@@ -64,11 +74,21 @@ const EMPTY_VALUE: CoffeeShopFormValue = {
 
           <app-labeled-field
             class="md:col-span-2"
-            label="coffeeShops.form.city"
-            controlId="city"
-            icon="pin"
+            label="coffeeShops.form.country"
+            controlId="country"
+            icon="globe"
           >
-            <input id="city" type="text" class="field-input" [formField]="shopForm.city" />
+            <select
+              id="country"
+              class="field-input"
+              [formField]="shopForm.country"
+              (change)="resetState()"
+            >
+              <option value="">{{ 'coffeeShops.form.selectCountry' | transloco }}</option>
+              @for (country of countryOptions(); track country) {
+                <option [value]="country">{{ country | optionLabel: 'country' }}</option>
+              }
+            </select>
           </app-labeled-field>
 
           <app-labeled-field
@@ -77,17 +97,42 @@ const EMPTY_VALUE: CoffeeShopFormValue = {
             controlId="state"
             icon="pin"
           >
-            <input id="state" type="text" class="field-input" [formField]="shopForm.state" />
+            @if (customPlace()) {
+              <input id="state" type="text" class="field-input" [formField]="shopForm.state" />
+            } @else {
+              <app-combobox
+                inputId="state"
+                placeholder="coffeeShops.form.selectState"
+                [options]="stateOptions()"
+                [formField]="shopForm.state"
+                (picked)="resetCity()"
+              />
+            }
           </app-labeled-field>
 
           <app-labeled-field
             class="md:col-span-2"
-            label="coffeeShops.form.country"
-            controlId="country"
-            icon="globe"
+            label="coffeeShops.form.city"
+            controlId="city"
+            icon="pin"
           >
-            <input id="country" type="text" class="field-input" [formField]="shopForm.country" />
+            @if (customPlace()) {
+              <input id="city" type="text" class="field-input" [formField]="shopForm.city" />
+            } @else {
+              <app-combobox
+                inputId="city"
+                placeholder="coffeeShops.form.selectCity"
+                [options]="cityOptions()"
+                [formField]="shopForm.city"
+              />
+            }
           </app-labeled-field>
+
+          @if (geoData.error()) {
+            <p class="field-error md:col-span-6" role="alert">
+              {{ 'coffeeShops.form.geoError' | transloco }}
+            </p>
+          }
 
           <app-labeled-field
             class="md:col-span-6"
@@ -153,6 +198,8 @@ export class CoffeeShopForm {
   readonly saving = input(false);
   readonly submitted = output<CoffeeShopFormValue>();
 
+  private readonly geo = inject(GeoService);
+
   private readonly data = linkedSignal<CoffeeShopFormValue>(
     () => this.initialValue() ?? EMPTY_VALUE,
   );
@@ -161,6 +208,8 @@ export class CoffeeShopForm {
     this.data,
     (path) => {
       required(path.name, { message: 'errors.nameRequired' });
+      disabled(path.state, ({ valueOf }) => !valueOf(path.country));
+      disabled(path.city, ({ valueOf }) => !valueOf(path.state));
       min(path.rate, 1, { message: 'errors.rateRange' });
       max(path.rate, 5, { message: 'errors.rateRange' });
     },
@@ -172,4 +221,44 @@ export class CoffeeShopForm {
       },
     },
   );
+  /** States and cities of the chosen country; idle when the country has no bundled data. */
+  protected readonly geoData = resource({
+    params: () => this.geo.codeFor(this.shopForm.country().value()),
+    loader: ({ params }) => this.geo.load(params),
+  });
+
+  /** A saved country outside the bundled ones keeps free-text state and city. */
+  protected readonly customPlace = computed(() => {
+    const country = this.shopForm.country().value();
+    return country !== '' && this.geo.codeFor(country) === undefined;
+  });
+
+  protected readonly countryOptions = computed(() =>
+    withCurrent(
+      GEO_COUNTRIES.map((country) => country.name),
+      this.shopForm.country().value(),
+    ),
+  );
+
+  protected readonly stateOptions = computed(() =>
+    withCurrent(
+      (this.geoData.value()?.states ?? []).map((state) => state.name),
+      this.shopForm.state().value(),
+    ),
+  );
+
+  protected readonly cityOptions = computed(() => {
+    const state = this.shopForm.state().value();
+    const cities = this.geoData.value()?.states.find((item) => item.name === state)?.cities ?? [];
+    return withCurrent(cities, this.shopForm.city().value());
+  });
+
+  protected resetState(): void {
+    this.shopForm.state().value.set('');
+    this.resetCity();
+  }
+
+  protected resetCity(): void {
+    this.shopForm.city().value.set('');
+  }
 }
