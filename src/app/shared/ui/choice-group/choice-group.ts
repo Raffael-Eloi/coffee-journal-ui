@@ -11,6 +11,8 @@ import {
   viewChild,
 } from '@angular/core';
 import { FormValueControl } from '@angular/forms/signals';
+import { TranslocoPipe } from '@jsverse/transloco';
+import { OptionLabelPipe } from '../../../i18n/option-label.pipe';
 
 let nextGroupId = 0;
 
@@ -20,9 +22,10 @@ let nextGroupId = 0;
  */
 @Component({
   selector: 'app-choice-group',
+  imports: [TranslocoPipe, OptionLabelPipe],
   template: `
     <fieldset class="flex flex-col gap-2">
-      <legend class="field-label">{{ label() }}</legend>
+      <legend class="field-label">{{ label() | transloco }}</legend>
       <div class="flex flex-wrap gap-2" (focusout)="touch.emit()">
         @for (option of options(); track option) {
           <label class="choice">
@@ -34,7 +37,7 @@ let nextGroupId = 0;
               [disabled]="disabled() || readonly()"
               (change)="pick(option)"
             />
-            {{ option }}
+            {{ optionGroup() ? (option | optionLabel: optionGroup()) : option }}
           </label>
         }
         @if (isOther()) {
@@ -53,8 +56,10 @@ let nextGroupId = 0;
               #otherInput
               type="text"
               class="field-input w-44"
-              [attr.aria-label]="label() + ' (other)'"
-              placeholder="Other"
+              [attr.aria-label]="
+                'ui.choice.otherAria' | transloco: { label: (label() | transloco) }
+              "
+              [placeholder]="'ui.choice.other' | transloco"
               [value]="value()"
               [disabled]="disabled() || readonly()"
               (input)="onOtherInput($event)"
@@ -70,7 +75,7 @@ let nextGroupId = 0;
               [disabled]="disabled() || readonly()"
               (change)="chooseOther()"
             />
-            Other
+            {{ 'ui.choice.other' | transloco }}
           </label>
         }
       </div>
@@ -83,6 +88,8 @@ export class ChoiceGroup implements FormValueControl<string> {
   readonly disabled = input(false);
   readonly readonly = input(false);
   readonly label = input.required<string>();
+  /** When set, option labels are looked up as `options.<group>.<value>` and fall back to the raw value. */
+  readonly optionGroup = input('');
   readonly options = input.required<readonly string[]>();
 
   protected readonly groupName = `choice-group-${nextGroupId++}`;

@@ -3,66 +3,72 @@ import { Component, inject, input, resource, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { RoastersService } from '../../../roasters/roasters.service';
 import { CoffeesService } from '../../coffees.service';
+import { TranslocoPipe } from '@jsverse/transloco';
+import { OptionLabelPipe } from '../../../../i18n/option-label.pipe';
 
 @Component({
   selector: 'app-coffee-detail-page',
-  imports: [RouterLink, NgOptimizedImage, CurrencyPipe],
+  imports: [TranslocoPipe, OptionLabelPipe, RouterLink, NgOptimizedImage, CurrencyPipe],
   template: `
-    <a class="link" routerLink="/coffees">← Coffees</a>
+    <a class="link" routerLink="/coffees">{{ 'coffees.detail.back' | transloco }}</a>
 
     @if (coffee.isLoading()) {
-      <p class="mt-4 text-husk" role="status">Loading…</p>
+      <p class="mt-4 text-husk" role="status">{{ 'common.loading' | transloco }}</p>
     } @else if (coffee.error()) {
-      <p class="mt-4 text-error" role="alert">Could not load this coffee.</p>
+      <p class="mt-4 text-error" role="alert">{{ 'coffees.detail.loadError' | transloco }}</p>
     } @else if (coffee.value(); as c) {
       <h1 class="mt-4">{{ c.name }}</h1>
       @if (roaster.value(); as r) {
         <p class="text-husk">
-          by <a class="link" [routerLink]="['/roasters', r.id]">{{ r.name }}</a>
+          {{ 'coffees.detail.by' | transloco }}
+          <a class="link" [routerLink]="['/roasters', r.id]">{{ r.name }}</a>
         </p>
       }
       <p class="mt-2">{{ c.description }}</p>
 
       <dl class="spec-list mt-6 max-w-3xl">
         <div>
-          <dt class="spec-label">Rate</dt>
+          <dt class="spec-label">{{ 'coffees.detail.rate' | transloco }}</dt>
           <dd class="spec-value">{{ c.rate }}</dd>
         </div>
         <div>
-          <dt class="spec-label">Recommended</dt>
-          <dd class="spec-value">{{ c.recommend ? 'Yes' : 'No' }}</dd>
+          <dt class="spec-label">{{ 'common.recommended' | transloco }}</dt>
+          <dd class="spec-value">{{ (c.recommend ? 'common.yes' : 'common.no') | transloco }}</dd>
         </div>
         <div>
-          <dt class="spec-label">Origin</dt>
+          <dt class="spec-label">{{ 'coffees.detail.origin' | transloco }}</dt>
           <dd class="spec-value">{{ c.origin }}</dd>
         </div>
         <div>
-          <dt class="spec-label">Process</dt>
-          <dd class="spec-value">{{ c.process }}</dd>
+          <dt class="spec-label">{{ 'coffees.detail.process' | transloco }}</dt>
+          <dd class="spec-value">{{ c.process | optionLabel: 'process' }}</dd>
         </div>
         <div>
-          <dt class="spec-label">Roast level</dt>
-          <dd class="spec-value">{{ c.roastLevel }}</dd>
+          <dt class="spec-label">{{ 'coffees.detail.roastLevel' | transloco }}</dt>
+          <dd class="spec-value">{{ c.roastLevel | optionLabel: 'roastLevel' }}</dd>
         </div>
         <div>
-          <dt class="spec-label">Variety</dt>
+          <dt class="spec-label">{{ 'coffees.detail.variety' | transloco }}</dt>
           <dd class="spec-value">{{ c.variety }}</dd>
         </div>
         <div>
-          <dt class="spec-label">Tasting notes</dt>
+          <dt class="spec-label">{{ 'coffees.detail.tastingNotes' | transloco }}</dt>
           <dd class="spec-value font-normal">{{ c.tastingNotes }}</dd>
         </div>
         <div>
-          <dt class="spec-label">Review</dt>
+          <dt class="spec-label">{{ 'coffees.detail.review' | transloco }}</dt>
           <dd class="spec-value font-normal">{{ c.review }}</dd>
         </div>
       </dl>
 
       @if (c.prices.length > 0) {
-        <h2 class="mt-8">Prices</h2>
+        <h2 class="mt-8">{{ 'coffees.detail.prices' | transloco }}</h2>
         <ul>
           @for (price of c.prices; track price.id) {
-            <li>{{ price.grams }} g — {{ price.price | currency: price.currency }}</li>
+            <li>
+              {{ 'common.grams' | transloco: { grams: price.grams } }} —
+              {{ price.price | currency: price.currency }}
+            </li>
           }
         </ul>
       }
@@ -76,7 +82,7 @@ import { CoffeesService } from '../../coffees.service';
                 [ngSrc]="url"
                 width="240"
                 height="180"
-                [alt]="'Photo of ' + c.name"
+                [alt]="'coffees.detail.photoAlt' | transloco: { name: c.name }"
               />
             </li>
           }
@@ -84,19 +90,27 @@ import { CoffeesService } from '../../coffees.service';
       }
 
       <div class="mt-6 flex items-center gap-4">
-        <a class="btn btn-primary" [routerLink]="['/coffees', c.id, 'edit']"> Edit </a>
+        <a class="btn btn-primary" [routerLink]="['/coffees', c.id, 'edit']">{{
+          'common.edit' | transloco
+        }}</a>
 
         @if (confirmingDelete()) {
-          <span>Delete this coffee?</span>
-          <button type="button" class="btn btn-danger" (click)="remove()">Confirm delete</button>
-          <button type="button" class="link" (click)="confirmingDelete.set(false)">Cancel</button>
+          <span>{{ 'coffees.detail.confirmDelete' | transloco }}</span>
+          <button type="button" class="btn btn-danger" (click)="remove()">
+            {{ 'common.confirmDelete' | transloco }}
+          </button>
+          <button type="button" class="link" (click)="confirmingDelete.set(false)">
+            {{ 'common.cancel' | transloco }}
+          </button>
         } @else {
-          <button type="button" class="link" (click)="confirmingDelete.set(true)">Delete</button>
+          <button type="button" class="link" (click)="confirmingDelete.set(true)">
+            {{ 'common.delete' | transloco }}
+          </button>
         }
       </div>
 
       @if (deleteError()) {
-        <p class="mt-2 text-error" role="alert">Could not delete this coffee.</p>
+        <p class="mt-2 text-error" role="alert">{{ 'coffees.detail.deleteError' | transloco }}</p>
       }
     }
   `,

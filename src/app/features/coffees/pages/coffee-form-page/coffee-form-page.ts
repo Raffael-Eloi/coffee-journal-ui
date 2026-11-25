@@ -5,6 +5,7 @@ import { RoastersService } from '../../../roasters/roasters.service';
 import { CoffeeForm } from '../../components/coffee-form/coffee-form';
 import { Coffee, CoffeeFormValue } from '../../coffee.model';
 import { CoffeesService } from '../../coffees.service';
+import { TranslocoPipe } from '@jsverse/transloco';
 
 function toFormValue({ id, prices, ...rest }: Coffee): CoffeeFormValue {
   return {
@@ -15,18 +16,18 @@ function toFormValue({ id, prices, ...rest }: Coffee): CoffeeFormValue {
 
 @Component({
   selector: 'app-coffee-form-page',
-  imports: [RouterLink, FormPageHeader, CoffeeForm],
+  imports: [TranslocoPipe, RouterLink, FormPageHeader, CoffeeForm],
   template: `
     <div class="mx-auto flex max-w-3xl flex-col gap-8">
-      <a class="link self-start" routerLink="/coffees">← Coffees</a>
+      <a class="link self-start" routerLink="/coffees">{{ 'coffees.form.back' | transloco }}</a>
       <app-form-page-header
-        eyebrow="Coffee"
-        [title]="id() === undefined ? 'Add coffee' : 'Edit coffee'"
-        description="Record a coffee, its prices and your tasting notes."
+        eyebrow="coffees.form.eyebrow"
+        [title]="id() === undefined ? 'coffees.form.addTitle' : 'coffees.form.editTitle'"
+        description="coffees.form.description"
       />
 
       @if (coffee.error() || roasters.error()) {
-        <p class="text-error" role="alert">Could not load the data for this form.</p>
+        <p class="text-error" role="alert">{{ 'coffees.form.loadError' | transloco }}</p>
       } @else if (roasters.value(); as roasterList) {
         @if (id() === undefined || initialValue()) {
           <app-coffee-form
@@ -36,13 +37,13 @@ function toFormValue({ id, prices, ...rest }: Coffee): CoffeeFormValue {
             (submitted)="save($event)"
           />
           @if (saveError()) {
-            <p class="mt-2 text-error" role="alert">Could not save this coffee.</p>
+            <p class="mt-2 text-error" role="alert">{{ 'coffees.form.saveError' | transloco }}</p>
           }
         } @else {
-          <p role="status">Loading…</p>
+          <p role="status">{{ 'common.loading' | transloco }}</p>
         }
       } @else {
-        <p role="status">Loading…</p>
+        <p role="status">{{ 'common.loading' | transloco }}</p>
       }
     </div>
   `,

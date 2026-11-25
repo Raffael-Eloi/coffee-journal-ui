@@ -1,19 +1,20 @@
 import { NgOptimizedImage } from '@angular/common';
 import { Component, inject, input, model, output, signal } from '@angular/core';
 import { FormValueControl } from '@angular/forms/signals';
+import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 import { ImagesService } from '../../images/images.service';
 import { Icon } from '../icon/icon';
 
 /**
- * Uploads image files one request at a time and keeps the returned URLs.
+ * Uploads image files one request at a time and keeps the returned URLs (`label` is a translation key).
  * Bound with `[formField]` to a `string[]` of image URLs.
  */
 @Component({
   selector: 'app-image-uploader',
-  imports: [NgOptimizedImage, Icon],
+  imports: [NgOptimizedImage, Icon, TranslocoPipe],
   template: `
     <fieldset class="flex flex-col gap-3">
-      <legend class="field-label">{{ label() }}</legend>
+      <legend class="field-label">{{ label() | transloco }}</legend>
 
       @if (value().length > 0) {
         <ul class="flex flex-wrap gap-3">
@@ -24,12 +25,12 @@ import { Icon } from '../icon/icon';
                 [ngSrc]="url"
                 width="96"
                 height="96"
-                [alt]="'Photo ' + (i + 1)"
+                [alt]="'ui.imageUploader.photo' | transloco: { n: i + 1 }"
               />
               <button
                 type="button"
                 class="absolute -top-2 -right-2 rounded-full border border-outline bg-surface p-1 text-husk hover:text-error"
-                [attr.aria-label]="'Remove photo ' + (i + 1)"
+                [attr.aria-label]="'ui.imageUploader.remove' | transloco: { n: i + 1 }"
                 [disabled]="disabled() || readonly()"
                 (click)="remove(i)"
               >
@@ -44,7 +45,7 @@ import { Icon } from '../icon/icon';
         class="btn btn-ghost cursor-pointer gap-2 self-start has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-caramel"
       >
         <app-icon name="plus" [size]="16" />
-        {{ uploading() ? 'Uploading…' : 'Add photos' }}
+        {{ (uploading() ? 'ui.imageUploader.uploading' : 'ui.imageUploader.add') | transloco }}
         <input
           type="file"
           class="sr-only"
@@ -54,10 +55,10 @@ import { Icon } from '../icon/icon';
           (change)="onFiles($event)"
         />
       </label>
-      <p class="text-xs text-husk">JPEG, PNG or WebP, up to 5 MB each.</p>
+      <p class="text-xs text-husk">{{ 'ui.imageUploader.hint' | transloco }}</p>
 
       @if (uploading()) {
-        <p class="text-husk" role="status">Uploading…</p>
+        <p class="text-husk" role="status">{{ 'ui.imageUploader.uploading' | transloco }}</p>
       }
       @if (error(); as message) {
         <p class="field-error" role="alert">{{ message }}</p>
@@ -67,12 +68,13 @@ import { Icon } from '../icon/icon';
 })
 export class ImageUploader implements FormValueControl<string[]> {
   private readonly images = inject(ImagesService);
+  private readonly transloco = inject(TranslocoService);
 
   readonly value = model<string[]>([]);
   readonly touch = output<void>();
   readonly disabled = input(false);
   readonly readonly = input(false);
-  readonly label = input('Photos');
+  readonly label = input('ui.imageUploader.label');
 
   protected readonly uploading = signal(false);
   protected readonly error = signal<string | null>(null);
@@ -94,18 +96,18 @@ export class ImageUploader implements FormValueControl<string[]> {
     for (const file of files) {
       const problem = this.images.validate(file);
       if (problem) {
-        failures.push(`${file.name} ${problem}`);
+        failures.push(this.transloco.translate(`images.${problem}`, { name: file.name }));
         continue;
       }
       try {
         const url = await this.images.upload(file);
         this.value.update((urls) => [...urls, url]);
       } catch {
-        failures.push(`${file.name} could not be uploaded`);
+        failures.push(this.transloco.translate('images.failed', { name: file.name }));
       }
     }
     this.uploading.set(false);
     this.touch.emit();
-    this.error.set(failures.length > 0 ? failures.join('. ') + '.' : null);
+    this.error.set(failures.length > 0 ? failures.join('. ') : null);
   }
 }

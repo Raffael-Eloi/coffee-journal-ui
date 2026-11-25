@@ -4,8 +4,16 @@ import { FormPageHeader } from '../../../../shared/ui/form-page-header/form-page
 import { RoasterForm } from '../../components/roaster-form/roaster-form';
 import { Roaster, RoasterFormValue, RoasterInput } from '../../roaster.model';
 import { RoastersService } from '../../roasters.service';
+import { TranslocoPipe } from '@jsverse/transloco';
 
-function toFormValue({ id, createdAt, updatedAt, website, logoUrl, ...rest }: Roaster): RoasterFormValue {
+function toFormValue({
+  id,
+  createdAt,
+  updatedAt,
+  website,
+  logoUrl,
+  ...rest
+}: Roaster): RoasterFormValue {
   return { ...rest, website: website ?? '', logoUrl: logoUrl ?? '' };
 }
 
@@ -15,18 +23,18 @@ function toInput({ website, logoUrl, ...rest }: RoasterFormValue): RoasterInput 
 
 @Component({
   selector: 'app-roaster-form-page',
-  imports: [RouterLink, FormPageHeader, RoasterForm],
+  imports: [TranslocoPipe, RouterLink, FormPageHeader, RoasterForm],
   template: `
     <div class="mx-auto flex max-w-3xl flex-col gap-8">
-      <a class="link self-start" routerLink="/roasters">← Roasters</a>
+      <a class="link self-start" routerLink="/roasters">{{ 'roasters.form.back' | transloco }}</a>
       <app-form-page-header
-        eyebrow="Roaster"
-        [title]="id() === undefined ? 'Add roaster' : 'Edit roaster'"
-        description="Record a roaster and what you thought of it."
+        eyebrow="roasters.form.eyebrow"
+        [title]="id() === undefined ? 'roasters.form.addTitle' : 'roasters.form.editTitle'"
+        description="roasters.form.description"
       />
 
       @if (roaster.error()) {
-        <p class="text-error" role="alert">Could not load this roaster.</p>
+        <p class="text-error" role="alert">{{ 'roasters.form.loadError' | transloco }}</p>
       } @else if (id() === undefined || initialValue()) {
         <app-roaster-form
           [initialValue]="initialValue()"
@@ -34,10 +42,10 @@ function toInput({ website, logoUrl, ...rest }: RoasterFormValue): RoasterInput 
           (submitted)="save($event)"
         />
         @if (saveError()) {
-          <p class="mt-2 text-error" role="alert">Could not save this roaster.</p>
+          <p class="mt-2 text-error" role="alert">{{ 'roasters.form.saveError' | transloco }}</p>
         }
       } @else {
-        <p role="status">Loading…</p>
+        <p role="status">{{ 'common.loading' | transloco }}</p>
       }
     </div>
   `,

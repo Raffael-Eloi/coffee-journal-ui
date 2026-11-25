@@ -22,7 +22,9 @@ describe('CoffeeShopForm', () => {
     await fixture.whenStable();
 
     expect(submitted).toEqual([]);
-    const alerts = Array.from(el.querySelectorAll('[role="alert"]')).map((a) => a.textContent).join(' ');
+    const alerts = Array.from(el.querySelectorAll('[role="alert"]'))
+      .map((a) => a.textContent)
+      .join(' ');
     expect(alerts).toContain('Name is required');
     expect(alerts).toContain('Rate must be between 1 and 5');
   });

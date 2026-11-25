@@ -1,0 +1,215 @@
+{
+  "app": {
+    "name": "Coffee Journal",
+    "tagline": "Diário de Degustação Especial",
+    "homeLabel": "Coffee Journal, início"
+  },
+  "nav": {
+    "main": "Principal",
+    "coffeeShops": "Cafeterias",
+    "roasters": "Torrefadores",
+    "coffees": "Cafés"
+  },
+  "common": {
+    "loading": "Carregando…",
+    "tryAgain": "Tentar novamente",
+    "save": "Salvar",
+    "saving": "Salvando…",
+    "edit": "Editar",
+    "delete": "Excluir",
+    "confirmDelete": "Confirmar exclusão",
+    "cancel": "Cancelar",
+    "yes": "Sim",
+    "no": "Não",
+    "recommended": "Recomendado",
+    "rateLabel": "Nota:",
+    "ratedOutOf": "Nota {{rate}} de 5",
+    "ratingBadge": "{{rate}} / 5",
+    "websiteLink": "Visitar site",
+    "opensInNewTab": "(abre em uma nova aba)",
+    "getDirections": "Como chegar",
+    "fieldNotes": "Anotações",
+    "noReview": "Ainda sem avaliação.",
+    "breadcrumb": "Trilha de navegação",
+    "experienceTitle": "Experiência e Veredito",
+    "review": "Impressões e anotações pessoais",
+    "website": "Site",
+    "recommendQuestion": "Recomenda a outras pessoas?",
+    "grams": "{{grams}} g"
+  },
+  "errors": {
+    "nameRequired": "O nome é obrigatório",
+    "roasterRequired": "O torrefador é obrigatório",
+    "rateRange": "A nota deve estar entre 1 e 5"
+  },
+  "options": {
+    "process": {
+      "Washed": "Lavado",
+      "Natural": "Natural",
+      "Honey": "Honey"
+    },
+    "roastLevel": {
+      "Light": "Clara",
+      "Medium": "Média",
+      "Dark": "Escura"
+    }
+  },
+  "images": {
+    "invalidType": "{{name}} deve ser uma imagem JPEG, PNG ou WebP",
+    "tooLarge": "{{name}} é maior que 5 MB",
+    "failed": "Não foi possível enviar {{name}}"
+  },
+  "ui": {
+    "starRating": {
+      "label": "Impressão geral",
+      "one": "{{count}} estrela",
+      "other": "{{count}} estrelas"
+    },
+    "yesNo": {
+      "yes": "Sim, com certeza",
+      "no": "Nem tanto"
+    },
+    "choice": {
+      "other": "Outro",
+      "otherAria": "{{label}} (outro)"
+    },
+    "imageUploader": {
+      "label": "Fotos",
+      "add": "Adicionar fotos",
+      "uploading": "Enviando…",
+      "hint": "JPEG, PNG ou WebP, até 5 MB cada.",
+      "photo": "Foto {{n}}",
+      "remove": "Remover foto {{n}}"
+    },
+    "logoUploader": {
+      "label": "Logo",
+      "upload": "Enviar logo",
+      "replace": "Trocar logo",
+      "remove": "Remover logo",
+      "current": "Logo atual",
+      "hint": "JPEG, PNG ou WebP, até 5 MB."
+    }
+  },
+  "coffeeShops": {
+    "list": {
+      "add": "Adicionar cafeteria",
+      "loadError": "Não foi possível carregar as cafeterias.",
+      "empty": "Nenhuma cafeteria ainda."
+    },
+    "detail": {
+      "loadError": "Não foi possível carregar esta cafeteria.",
+      "confirmDelete": "Excluir esta cafeteria?",
+      "deleteError": "Não foi possível excluir esta cafeteria.",
+      "photoAlt": "Foto {{n}} de {{name}}",
+      "venue": "Local"
+    },
+    "form": {
+      "eyebrow": "Cafeteria",
+      "addTitle": "Adicionar cafeteria",
+      "editTitle": "Editar cafeteria",
+      "description": "Registre uma cafeteria e o que você achou dela.",
+      "back": "← Cafeterias",
+      "loadError": "Não foi possível carregar esta cafeteria.",
+      "saveError": "Não foi possível salvar esta cafeteria.",
+      "venueTitle": "A Cafeteria",
+      "venueCaption": "Perfil do local",
+      "name": "Cafeteria ou local",
+      "city": "Cidade",
+      "state": "Estado",
+      "country": "País",
+      "location": "Endereço",
+      "verdictCaption": "Ambiente e atendimento",
+      "photosTitle": "Fotos",
+      "photosCaption": "O espaço e a xícara"
+    }
+  },
+  "roasters": {
+    "list": {
+      "add": "Adicionar torrefador",
+      "loadError": "Não foi possível carregar os torrefadores.",
+      "empty": "Nenhum torrefador ainda."
+    },
+    "card": {
+      "membership": "Assinatura"
+    },
+    "detail": {
+      "loadError": "Não foi possível carregar este torrefador.",
+      "confirmDelete": "Excluir este torrefador?",
+      "deleteError": "Não foi possível excluir este torrefador.",
+      "logoAlt": "Logo de {{name}}",
+      "title": "Torrefador",
+      "membership": "Assinatura",
+      "available": "Disponível",
+      "notAvailable": "Não disponível"
+    },
+    "form": {
+      "eyebrow": "Torrefador",
+      "addTitle": "Adicionar torrefador",
+      "editTitle": "Editar torrefador",
+      "description": "Registre um torrefador e o que você achou dele.",
+      "back": "← Torrefadores",
+      "loadError": "Não foi possível carregar este torrefador.",
+      "saveError": "Não foi possível salvar este torrefador.",
+      "profileTitle": "O Torrefador",
+      "profileCaption": "Perfil do torrefador",
+      "name": "Nome do torrefador",
+      "logo": "Logo",
+      "membershipOption": "Opção de assinatura",
+      "verdictCaption": "Qualidade e serviço"
+    }
+  },
+  "coffees": {
+    "list": {
+      "add": "Adicionar café",
+      "loadError": "Não foi possível carregar os cafés.",
+      "empty": "Nenhum café ainda."
+    },
+    "detail": {
+      "back": "← Cafés",
+      "loadError": "Não foi possível carregar este café.",
+      "confirmDelete": "Excluir este café?",
+      "deleteError": "Não foi possível excluir este café.",
+      "by": "por",
+      "origin": "Origem",
+      "process": "Processo",
+      "roastLevel": "Nível de torra",
+      "variety": "Variedade",
+      "tastingNotes": "Notas de degustação",
+      "prices": "Preços",
+      "photoAlt": "Foto de {{name}}",
+      "rate": "Nota",
+      "review": "Avaliação"
+    },
+    "form": {
+      "eyebrow": "Café",
+      "addTitle": "Adicionar café",
+      "editTitle": "Editar café",
+      "description": "Registre um café, seus preços e suas notas de degustação.",
+      "back": "← Cafés",
+      "loadError": "Não foi possível carregar os dados deste formulário.",
+      "saveError": "Não foi possível salvar este café.",
+      "coffeeTitle": "O Café",
+      "coffeeCaption": "Origem e perfil",
+      "name": "Nome do café / lote",
+      "roaster": "Torrefador",
+      "selectRoaster": "Selecione um torrefador",
+      "descriptionLabel": "Descrição",
+      "origin": "Origem",
+      "variety": "Variedade",
+      "process": "Processo",
+      "roastLevel": "Nível de torra",
+      "verdictCaption": "Degustação",
+      "tastingNotes": "Notas de degustação",
+      "pricesTitle": "Preços",
+      "pricesCaption": "Pacotes à venda",
+      "bag": "Pacote {{n}}",
+      "removePrice": "Remover preço {{n}}",
+      "bagSize": "Tamanho do pacote",
+      "price": "Preço",
+      "currencyFor": "Moeda do pacote {{n}}",
+      "addPrice": "Adicionar preço",
+      "photosTitle": "Fotos",
+      "photosCaption": "O pacote e a bebida"
+    }
+  }
+}

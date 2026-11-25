@@ -12,7 +12,7 @@ describe('ImageUploader', () => {
           provide: ImagesService,
           useValue: {
             upload,
-            validate: (file: File) => (file.type === 'image/png' ? null : 'must be an image'),
+            validate: (file: File) => (file.type === 'image/png' ? null : 'invalidType'),
           },
         },
       ],

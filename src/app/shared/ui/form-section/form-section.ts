@@ -1,10 +1,12 @@
 import { Component, input } from '@angular/core';
+import { TranslocoPipe } from '@jsverse/transloco';
 
 let nextSectionId = 0;
 
-/** Numbered white card that groups related fields in a form (Stitch "Log Visit" layout). */
+/** Numbered white card (`title` and `caption` are translation keys) that groups related fields in a form (Stitch "Log Visit" layout). */
 @Component({
   selector: 'app-form-section',
+  imports: [TranslocoPipe],
   template: `
     <section
       class="flex flex-col gap-6 rounded-xl border border-hairline bg-surface p-6 shadow-sm md:p-10"
@@ -18,10 +20,10 @@ let nextSectionId = 0;
           >
             {{ number() }}
           </span>
-          <h2 [id]="headingId">{{ title() }}</h2>
+          <h2 [id]="headingId">{{ title() | transloco }}</h2>
         </div>
         <span class="text-[0.6875rem] font-semibold tracking-wider text-husk uppercase">
-          {{ caption() }}
+          {{ caption() ?? '' | transloco }}
         </span>
       </div>
       <ng-content />

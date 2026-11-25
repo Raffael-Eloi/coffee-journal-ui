@@ -1,10 +1,11 @@
 import { Component, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CoffeeShop } from '../../coffee-shop.model';
+import { TranslocoPipe } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-coffee-shop-card',
-  imports: [RouterLink],
+  imports: [TranslocoPipe, RouterLink],
   template: `
     <article class="card flex h-full flex-col gap-2">
       <h2>
@@ -16,11 +17,11 @@ import { CoffeeShop } from '../../coffee-shop.model';
       <p class="mt-auto flex flex-wrap items-center gap-2">
         <span class="badge badge-rating">
           <span class="star" aria-hidden="true">★</span>
-          <span class="sr-only">Rate:</span>
+          <span class="sr-only">{{ 'common.rateLabel' | transloco }}</span>
           {{ shop().rate }}
         </span>
         @if (shop().recommend) {
-          <span class="badge badge-light">Recommended</span>
+          <span class="badge badge-light">{{ 'common.recommended' | transloco }}</span>
         }
       </p>
     </article>

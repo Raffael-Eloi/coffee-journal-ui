@@ -2,27 +2,30 @@ import { Component, inject, resource } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CoffeeShopCard } from '../../components/coffee-shop-card/coffee-shop-card';
 import { CoffeeShopsService } from '../../coffee-shops.service';
+import { TranslocoPipe } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-coffee-shop-list-page',
-  imports: [RouterLink, CoffeeShopCard],
+  imports: [TranslocoPipe, RouterLink, CoffeeShopCard],
   template: `
     <div class="flex items-center justify-between">
-      <h1>Coffee shops</h1>
+      <h1>{{ 'nav.coffeeShops' | transloco }}</h1>
       <a class="btn btn-action" routerLink="/coffee-shops/new">
-        Add coffee shop
+        {{ 'coffeeShops.list.add' | transloco }}
       </a>
     </div>
 
     @if (shops.isLoading()) {
-      <p class="mt-4 text-husk" role="status">Loading…</p>
+      <p class="mt-4 text-husk" role="status">{{ 'common.loading' | transloco }}</p>
     } @else if (shops.error()) {
-      <p class="mt-4 text-error" role="alert">Could not load coffee shops.</p>
-      <button type="button" class="link mt-2" (click)="shops.reload()">Try again</button>
+      <p class="mt-4 text-error" role="alert">{{ 'coffeeShops.list.loadError' | transloco }}</p>
+      <button type="button" class="link mt-2" (click)="shops.reload()">
+        {{ 'common.tryAgain' | transloco }}
+      </button>
     } @else {
       @let list = shops.value() ?? [];
       @if (list.length === 0) {
-        <p class="mt-6 text-husk">No coffee shops yet.</p>
+        <p class="mt-6 text-husk">{{ 'coffeeShops.list.empty' | transloco }}</p>
       } @else {
         <ul class="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           @for (shop of list; track shop.id) {

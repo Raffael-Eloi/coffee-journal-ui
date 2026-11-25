@@ -4,22 +4,26 @@ import { Router, RouterLink } from '@angular/router';
 import { Icon } from '../../../../shared/ui/icon/icon';
 import { CoffeeShop } from '../../coffee-shop.model';
 import { CoffeeShopsService } from '../../coffee-shops.service';
+import { TranslocoPipe } from '@jsverse/transloco';
 
 const STARS = [1, 2, 3, 4, 5];
 
 @Component({
   selector: 'app-coffee-shop-detail-page',
-  imports: [RouterLink, NgOptimizedImage, Icon],
+  imports: [TranslocoPipe, RouterLink, NgOptimizedImage, Icon],
   template: `
     @if (coffeeShop.isLoading()) {
-      <p class="text-husk" role="status">Loading…</p>
+      <p class="text-husk" role="status">{{ 'common.loading' | transloco }}</p>
     } @else if (coffeeShop.error()) {
-      <p class="text-error" role="alert">Could not load this coffee shop.</p>
+      <p class="text-error" role="alert">{{ 'coffeeShops.detail.loadError' | transloco }}</p>
     } @else if (coffeeShop.value(); as shop) {
       <div class="flex flex-col gap-10">
         <header class="flex flex-col gap-4">
-          <nav aria-label="Breadcrumb" class="flex flex-wrap items-center gap-2 text-xs text-husk">
-            <a class="link" routerLink="/coffee-shops">Coffee Shops</a>
+          <nav
+            [attr.aria-label]="'common.breadcrumb' | transloco"
+            class="flex flex-wrap items-center gap-2 text-xs text-husk"
+          >
+            <a class="link" routerLink="/coffee-shops">{{ 'nav.coffeeShops' | transloco }}</a>
             @if (shop.city) {
               <span aria-hidden="true">›</span>
               <span>{{ shop.city }}</span>
@@ -33,11 +37,11 @@ const STARS = [1, 2, 3, 4, 5];
               <div class="flex flex-wrap items-center gap-2">
                 <span class="badge badge-rating">
                   <span class="star" aria-hidden="true">★</span>
-                  <span class="sr-only">Rate:</span>
-                  {{ shop.rate }} / 5
+                  <span class="sr-only">{{ 'common.rateLabel' | transloco }}</span>
+                  {{ 'common.ratingBadge' | transloco: { rate: shop.rate } }}
                 </span>
                 @if (shop.recommend) {
-                  <span class="badge badge-light">Recommended</span>
+                  <span class="badge badge-light">{{ 'common.recommended' | transloco }}</span>
                 }
               </div>
 
@@ -58,33 +62,37 @@ const STARS = [1, 2, 3, 4, 5];
                     rel="noopener noreferrer"
                   >
                     <app-icon name="link" [size]="16" />
-                    Visit website
-                    <span class="sr-only">(opens in a new tab)</span>
+                    {{ 'common.websiteLink' | transloco }}
+                    <span class="sr-only">{{ 'common.opensInNewTab' | transloco }}</span>
                   </a>
                 }
               </div>
             </div>
 
             <div class="flex flex-wrap items-center gap-3">
-              <a class="btn btn-primary" [routerLink]="['/coffee-shops', shop.id, 'edit']">Edit</a>
+              <a class="btn btn-primary" [routerLink]="['/coffee-shops', shop.id, 'edit']">{{
+                'common.edit' | transloco
+              }}</a>
               @if (confirmingDelete()) {
-                <span>Delete this coffee shop?</span>
+                <span>{{ 'coffeeShops.detail.confirmDelete' | transloco }}</span>
                 <button type="button" class="btn btn-danger" (click)="remove()">
-                  Confirm delete
+                  {{ 'common.confirmDelete' | transloco }}
                 </button>
                 <button type="button" class="link" (click)="confirmingDelete.set(false)">
-                  Cancel
+                  {{ 'common.cancel' | transloco }}
                 </button>
               } @else {
                 <button type="button" class="btn btn-ghost" (click)="confirmingDelete.set(true)">
-                  Delete
+                  {{ 'common.delete' | transloco }}
                 </button>
               }
             </div>
           </div>
 
           @if (deleteError()) {
-            <p class="text-error" role="alert">Could not delete this coffee shop.</p>
+            <p class="text-error" role="alert">
+              {{ 'coffeeShops.detail.deleteError' | transloco }}
+            </p>
           }
         </header>
 
@@ -97,7 +105,7 @@ const STARS = [1, 2, 3, 4, 5];
                   [ngSrc]="url"
                   width="800"
                   height="600"
-                  [alt]="'Photo ' + (i + 1) + ' of ' + shop.name"
+                  [alt]="'coffeeShops.detail.photoAlt' | transloco: { n: i + 1, name: shop.name }"
                 />
               </li>
             }
@@ -107,10 +115,12 @@ const STARS = [1, 2, 3, 4, 5];
         <div class="grid gap-6 lg:grid-cols-12 lg:items-start">
           <section class="card flex flex-col gap-6 lg:col-span-8">
             <div class="flex items-center justify-between">
-              <h2 class="field-label-sm">Field notes</h2>
+              <h2 class="field-label-sm">{{ 'common.fieldNotes' | transloco }}</h2>
               <p class="flex items-center gap-1 text-terracotta">
                 <span aria-hidden="true">{{ stars(shop) }}</span>
-                <span class="sr-only">Rated {{ shop.rate }} out of 5</span>
+                <span class="sr-only">{{
+                  'common.ratedOutOf' | transloco: { rate: shop.rate }
+                }}</span>
               </p>
             </div>
             @if (shop.review) {
@@ -120,16 +130,18 @@ const STARS = [1, 2, 3, 4, 5];
                 “{{ shop.review }}”
               </blockquote>
             } @else {
-              <p class="text-husk">No review yet.</p>
+              <p class="text-husk">{{ 'common.noReview' | transloco }}</p>
             }
           </section>
 
           <aside class="card flex flex-col gap-4 lg:col-span-4">
-            <h2 class="text-xl">Venue</h2>
+            <h2 class="text-xl">{{ 'coffeeShops.detail.venue' | transloco }}</h2>
             <dl class="spec-list">
               <div>
-                <dt class="spec-label">Recommended</dt>
-                <dd class="spec-value">{{ shop.recommend ? 'Yes' : 'No' }}</dd>
+                <dt class="spec-label">{{ 'common.recommended' | transloco }}</dt>
+                <dd class="spec-value">
+                  {{ (shop.recommend ? 'common.yes' : 'common.no') | transloco }}
+                </dd>
               </div>
             </dl>
             @if (directionsUrl(shop); as url) {
@@ -140,8 +152,8 @@ const STARS = [1, 2, 3, 4, 5];
                 rel="noopener noreferrer"
               >
                 <app-icon name="pin" [size]="16" />
-                Get directions
-                <span class="sr-only">(opens in a new tab)</span>
+                {{ 'common.getDirections' | transloco }}
+                <span class="sr-only">{{ 'common.opensInNewTab' | transloco }}</span>
               </a>
             }
           </aside>

@@ -1,0 +1,215 @@
+{
+  "app": {
+    "name": "Coffee Journal",
+    "tagline": "Specialty Tasting Log",
+    "homeLabel": "Coffee Journal, home"
+  },
+  "nav": {
+    "main": "Main",
+    "coffeeShops": "Coffee shops",
+    "roasters": "Roasters",
+    "coffees": "Coffees"
+  },
+  "common": {
+    "loading": "Loading…",
+    "tryAgain": "Try again",
+    "save": "Save",
+    "saving": "Saving…",
+    "edit": "Edit",
+    "delete": "Delete",
+    "confirmDelete": "Confirm delete",
+    "cancel": "Cancel",
+    "yes": "Yes",
+    "no": "No",
+    "recommended": "Recommended",
+    "rateLabel": "Rate:",
+    "ratedOutOf": "Rated {{rate}} out of 5",
+    "ratingBadge": "{{rate}} / 5",
+    "websiteLink": "Visit website",
+    "opensInNewTab": "(opens in a new tab)",
+    "getDirections": "Get directions",
+    "fieldNotes": "Field notes",
+    "noReview": "No review yet.",
+    "breadcrumb": "Breadcrumb",
+    "experienceTitle": "Experience & Verdict",
+    "review": "Personal impressions & notes",
+    "website": "Website",
+    "recommendQuestion": "Recommend to others?",
+    "grams": "{{grams}} g"
+  },
+  "errors": {
+    "nameRequired": "Name is required",
+    "roasterRequired": "Roaster is required",
+    "rateRange": "Rate must be between 1 and 5"
+  },
+  "options": {
+    "process": {
+      "Washed": "Washed",
+      "Natural": "Natural",
+      "Honey": "Honey"
+    },
+    "roastLevel": {
+      "Light": "Light",
+      "Medium": "Medium",
+      "Dark": "Dark"
+    }
+  },
+  "images": {
+    "invalidType": "{{name}} must be a JPEG, PNG or WebP image",
+    "tooLarge": "{{name}} is larger than 5 MB",
+    "failed": "{{name}} could not be uploaded"
+  },
+  "ui": {
+    "starRating": {
+      "label": "Overall impression",
+      "one": "{{count}} star",
+      "other": "{{count}} stars"
+    },
+    "yesNo": {
+      "yes": "Yes, definitely",
+      "no": "Not quite"
+    },
+    "choice": {
+      "other": "Other",
+      "otherAria": "{{label}} (other)"
+    },
+    "imageUploader": {
+      "label": "Photos",
+      "add": "Add photos",
+      "uploading": "Uploading…",
+      "hint": "JPEG, PNG or WebP, up to 5 MB each.",
+      "photo": "Photo {{n}}",
+      "remove": "Remove photo {{n}}"
+    },
+    "logoUploader": {
+      "label": "Logo",
+      "upload": "Upload logo",
+      "replace": "Replace logo",
+      "remove": "Remove logo",
+      "current": "Current logo",
+      "hint": "JPEG, PNG or WebP, up to 5 MB."
+    }
+  },
+  "coffeeShops": {
+    "list": {
+      "add": "Add coffee shop",
+      "loadError": "Could not load coffee shops.",
+      "empty": "No coffee shops yet."
+    },
+    "detail": {
+      "loadError": "Could not load this coffee shop.",
+      "confirmDelete": "Delete this coffee shop?",
+      "deleteError": "Could not delete this coffee shop.",
+      "photoAlt": "Photo {{n}} of {{name}}",
+      "venue": "Venue"
+    },
+    "form": {
+      "eyebrow": "Coffee shop",
+      "addTitle": "Add coffee shop",
+      "editTitle": "Edit coffee shop",
+      "description": "Record a café and what you thought of it.",
+      "back": "← Coffee shops",
+      "loadError": "Could not load this coffee shop.",
+      "saveError": "Could not save this coffee shop.",
+      "venueTitle": "The Café",
+      "venueCaption": "Venue profile",
+      "name": "Shop or venue",
+      "city": "City",
+      "state": "State",
+      "country": "Country",
+      "location": "Location",
+      "verdictCaption": "Atmosphere & flow",
+      "photosTitle": "Photos",
+      "photosCaption": "The space & the cup"
+    }
+  },
+  "roasters": {
+    "list": {
+      "add": "Add roaster",
+      "loadError": "Could not load roasters.",
+      "empty": "No roasters yet."
+    },
+    "card": {
+      "membership": "Membership"
+    },
+    "detail": {
+      "loadError": "Could not load this roaster.",
+      "confirmDelete": "Delete this roaster?",
+      "deleteError": "Could not delete this roaster.",
+      "logoAlt": "{{name}} logo",
+      "title": "Roaster",
+      "membership": "Membership",
+      "available": "Available",
+      "notAvailable": "Not available"
+    },
+    "form": {
+      "eyebrow": "Roaster",
+      "addTitle": "Add roaster",
+      "editTitle": "Edit roaster",
+      "description": "Record a roaster and what you thought of it.",
+      "back": "← Roasters",
+      "loadError": "Could not load this roaster.",
+      "saveError": "Could not save this roaster.",
+      "profileTitle": "The Roaster",
+      "profileCaption": "Roaster profile",
+      "name": "Roaster name",
+      "logo": "Logo",
+      "membershipOption": "Membership option",
+      "verdictCaption": "Quality & service"
+    }
+  },
+  "coffees": {
+    "list": {
+      "add": "Add coffee",
+      "loadError": "Could not load coffees.",
+      "empty": "No coffees yet."
+    },
+    "detail": {
+      "back": "← Coffees",
+      "loadError": "Could not load this coffee.",
+      "confirmDelete": "Delete this coffee?",
+      "deleteError": "Could not delete this coffee.",
+      "by": "by",
+      "origin": "Origin",
+      "process": "Process",
+      "roastLevel": "Roast level",
+      "variety": "Variety",
+      "tastingNotes": "Tasting notes",
+      "prices": "Prices",
+      "photoAlt": "Photo of {{name}}",
+      "rate": "Rate",
+      "review": "Review"
+    },
+    "form": {
+      "eyebrow": "Coffee",
+      "addTitle": "Add coffee",
+      "editTitle": "Edit coffee",
+      "description": "Record a coffee, its prices and your tasting notes.",
+      "back": "← Coffees",
+      "loadError": "Could not load the data for this form.",
+      "saveError": "Could not save this coffee.",
+      "coffeeTitle": "The Coffee",
+      "coffeeCaption": "Origin & profile",
+      "name": "Coffee name / lot",
+      "roaster": "Roaster",
+      "selectRoaster": "Select a roaster",
+      "descriptionLabel": "Description",
+      "origin": "Origin",
+      "variety": "Variety",
+      "process": "Process",
+      "roastLevel": "Roast level",
+      "verdictCaption": "Tasting",
+      "tastingNotes": "Tasting notes",
+      "pricesTitle": "Prices",
+      "pricesCaption": "Retail bags",
+      "bag": "Bag {{n}}",
+      "removePrice": "Remove price {{n}}",
+      "bagSize": "Bag size",
+      "price": "Price",
+      "currencyFor": "Currency for bag {{n}}",
+      "addPrice": "Add price",
+      "photosTitle": "Photos",
+      "photosCaption": "The bag & the brew"
+    }
+  }
+}

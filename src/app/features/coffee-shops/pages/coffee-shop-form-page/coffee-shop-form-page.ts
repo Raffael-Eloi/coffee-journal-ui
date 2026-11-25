@@ -4,6 +4,7 @@ import { FormPageHeader } from '../../../../shared/ui/form-page-header/form-page
 import { CoffeeShopForm } from '../../components/coffee-shop-form/coffee-shop-form';
 import { CoffeeShop, CoffeeShopFormValue } from '../../coffee-shop.model';
 import { CoffeeShopsService } from '../../coffee-shops.service';
+import { TranslocoPipe } from '@jsverse/transloco';
 
 function toFormValue({ id, roasterId, ...value }: CoffeeShop): CoffeeShopFormValue {
   return value;
@@ -11,18 +12,20 @@ function toFormValue({ id, roasterId, ...value }: CoffeeShop): CoffeeShopFormVal
 
 @Component({
   selector: 'app-coffee-shop-form-page',
-  imports: [RouterLink, FormPageHeader, CoffeeShopForm],
+  imports: [TranslocoPipe, RouterLink, FormPageHeader, CoffeeShopForm],
   template: `
     <div class="mx-auto flex max-w-3xl flex-col gap-8">
-      <a class="link self-start" routerLink="/coffee-shops">← Coffee shops</a>
+      <a class="link self-start" routerLink="/coffee-shops">{{
+        'coffeeShops.form.back' | transloco
+      }}</a>
       <app-form-page-header
-        eyebrow="Coffee shop"
-        [title]="id() === undefined ? 'Add coffee shop' : 'Edit coffee shop'"
-        description="Record a café and what you thought of it."
+        eyebrow="coffeeShops.form.eyebrow"
+        [title]="id() === undefined ? 'coffeeShops.form.addTitle' : 'coffeeShops.form.editTitle'"
+        description="coffeeShops.form.description"
       />
 
       @if (shop.error()) {
-        <p class="text-error" role="alert">Could not load this coffee shop.</p>
+        <p class="text-error" role="alert">{{ 'coffeeShops.form.loadError' | transloco }}</p>
       } @else if (id() === undefined || initialValue()) {
         <app-coffee-shop-form
           [initialValue]="initialValue()"
@@ -30,10 +33,10 @@ function toFormValue({ id, roasterId, ...value }: CoffeeShop): CoffeeShopFormVal
           (submitted)="save($event)"
         />
         @if (saveError()) {
-          <p class="mt-2 text-error" role="alert">Could not save this coffee shop.</p>
+          <p class="mt-2 text-error" role="alert">{{ 'coffeeShops.form.saveError' | transloco }}</p>
         }
       } @else {
-        <p role="status">Loading…</p>
+        <p role="status">{{ 'common.loading' | transloco }}</p>
       }
     </div>
   `,

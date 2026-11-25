@@ -13,10 +13,10 @@ export const MAX_IMAGE_BYTES = 5 * 1024 * 1024;
 export class ImagesService {
   private readonly http = inject(HttpClient);
 
-  /** Returns a message when the file breaks the API limits, otherwise `null`. */
-  validate(file: File): string | null {
-    if (!ALLOWED_IMAGE_TYPES.includes(file.type)) return 'must be a JPEG, PNG or WebP image';
-    if (file.size > MAX_IMAGE_BYTES) return 'is larger than 5 MB';
+  /** Returns the reason (a key under `images.` in the translations) when the file breaks the API limits, otherwise `null`. */
+  validate(file: File): 'invalidType' | 'tooLarge' | null {
+    if (!ALLOWED_IMAGE_TYPES.includes(file.type)) return 'invalidType';
+    if (file.size > MAX_IMAGE_BYTES) return 'tooLarge';
     return null;
   }
 

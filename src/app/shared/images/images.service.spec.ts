@@ -38,8 +38,8 @@ describe('ImagesService', () => {
   });
 
   it('rejects other types and files over 5 MB', () => {
-    expect(service.validate(new File(['x'], 'a.gif', { type: 'image/gif' }))).toContain('JPEG');
+    expect(service.validate(new File(['x'], 'a.gif', { type: 'image/gif' }))).toBe('invalidType');
     const big = new File([new ArrayBuffer(5 * 1024 * 1024 + 1)], 'big.png', { type: 'image/png' });
-    expect(service.validate(big)).toContain('5 MB');
+    expect(service.validate(big)).toBe('tooLarge');
   });
 });
