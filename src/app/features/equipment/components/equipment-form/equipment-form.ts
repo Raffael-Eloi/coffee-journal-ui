@@ -163,7 +163,9 @@ interface FieldStateLike {
             >
               <option value="">{{ 'equipment.form.selectCategory' | transloco }}</option>
               @for (category of categories(); track category.id) {
-                <option [value]="category.id">{{ category.name }}</option>
+                <option [value]="category.id">
+                  {{ category.name | optionLabel: 'equipmentCategory' }}
+                </option>
               }
             </select>
           </app-labeled-field>

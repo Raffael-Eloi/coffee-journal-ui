@@ -73,6 +73,15 @@
       "5": "Raramente",
       "6": "Não uso mais",
       "7": "Nunca"
+    },
+    "equipmentCategory": {
+      "Accessory": "Acessório",
+      "Brewer": "Cafeteira",
+      "Grinder": "Moedor",
+      "Kettle": "Chaleira",
+      "Mug": "Caneca",
+      "PaperFilter": "Filtro de papel",
+      "Scale": "Balança"
     }
   },
   "images": {

@@ -1,12 +1,13 @@
 import { Component, computed, inject, resource, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
+import { OptionLabelPipe } from '../../../../i18n/option-label.pipe';
 import { EquipmentCard } from '../../components/equipment-card/equipment-card';
 import { EquipmentService } from '../../equipment.service';
 
 @Component({
   selector: 'app-equipment-list-page',
-  imports: [TranslocoPipe, RouterLink, EquipmentCard],
+  imports: [TranslocoPipe, OptionLabelPipe, RouterLink, EquipmentCard],
   template: `
     <div class="flex flex-col gap-8">
       <header class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
@@ -45,7 +46,7 @@ import { EquipmentService } from '../../equipment.service';
               [attr.aria-pressed]="selectedCategory() === category.id"
               (click)="selectedCategory.set(category.id)"
             >
-              {{ category.name }}
+              {{ category.name | optionLabel: 'equipmentCategory' }}
             </button>
           }
         </div>

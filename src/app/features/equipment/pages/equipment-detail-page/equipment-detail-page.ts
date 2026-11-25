@@ -34,7 +34,7 @@ const STARS = [1, 2, 3, 4, 5];
             <a class="link" routerLink="/equipment">{{ 'nav.equipment' | transloco }}</a>
             @if (categoryName(); as category) {
               <span aria-hidden="true">›</span>
-              <span>{{ category }}</span>
+              <span>{{ category | optionLabel: 'equipmentCategory' }}</span>
             }
             <span aria-hidden="true">›</span>
             <span aria-current="page" class="font-semibold text-terracotta">{{ e.name }}</span>
@@ -142,7 +142,7 @@ const STARS = [1, 2, 3, 4, 5];
               @if (categoryName(); as category) {
                 <div>
                   <dt class="spec-label">{{ 'equipment.detail.category' | transloco }}</dt>
-                  <dd class="spec-value">{{ category }}</dd>
+                  <dd class="spec-value">{{ category | optionLabel: 'equipmentCategory' }}</dd>
                 </div>
               }
               <div>

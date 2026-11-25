@@ -73,6 +73,15 @@
       "5": "Rarely",
       "6": "Not used anymore",
       "7": "Never"
+    },
+    "equipmentCategory": {
+      "Accessory": "Accessory",
+      "Brewer": "Brewer",
+      "Grinder": "Grinder",
+      "Kettle": "Kettle",
+      "Mug": "Mug",
+      "PaperFilter": "Paper filter",
+      "Scale": "Scale"
     }
   },
   "images": {

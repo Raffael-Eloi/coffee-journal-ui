@@ -27,7 +27,9 @@ import { Equipment } from '../../equipment.model';
         }
         @if (categoryName()) {
           <div class="absolute top-4 left-4">
-            <span class="badge bg-surface/90 text-terracotta">{{ categoryName() }}</span>
+            <span class="badge bg-surface/90 text-terracotta">{{
+              categoryName() | optionLabel: 'equipmentCategory'
+            }}</span>
           </div>
         }
         <div class="absolute top-4 right-4">
