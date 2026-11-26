@@ -77,7 +77,9 @@ function check(el: HTMLElement, text: string) {
 
 describe('CoffeeShopForm', () => {
   it('does not emit and shows errors when the required fields are empty', async () => {
-    const { fixture, submitted, el } = setup();
+    const { fixture, http, submitted, el } = setup();
+    fixture.detectChanges();
+    http.expectOne('/data/geo/US.json').flush({ states: [] });
     await fixture.whenStable();
 
     submit(el);
@@ -88,8 +90,19 @@ describe('CoffeeShopForm', () => {
       .map((a) => a.textContent)
       .join(' ');
     expect(alerts).toContain('Name is required');
-    expect(alerts).toContain('Country is required');
+    expect(alerts).toContain('State is required');
+    expect(alerts).toContain('City is required');
     expect(alerts).toContain('Address is required');
+  });
+
+  it('starts a new shop in the country of the app language', async () => {
+    const { fixture, http, el } = setup();
+    fixture.detectChanges();
+    http.expectOne('/data/geo/US.json').flush({ states: [] });
+    await fixture.whenStable();
+
+    const checked = el.querySelector<HTMLInputElement>('input[type="radio"]:checked')!;
+    expect(checked.closest('label')!.textContent).toContain('United States');
   });
 
   it('emits the offer, opening hours and null optional fields when the form is valid', async () => {
@@ -159,11 +172,11 @@ describe('CoffeeShopForm place fields', () => {
     ],
   };
 
-  function chooseCountry(el: HTMLElement, value: string) {
-    const select = el.querySelector<HTMLSelectElement>('#country')!;
-    select.value = value;
-    select.dispatchEvent(new Event('input'));
-    select.dispatchEvent(new Event('change'));
+  function chooseCountry(el: HTMLElement, name: string) {
+    const label = Array.from(el.querySelectorAll('label.choice')).find((l) =>
+      l.textContent?.includes(name),
+    )!;
+    label.querySelector<HTMLInputElement>('input')!.click();
   }
 
   const box = (el: HTMLElement, id: string) => el.querySelector<HTMLInputElement>('input#' + id)!;

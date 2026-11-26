@@ -3,9 +3,13 @@ import { TranslocoPipe } from '@jsverse/transloco';
 import { OptionLabelPipe } from '../../../i18n/option-label.pipe';
 import { GEO_COUNTRIES, GeoService } from '../../geo/geo.service';
 import { Combobox } from '../combobox/combobox';
+import { Flag } from '../flag/flag';
+import { Icon } from '../icon/icon';
 import { LabeledField } from '../labeled-field/labeled-field';
 
 type FieldError = { kind: string; message?: string };
+
+let nextGroupId = 0;
 
 /** The options, plus the current value when it is not among them (for example a saved legacy value). */
 function withCurrent(options: readonly string[], current: string): string[] {
@@ -13,36 +17,43 @@ function withCurrent(options: readonly string[], current: string): string[] {
 }
 
 /**
- * Country, state and city in that order: state and city are searchable lists of the bundled
- * data that depend on each other. A saved country that is not bundled falls back to free text.
- * Put it inside a `md:grid-cols-6` grid: it renders its fields as direct grid items.
+ * Country, state and city in that order. The country is a row of flag cards; state and city are
+ * searchable lists of the bundled data that depend on each other. A saved country that is not
+ * bundled falls back to free text. Put it inside a `md:grid-cols-6` grid: it renders its fields
+ * as direct grid items.
  */
 @Component({
   selector: 'app-place-fields',
-  imports: [TranslocoPipe, OptionLabelPipe, Combobox, LabeledField],
+  imports: [TranslocoPipe, OptionLabelPipe, Combobox, Flag, Icon, LabeledField],
   host: { class: 'contents' },
   template: `
-    <app-labeled-field
-      class="md:col-span-2"
-      label="place.country"
-      controlId="country"
-      icon="globe"
-      [errors]="countryErrors()"
-    >
-      <select id="country" class="field-input" (change)="onCountry($event)">
-        <option value="" [selected]="country() === ''">
-          {{ 'place.selectCountry' | transloco }}
-        </option>
+    <fieldset class="flex flex-col gap-1 md:col-span-6">
+      <legend class="field-label">{{ 'place.country' | transloco }}</legend>
+      <div class="flex flex-wrap gap-2">
         @for (option of countryOptions(); track option) {
-          <option [value]="option" [selected]="option === country()">
+          <label class="choice flex-none gap-2 px-4 py-2">
+            <input
+              type="radio"
+              class="sr-only"
+              [name]="groupName"
+              [checked]="option === country()"
+              (change)="chooseCountry(option)"
+            />
+            <app-flag [country]="option" />
             {{ option | optionLabel: 'country' }}
-          </option>
+            @if (option === country()) {
+              <app-icon name="bean" [size]="16" />
+            }
+          </label>
         }
-      </select>
-    </app-labeled-field>
+      </div>
+      @for (error of countryErrors(); track error.kind) {
+        <p class="field-error" role="alert">{{ error.message ?? '' | transloco }}</p>
+      }
+    </fieldset>
 
     <app-labeled-field
-      class="md:col-span-2"
+      class="md:col-span-3"
       label="place.state"
       controlId="state"
       icon="pin"
@@ -69,7 +80,7 @@ function withCurrent(options: readonly string[], current: string): string[] {
     </app-labeled-field>
 
     <app-labeled-field
-      class="md:col-span-2"
+      class="md:col-span-3"
       label="place.city"
       controlId="city"
       icon="pin"
@@ -109,6 +120,8 @@ export class PlaceFields {
 
   private readonly geo = inject(GeoService);
 
+  protected readonly groupName = `place-country-${nextGroupId++}`;
+
   /** States and cities of the chosen country; idle when the country has no bundled data. */
   protected readonly geoData = resource({
     params: () => this.geo.codeFor(this.country()),
@@ -141,8 +154,9 @@ export class PlaceFields {
     return withCurrent(cities, this.city());
   });
 
-  protected onCountry(event: Event): void {
-    this.country.set((event.target as HTMLSelectElement).value);
+  protected chooseCountry(country: string): void {
+    if (country === this.country()) return;
+    this.country.set(country);
     this.state.set('');
     this.city.set('');
   }

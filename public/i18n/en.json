@@ -422,7 +422,6 @@
     "state": "State",
     "city": "City",
     "address": "Address",
-    "selectCountry": "Select a country",
     "selectState": "Search for a state",
     "selectCity": "Search for a city",
     "geoError": "Could not load the list of states and cities."

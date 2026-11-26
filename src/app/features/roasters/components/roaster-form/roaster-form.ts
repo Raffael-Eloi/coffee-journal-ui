@@ -1,6 +1,7 @@
-import { Component, input, linkedSignal, output } from '@angular/core';
+import { Component, inject, input, linkedSignal, output } from '@angular/core';
 import { form, FormField, FormRoot, maxLength, required } from '@angular/forms/signals';
-import { TranslocoPipe } from '@jsverse/transloco';
+import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
+import { GeoService } from '../../../../shared/geo/geo.service';
 import { FieldErrors, fieldErrors } from '../../../../shared/api/validation-errors';
 import {
   COFFEE_CLASSIFICATIONS,
@@ -49,8 +50,8 @@ const EMPTY_DRAFT: RoasterDraft = {
   imageUrls: [],
 };
 
-function toDraft(input: RoasterInput | undefined): RoasterDraft {
-  if (!input) return EMPTY_DRAFT;
+function toDraft(input: RoasterInput | undefined, defaultCountry: string): RoasterDraft {
+  if (!input) return { ...EMPTY_DRAFT, country: defaultCountry };
   return {
     name: input.name,
     description: input.description ?? '',
@@ -254,7 +255,12 @@ export class RoasterForm {
       labelKey: `options.classification.${value}`,
     }));
 
-  private readonly data = linkedSignal<RoasterDraft>(() => toDraft(this.initialValue()));
+  private readonly geo = inject(GeoService);
+  private readonly transloco = inject(TranslocoService);
+
+  private readonly data = linkedSignal<RoasterDraft>(() =>
+    toDraft(this.initialValue(), this.geo.defaultCountry(this.transloco.getActiveLang())),
+  );
 
   protected readonly roasterForm = form(
     this.data,

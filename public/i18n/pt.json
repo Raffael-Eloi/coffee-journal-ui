@@ -422,7 +422,6 @@
     "state": "Estado",
     "city": "Cidade",
     "address": "Endereço",
-    "selectCountry": "Selecione um país",
     "selectState": "Busque um estado",
     "selectCity": "Busque uma cidade",
     "geoError": "Não foi possível carregar a lista de estados e cidades."

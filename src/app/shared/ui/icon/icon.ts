@@ -1,7 +1,7 @@
 import { Component, input } from '@angular/core';
 
 export type IconName =
-  'store' | 'pin' | 'flame' | 'link' | 'globe' | 'note' | 'coffee' | 'check' | 'plus' | 'close';
+  'store' | 'pin' | 'flame' | 'link' | 'globe' | 'note' | 'coffee' | 'check' | 'plus' | 'close' | 'bean';
 
 /** Decorative inline SVG icon. It inherits the current text color and is hidden from screen readers. */
 @Component({
@@ -64,6 +64,10 @@ export type IconName =
         }
         @case ('close') {
           <path d="M6 6l12 12M18 6L6 18" />
+        }
+        @case ('bean') {
+          <ellipse cx="12" cy="12" rx="5.5" ry="8.5" transform="rotate(35 12 12)" />
+          <path d="M8.3 16.2c3.4-1.6 3.4-4.6 4.4-6.2 .8-1.3 1.7-2 3-2.6" />
         }
       }
     </svg>

@@ -17,6 +17,11 @@ export const GEO_COUNTRIES = [
   { name: 'Brazil', code: 'BR' },
 ] as const;
 
+const DEFAULT_COUNTRY_BY_LANGUAGE: Record<string, string> = {
+  pt: 'Brazil',
+  en: 'United States',
+};
+
 /** Loads the bundled states and cities of a country on demand and keeps them for the session. */
 @Service()
 export class GeoService {
@@ -26,6 +31,11 @@ export class GeoService {
   /** The data file code for a stored country name, or `undefined` when the country is not bundled. */
   codeFor(countryName: string): string | undefined {
     return GEO_COUNTRIES.find((country) => country.name === countryName)?.code;
+  }
+
+  /** The country that goes with an app language (`pt` is Brazil, `en` is the United States), or `''` for others. */
+  defaultCountry(language: string): string {
+    return DEFAULT_COUNTRY_BY_LANGUAGE[language] ?? '';
   }
 
   load(code: string): Promise<GeoCountryData> {

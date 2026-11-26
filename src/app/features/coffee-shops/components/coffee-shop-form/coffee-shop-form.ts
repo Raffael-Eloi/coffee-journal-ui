@@ -1,6 +1,7 @@
-import { Component, computed, input, linkedSignal, output } from '@angular/core';
+import { Component, computed, inject, input, linkedSignal, output } from '@angular/core';
 import { applyEach, form, FormField, FormRoot, maxLength, required } from '@angular/forms/signals';
-import { TranslocoPipe } from '@jsverse/transloco';
+import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
+import { GeoService } from '../../../../shared/geo/geo.service';
 import { OptionLabelPipe } from '../../../../i18n/option-label.pipe';
 import { FieldErrors, fieldErrors } from '../../../../shared/api/validation-errors';
 import { CheckGroup, CheckOption } from '../../../../shared/ui/check-group/check-group';
@@ -67,8 +68,8 @@ const EMPTY_DRAFT: CoffeeShopDraft = {
   imageUrls: [],
 };
 
-function toDraft(input: CoffeeShopInput | undefined): CoffeeShopDraft {
-  if (!input) return EMPTY_DRAFT;
+function toDraft(input: CoffeeShopInput | undefined, defaultCountry: string): CoffeeShopDraft {
+  if (!input) return { ...EMPTY_DRAFT, country: defaultCountry };
   return {
     name: input.name,
     description: input.description ?? '',
@@ -389,7 +390,12 @@ export class CoffeeShopForm {
     this.roasters().map((roaster) => ({ value: roaster.id, label: roaster.name })),
   );
 
-  private readonly data = linkedSignal<CoffeeShopDraft>(() => toDraft(this.initialValue()));
+  private readonly geo = inject(GeoService);
+  private readonly transloco = inject(TranslocoService);
+
+  private readonly data = linkedSignal<CoffeeShopDraft>(() =>
+    toDraft(this.initialValue(), this.geo.defaultCountry(this.transloco.getActiveLang())),
+  );
 
   protected readonly shopForm = form(
     this.data,

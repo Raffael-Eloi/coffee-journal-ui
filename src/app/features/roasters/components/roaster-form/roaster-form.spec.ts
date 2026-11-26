@@ -1,5 +1,5 @@
 import { provideHttpClient } from '@angular/common/http';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { RoasterInput } from '../../roaster.model';
 import { RoasterForm } from './roaster-form';
@@ -30,7 +30,8 @@ describe('RoasterForm', () => {
     if (initialValue) fixture.componentRef.setInput('initialValue', initialValue);
     const submitted: RoasterInput[] = [];
     fixture.componentInstance.submitted.subscribe((value) => submitted.push(value));
-    return { fixture, submitted, el: fixture.nativeElement as HTMLElement };
+    const http = TestBed.inject(HttpTestingController);
+    return { fixture, http, submitted, el: fixture.nativeElement as HTMLElement };
   }
 
   function submit(el: HTMLElement) {
@@ -44,7 +45,10 @@ describe('RoasterForm', () => {
   }
 
   it('does not emit and shows errors when the required fields are empty', async () => {
-    const { fixture, submitted, el } = setup();
+    const { fixture, http, submitted, el } = setup();
+    // A new roaster starts in the country of the app language, so its states are fetched.
+    fixture.detectChanges();
+    http.expectOne('/data/geo/US.json').flush({ states: [] });
     await fixture.whenStable();
 
     submit(el);
@@ -55,7 +59,6 @@ describe('RoasterForm', () => {
       .map((a) => a.textContent)
       .join(' ');
     expect(alerts).toContain('Name is required');
-    expect(alerts).toContain('Country is required');
     expect(alerts).toContain('State is required');
     expect(alerts).toContain('City is required');
   });
