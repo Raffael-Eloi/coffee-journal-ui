@@ -1,6 +1,7 @@
 import { Component, input, model, output } from '@angular/core';
 import { FormValueControl } from '@angular/forms/signals';
 import { TranslocoPipe } from '@jsverse/transloco';
+import { SymbolIcon } from '../symbol/symbol';
 
 export interface CheckOption<T extends string | number> {
   value: T;
@@ -8,6 +9,8 @@ export interface CheckOption<T extends string | number> {
   label?: string;
   /** Translation key shown instead of `label`. */
   labelKey?: string;
+  /** Material Symbols icon name shown before the text. */
+  icon?: string;
 }
 
 /**
@@ -16,7 +19,7 @@ export interface CheckOption<T extends string | number> {
  */
 @Component({
   selector: 'app-check-group',
-  imports: [TranslocoPipe],
+  imports: [TranslocoPipe, SymbolIcon],
   template: `
     <fieldset class="flex flex-col gap-2">
       <legend class="field-label">{{ label() | transloco }}</legend>
@@ -30,6 +33,9 @@ export interface CheckOption<T extends string | number> {
               [disabled]="disabled() || readonly()"
               (change)="toggle(option.value, $any($event.target).checked)"
             />
+            @if (option.icon) {
+              <app-symbol [name]="option.icon" [size]="18" />
+            }
             {{ option.labelKey ? (option.labelKey | transloco) : option.label }}
           </label>
         } @empty {

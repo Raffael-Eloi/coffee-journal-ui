@@ -6,7 +6,14 @@ import { OptionLabelPipe } from '../../../../i18n/option-label.pipe';
 import { Icon } from '../../../../shared/ui/icon/icon';
 import { PhotoGallery } from '../../../../shared/ui/photo-gallery/photo-gallery';
 import { RoastersService } from '../../../roasters/roasters.service';
-import { CoffeeShop, DayOfWeek, OpeningHours } from '../../coffee-shop.model';
+import { SymbolIcon } from '../../../../shared/ui/symbol/symbol';
+import {
+  AMENITY_ICONS,
+  BREWING_METHOD_ICONS,
+  CoffeeShop,
+  DayOfWeek,
+  OpeningHours,
+} from '../../coffee-shop.model';
 import { CoffeeShopsService } from '../../coffee-shops.service';
 
 /** Monday first: the week as people read it. */
@@ -14,7 +21,15 @@ const WEEK: readonly DayOfWeek[] = [1, 2, 3, 4, 5, 6, 0];
 
 @Component({
   selector: 'app-coffee-shop-detail-page',
-  imports: [TranslocoPipe, OptionLabelPipe, RouterLink, Icon, PhotoGallery, ReviewsSection],
+  imports: [
+    TranslocoPipe,
+    OptionLabelPipe,
+    RouterLink,
+    Icon,
+    PhotoGallery,
+    ReviewsSection,
+    SymbolIcon,
+  ],
   template: `
     @if (coffeeShop.isLoading()) {
       <p class="text-husk" role="status">{{ 'common.loading' | transloco }}</p>
@@ -169,7 +184,8 @@ const WEEK: readonly DayOfWeek[] = [1, 2, 3, 4, 5, 6, 0];
                 </h3>
                 <ul class="flex flex-wrap gap-2">
                   @for (method of shop.brewingMethods; track method) {
-                    <li class="badge badge-medium">
+                    <li class="badge badge-medium gap-1.5">
+                      <app-symbol [name]="brewingMethodIcons[method]" [size]="16" />
                       {{ method + '' | optionLabel: 'brewingMethod' }}
                     </li>
                   }
@@ -182,7 +198,8 @@ const WEEK: readonly DayOfWeek[] = [1, 2, 3, 4, 5, 6, 0];
                 <h3 class="field-label-sm">{{ 'coffeeShops.detail.amenities' | transloco }}</h3>
                 <ul class="flex flex-wrap gap-2">
                   @for (amenity of shop.amenities; track amenity) {
-                    <li class="badge badge-light">
+                    <li class="badge badge-light gap-1.5">
+                      <app-symbol [name]="amenityIcons[amenity]" [size]="16" />
                       {{ amenity + '' | optionLabel: 'amenity' }}
                     </li>
                   }
@@ -221,6 +238,9 @@ export class CoffeeShopDetailPage {
   private readonly service = inject(CoffeeShopsService);
   private readonly roastersService = inject(RoastersService);
   private readonly router = inject(Router);
+
+  protected readonly brewingMethodIcons = BREWING_METHOD_ICONS;
+  protected readonly amenityIcons = AMENITY_ICONS;
 
   readonly id = input.required<string>();
 

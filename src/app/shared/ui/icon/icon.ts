@@ -1,7 +1,17 @@
 import { Component, input } from '@angular/core';
 
 export type IconName =
-  'store' | 'pin' | 'flame' | 'link' | 'globe' | 'note' | 'coffee' | 'check' | 'plus' | 'close' | 'bean';
+  | 'store'
+  | 'pin'
+  | 'flame'
+  | 'link'
+  | 'globe'
+  | 'note'
+  | 'coffee'
+  | 'check'
+  | 'plus'
+  | 'close'
+  | 'bean';
 
 /** Decorative inline SVG icon. It inherits the current text color and is hidden from screen readers. */
 @Component({

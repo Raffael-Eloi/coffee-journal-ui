@@ -5,7 +5,6 @@ import { GeoService } from '../../../../shared/geo/geo.service';
 import { OptionLabelPipe } from '../../../../i18n/option-label.pipe';
 import { FieldErrors, fieldErrors } from '../../../../shared/api/validation-errors';
 import { CheckGroup, CheckOption } from '../../../../shared/ui/check-group/check-group';
-import { Combobox } from '../../../../shared/ui/combobox/combobox';
 import { FormSection } from '../../../../shared/ui/form-section/form-section';
 import { Icon } from '../../../../shared/ui/icon/icon';
 import { ImageUploader } from '../../../../shared/ui/image-uploader/image-uploader';
@@ -15,6 +14,8 @@ import { Roaster } from '../../../roasters/roaster.model';
 import {
   Amenity,
   AMENITIES,
+  AMENITY_ICONS,
+  BREWING_METHOD_ICONS,
   BREWING_METHODS,
   CoffeeBrewingMethod,
   CoffeeShopInput,
@@ -118,18 +119,12 @@ function toInput(draft: CoffeeShopDraft): CoffeeShopInput {
   };
 }
 
-/** The options, plus the current value when it is not among them (for example a saved legacy value). */
-function withCurrent(options: readonly string[], current: string): string[] {
-  return current === '' || options.includes(current) ? [...options] : [...options, current];
-}
-
 @Component({
   selector: 'app-coffee-shop-form',
   imports: [
     TranslocoPipe,
     OptionLabelPipe,
     CheckGroup,
-    Combobox,
     FormField,
     FormRoot,
     FormSection,
@@ -227,21 +222,6 @@ function withCurrent(options: readonly string[], current: string): string[] {
             [errors]="errorsFor(shopForm.address(), 'address')"
           >
             <input id="address" type="text" class="field-input" [formField]="shopForm.address" />
-          </app-labeled-field>
-
-          <app-labeled-field
-            class="md:col-span-6"
-            label="coffeeShops.form.timeZone"
-            controlId="timeZone"
-            icon="globe"
-            [errors]="errorsFor(shopForm.timeZone(), 'timeZone')"
-          >
-            <app-combobox
-              inputId="timeZone"
-              placeholder="coffeeShops.form.selectTimeZone"
-              [options]="timeZoneOptions()"
-              [formField]="shopForm.timeZone"
-            />
           </app-labeled-field>
         </div>
       </app-form-section>
@@ -379,11 +359,16 @@ export class CoffeeShopForm {
 
   protected readonly days = DAYS_OF_WEEK;
   protected readonly brewingMethodOptions: CheckOption<CoffeeBrewingMethod>[] = BREWING_METHODS.map(
-    (value) => ({ value, labelKey: `options.brewingMethod.${value}` }),
+    (value) => ({
+      value,
+      labelKey: `options.brewingMethod.${value}`,
+      icon: BREWING_METHOD_ICONS[value],
+    }),
   );
   protected readonly amenityOptions: CheckOption<Amenity>[] = AMENITIES.map((value) => ({
     value,
     labelKey: `options.amenity.${value}`,
+    icon: AMENITY_ICONS[value],
   }));
 
   protected readonly roasterOptions = computed<CheckOption<string>[]>(() =>
@@ -423,9 +408,6 @@ export class CoffeeShopForm {
   );
 
   /** Every IANA time zone the browser knows, plus the current one when it is not among them. */
-  protected readonly timeZoneOptions = computed(() =>
-    withCurrent(Intl.supportedValuesOf('timeZone'), this.shopForm.timeZone().value()),
-  );
 
   protected errorsFor(
     state: Parameters<typeof fieldErrors>[0],

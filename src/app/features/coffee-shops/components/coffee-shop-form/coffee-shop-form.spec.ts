@@ -69,8 +69,8 @@ function fill(el: HTMLElement, selector: string, value: string) {
 }
 
 function check(el: HTMLElement, text: string) {
-  const label = Array.from(el.querySelectorAll('label.choice')).find(
-    (l) => l.textContent?.trim() === text,
+  const label = Array.from(el.querySelectorAll('label.choice')).find((l) =>
+    l.textContent?.trim().endsWith(text),
   )!;
   label.querySelector<HTMLInputElement>('input')!.click();
 }
@@ -152,15 +152,6 @@ describe('CoffeeShopForm', () => {
     expect(el.querySelector<HTMLSelectElement>('#day-0')!.value).toBe('6');
     expect(el.querySelector<HTMLInputElement>('#opens-0')!.value).toBe('09:30');
     expect(el.querySelector<HTMLInputElement>('#closes-0')!.value).toBe('02:00');
-  });
-
-  it('shows the messages the API returned next to their field', async () => {
-    const { fixture, el } = setup({});
-    fixture.componentRef.setInput('serverErrors', { timeZone: ['Unknown time zone'] });
-    await fixture.whenStable();
-
-    const field = el.querySelector('#timeZone')!.closest('app-labeled-field')!;
-    expect(field.textContent).toContain('Unknown time zone');
   });
 });
 
