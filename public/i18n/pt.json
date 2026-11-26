@@ -48,7 +48,9 @@
     "frequencyRequired": "Escolha com que frequência você usa",
     "tooLong": "O texto é muito longo",
     "priceRange": "O preço deve estar entre 0,01 e 99.999.999,99",
-    "linkInvalid": "Informe um link que comece com http:// ou https://"
+    "linkInvalid": "Informe um link que comece com http:// ou https://",
+    "handleRequired": "O identificador é obrigatório",
+    "handleInvalid": "Use de 3 a 30 letras minúsculas, números ou sublinhados"
   },
   "options": {
     "process": {
@@ -308,6 +310,32 @@
       "verdictCaption": "Qualidade e custo-benefício",
       "photoTitle": "Foto",
       "photoCaption": "O equipamento em uso"
+    }
+  },
+  "auth": {
+    "signIn": "Entrar",
+    "signOut": "Sair",
+    "failed": "Não foi possível entrar. Tente novamente.",
+    "profileError": "Não foi possível carregar seu perfil."
+  },
+  "profile": {
+    "setup": {
+      "eyebrow": "Boas-vindas",
+      "title": "Crie seu perfil",
+      "description": "Escolha como você aparece no diário.",
+      "signInRequired": "Entre para criar seu perfil.",
+      "alreadyDone": "Seu perfil já foi criado.",
+      "sectionTitle": "Sobre você",
+      "sectionCaption": "Perfil",
+      "name": "Nome",
+      "handle": "Identificador",
+      "handleHint": "De 3 a 30 caracteres: letras minúsculas, números e sublinhados.",
+      "email": "E-mail",
+      "language": "Idioma",
+      "languagePt": "Português (Brasil)",
+      "languageEn": "English (US)",
+      "submit": "Criar perfil",
+      "saveError": "Não foi possível criar seu perfil."
     }
   }
 }

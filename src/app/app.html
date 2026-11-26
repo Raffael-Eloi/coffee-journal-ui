@@ -30,8 +30,34 @@
         </a>
       </nav>
     </div>
+
+    <div class="flex items-center gap-3">
+      @if (auth.isSignedIn()) {
+        <span class="text-sm font-semibold text-espresso">
+          {{ currentUser.profile()?.name ?? auth.displayName() }}
+        </span>
+        <button type="button" class="btn btn-ghost" (click)="auth.signOut()">
+          {{ 'auth.signOut' | transloco }}
+        </button>
+      } @else {
+        <button type="button" class="btn btn-primary" (click)="auth.signIn()">
+          {{ 'auth.signIn' | transloco }}
+        </button>
+      }
+    </div>
   </div>
 </header>
+
+@if (auth.failed()) {
+  <p class="bg-error-container px-5 py-2 text-center text-sm text-ink" role="alert">
+    {{ 'auth.failed' | transloco }}
+  </p>
+}
+@if (currentUser.status() === 'error') {
+  <p class="bg-error-container px-5 py-2 text-center text-sm text-ink" role="alert">
+    {{ 'auth.profileError' | transloco }}
+  </p>
+}
 
 <main class="mx-auto w-full max-w-6xl flex-1 px-5 py-8 md:px-12">
   <router-outlet />

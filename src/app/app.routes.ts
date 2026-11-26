@@ -17,6 +17,14 @@ export const routes: Routes = [
     loadChildren: () => import('./features/coffees/coffees.routes').then((m) => m.COFFEES_ROUTES),
   },
   {
+    path: 'profile/setup',
+    title: 'Create profile',
+    loadComponent: () =>
+      import('./features/profile/pages/profile-setup-page/profile-setup-page').then(
+        (m) => m.ProfileSetupPage,
+      ),
+  },
+  {
     path: 'equipment',
     loadChildren: () =>
       import('./features/equipment/equipment.routes').then((m) => m.EQUIPMENT_ROUTES),

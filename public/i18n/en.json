@@ -48,7 +48,9 @@
     "frequencyRequired": "Choose how often you use it",
     "tooLong": "Text is too long",
     "priceRange": "Price must be between 0.01 and 99,999,999.99",
-    "linkInvalid": "Enter a link that starts with http:// or https://"
+    "linkInvalid": "Enter a link that starts with http:// or https://",
+    "handleRequired": "Handle is required",
+    "handleInvalid": "Use 3 to 30 lowercase letters, numbers or underscores"
   },
   "options": {
     "process": {
@@ -308,6 +310,32 @@
       "verdictCaption": "Quality & value",
       "photoTitle": "Photo",
       "photoCaption": "The gear in use"
+    }
+  },
+  "auth": {
+    "signIn": "Sign in",
+    "signOut": "Sign out",
+    "failed": "Sign-in did not work. Please try again.",
+    "profileError": "Could not load your profile."
+  },
+  "profile": {
+    "setup": {
+      "eyebrow": "Welcome",
+      "title": "Create your profile",
+      "description": "Choose how you appear in the journal.",
+      "signInRequired": "Sign in to create your profile.",
+      "alreadyDone": "Your profile is already created.",
+      "sectionTitle": "About you",
+      "sectionCaption": "Profile",
+      "name": "Name",
+      "handle": "Handle",
+      "handleHint": "3 to 30 characters: lowercase letters, numbers and underscores.",
+      "email": "Email",
+      "language": "Language",
+      "languagePt": "Português (Brasil)",
+      "languageEn": "English (US)",
+      "submit": "Create profile",
+      "saveError": "Could not create your profile."
     }
   }
 }
