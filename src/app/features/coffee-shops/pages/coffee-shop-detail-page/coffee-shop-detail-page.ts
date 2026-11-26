@@ -1,3 +1,4 @@
+import { ReviewsSection } from '../../../../shared/reviews/reviews-section/reviews-section';
 import { Component, computed, inject, input, resource, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
@@ -13,7 +14,7 @@ const WEEK: readonly DayOfWeek[] = [1, 2, 3, 4, 5, 6, 0];
 
 @Component({
   selector: 'app-coffee-shop-detail-page',
-  imports: [TranslocoPipe, OptionLabelPipe, RouterLink, Icon, PhotoGallery],
+  imports: [TranslocoPipe, OptionLabelPipe, RouterLink, Icon, PhotoGallery, ReviewsSection],
   template: `
     @if (coffeeShop.isLoading()) {
       <p class="text-husk" role="status">{{ 'common.loading' | transloco }}</p>
@@ -210,6 +211,8 @@ const WEEK: readonly DayOfWeek[] = [1, 2, 3, 4, 5, 6, 0];
             }
           </aside>
         </div>
+
+        <app-reviews-section path="coffee-shops" [itemId]="shop.id" />
       </div>
     }
   `,

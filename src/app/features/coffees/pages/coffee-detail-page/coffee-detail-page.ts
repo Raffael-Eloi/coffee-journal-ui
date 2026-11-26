@@ -1,3 +1,4 @@
+import { ReviewsSection } from '../../../../shared/reviews/reviews-section/reviews-section';
 import { CurrencyPipe } from '@angular/common';
 import { Component, inject, input, resource, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
@@ -9,7 +10,7 @@ import { CoffeesService } from '../../coffees.service';
 
 @Component({
   selector: 'app-coffee-detail-page',
-  imports: [TranslocoPipe, OptionLabelPipe, RouterLink, CurrencyPipe, PhotoGallery],
+  imports: [TranslocoPipe, OptionLabelPipe, RouterLink, CurrencyPipe, PhotoGallery, ReviewsSection],
   template: `
     <a class="link" routerLink="/coffees">{{ 'coffees.detail.back' | transloco }}</a>
 
@@ -104,6 +105,10 @@ import { CoffeesService } from '../../coffees.service';
       @if (deleteError()) {
         <p class="mt-2 text-error" role="alert">{{ 'coffees.detail.deleteError' | transloco }}</p>
       }
+
+      <div class="mt-10">
+        <app-reviews-section path="coffees" [itemId]="c.id" />
+      </div>
     }
   `,
 })

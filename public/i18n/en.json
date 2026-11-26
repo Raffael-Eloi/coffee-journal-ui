@@ -425,5 +425,24 @@
     "selectState": "Search for a state",
     "selectCity": "Search for a city",
     "geoError": "Could not load the list of states and cities."
+  },
+  "reviews": {
+    "title": "Reviews",
+    "averageLabel": "Average rating out of 5",
+    "countOne": "{{count}} review",
+    "countOther": "{{count}} reviews",
+    "recommendedCount": "{{count}} recommend it",
+    "none": "No reviews yet. Be the first to write one.",
+    "signInPrompt": "Sign in to write a review.",
+    "profilePrompt": "Create your profile to write a review.",
+    "createProfile": "Create profile",
+    "writeTitle": "Write a review",
+    "loadError": "Could not load the reviews.",
+    "saveError": "Could not save the review. Try again.",
+    "deleteError": "Could not delete the review. Try again.",
+    "confirmDelete": "Delete this review?",
+    "form": {
+      "text": "Your review"
+    }
   }
 }

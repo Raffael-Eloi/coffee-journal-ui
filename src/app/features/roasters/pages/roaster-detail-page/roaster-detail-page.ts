@@ -1,3 +1,4 @@
+import { ReviewsSection } from '../../../../shared/reviews/reviews-section/reviews-section';
 import { NgOptimizedImage } from '@angular/common';
 import { Component, inject, input, resource, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
@@ -10,7 +11,15 @@ import { RoastersService } from '../../roasters.service';
 
 @Component({
   selector: 'app-roaster-detail-page',
-  imports: [TranslocoPipe, OptionLabelPipe, RouterLink, NgOptimizedImage, Icon, PhotoGallery],
+  imports: [
+    TranslocoPipe,
+    OptionLabelPipe,
+    RouterLink,
+    NgOptimizedImage,
+    Icon,
+    PhotoGallery,
+    ReviewsSection,
+  ],
   template: `
     @if (roaster.isLoading()) {
       <p class="text-husk" role="status">{{ 'common.loading' | transloco }}</p>
@@ -155,6 +164,8 @@ import { RoastersService } from '../../roasters.service';
             </dl>
           </aside>
         </div>
+
+        <app-reviews-section path="coffee-roasters" [itemId]="r.id" />
       </div>
     }
   `,
