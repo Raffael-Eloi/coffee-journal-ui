@@ -4,6 +4,7 @@ import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 import { GeoService } from '../../../../shared/geo/geo.service';
 import { FieldErrors, fieldErrors } from '../../../../shared/api/validation-errors';
 import {
+  COFFEE_CLASSIFICATION_ICONS,
   COFFEE_CLASSIFICATIONS,
   CoffeeClassification,
 } from '../../../../shared/models/coffee-classification';
@@ -253,6 +254,7 @@ export class RoasterForm {
     COFFEE_CLASSIFICATIONS.map((value) => ({
       value,
       labelKey: `options.classification.${value}`,
+      icon: COFFEE_CLASSIFICATION_ICONS[value],
     }));
 
   private readonly geo = inject(GeoService);
