@@ -22,7 +22,7 @@ export interface CheckOption<T extends string | number> {
       <legend class="field-label">{{ label() | transloco }}</legend>
       <div class="flex flex-wrap gap-2" (focusout)="touch.emit()">
         @for (option of options(); track option.value) {
-          <label class="choice">
+          <label class="choice flex-none">
             <input
               type="checkbox"
               class="sr-only"
