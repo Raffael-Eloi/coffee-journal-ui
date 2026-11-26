@@ -1,11 +1,11 @@
 import { Component, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { OptionLabelPipe } from '../../../../i18n/option-label.pipe';
 import { CoffeeShop } from '../../coffee-shop.model';
-import { TranslocoPipe } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-coffee-shop-card',
-  imports: [TranslocoPipe, RouterLink],
+  imports: [OptionLabelPipe, RouterLink],
   template: `
     <article class="card flex h-full flex-col gap-2">
       <h2>
@@ -13,17 +13,14 @@ import { TranslocoPipe } from '@jsverse/transloco';
           {{ shop().name }}
         </a>
       </h2>
-      <p class="text-husk">{{ shop().city }}, {{ shop().country }}</p>
-      <p class="mt-auto flex flex-wrap items-center gap-2">
-        <span class="badge badge-rating">
-          <span class="star" aria-hidden="true">★</span>
-          <span class="sr-only">{{ 'common.rateLabel' | transloco }}</span>
-          {{ shop().rate }}
-        </span>
-        @if (shop().recommend) {
-          <span class="badge badge-light">{{ 'common.recommended' | transloco }}</span>
-        }
-      </p>
+      <p class="text-husk">{{ shop().city }}, {{ shop().country | optionLabel: 'country' }}</p>
+      @if (shop().amenities.length > 0) {
+        <p class="mt-auto flex flex-wrap items-center gap-2">
+          @for (amenity of shop().amenities; track amenity) {
+            <span class="badge badge-light">{{ amenity + '' | optionLabel: 'amenity' }}</span>
+          }
+        </p>
+      }
     </article>
   `,
 })

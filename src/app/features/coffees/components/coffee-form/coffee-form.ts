@@ -1,15 +1,27 @@
 import { Component, input, linkedSignal, output } from '@angular/core';
-import { form, FormField, FormRoot, max, min, required } from '@angular/forms/signals';
+import {
+  applyEach,
+  form,
+  FormField,
+  FormRoot,
+  maxLength,
+  min,
+  required,
+} from '@angular/forms/signals';
+import { TranslocoPipe } from '@jsverse/transloco';
+import { OptionLabelPipe } from '../../../../i18n/option-label.pipe';
+import { FieldErrors, fieldErrors } from '../../../../shared/api/validation-errors';
+import {
+  COFFEE_CLASSIFICATIONS,
+  CoffeeClassification,
+} from '../../../../shared/models/coffee-classification';
 import { ChoiceGroup } from '../../../../shared/ui/choice-group/choice-group';
 import { FormSection } from '../../../../shared/ui/form-section/form-section';
 import { Icon } from '../../../../shared/ui/icon/icon';
 import { ImageUploader } from '../../../../shared/ui/image-uploader/image-uploader';
 import { LabeledField } from '../../../../shared/ui/labeled-field/labeled-field';
-import { StarRating } from '../../../../shared/ui/star-rating/star-rating';
-import { YesNoToggle } from '../../../../shared/ui/yes-no-toggle/yes-no-toggle';
 import { Roaster } from '../../../roasters/roaster.model';
-import { CoffeeFormValue, Currency } from '../../coffee.model';
-import { TranslocoPipe } from '@jsverse/transloco';
+import { CoffeeInput, Currency } from '../../coffee.model';
 
 const PRESET_SIZES = [
   { grams: 150, label: '150 g' },
@@ -18,26 +30,78 @@ const PRESET_SIZES = [
   { grams: 1000, label: '1 kg' },
 ];
 
-const EMPTY_VALUE: CoffeeFormValue = {
+/** The values edited in the form: the optional link is an empty string and no classification is `0`. */
+interface CoffeeDraft {
+  name: string;
+  description: string;
+  roasterId: string;
+  classification: number;
+  origin: string;
+  process: string;
+  roastLevel: string;
+  variety: string;
+  tastingNotes: string;
+  productUrl: string;
+  prices: { grams: number; price: number; currency: Currency }[];
+  imageUrls: string[];
+}
+
+const EMPTY_DRAFT: CoffeeDraft = {
   name: '',
   description: '',
   roasterId: '',
-  rate: 0,
-  review: '',
-  recommend: false,
+  classification: 0,
   origin: '',
   process: '',
   roastLevel: '',
   variety: '',
   tastingNotes: '',
+  productUrl: '',
   prices: [],
   imageUrls: [],
 };
+
+function toDraft(input: CoffeeInput | undefined): CoffeeDraft {
+  if (!input) return EMPTY_DRAFT;
+  return {
+    name: input.name,
+    description: input.description,
+    roasterId: input.roasterId,
+    classification: input.classification,
+    origin: input.origin,
+    process: input.process,
+    roastLevel: input.roastLevel,
+    variety: input.variety,
+    tastingNotes: input.tastingNotes,
+    productUrl: input.productUrl ?? '',
+    prices: input.prices.map(({ grams, price, currency }) => ({ grams, price, currency })),
+    imageUrls: [...input.imageUrls],
+  };
+}
+
+function toInput(draft: CoffeeDraft): CoffeeInput {
+  return {
+    name: draft.name.trim(),
+    description: draft.description.trim(),
+    roasterId: draft.roasterId,
+    classification: draft.classification as CoffeeClassification,
+    origin: draft.origin.trim(),
+    process: draft.process.trim(),
+    roastLevel: draft.roastLevel.trim(),
+    variety: draft.variety.trim(),
+    tastingNotes: draft.tastingNotes.trim(),
+    productUrl: draft.productUrl.trim() || null,
+    // Copy price rows to plain objects: Signal Forms tags array items with a tracking symbol.
+    prices: draft.prices.map(({ grams, price, currency }) => ({ grams, price, currency })),
+    imageUrls: [...draft.imageUrls],
+  };
+}
 
 @Component({
   selector: 'app-coffee-form',
   imports: [
     TranslocoPipe,
+    OptionLabelPipe,
     FormField,
     FormRoot,
     ChoiceGroup,
@@ -45,8 +109,6 @@ const EMPTY_VALUE: CoffeeFormValue = {
     Icon,
     ImageUploader,
     LabeledField,
-    StarRating,
-    YesNoToggle,
   ],
   template: `
     <form class="flex flex-col gap-8" [formRoot]="coffeeForm">
@@ -61,7 +123,7 @@ const EMPTY_VALUE: CoffeeFormValue = {
             label="coffees.form.name"
             controlId="name"
             icon="coffee"
-            [errors]="coffeeForm.name().touched() ? coffeeForm.name().errors() : []"
+            [errors]="errorsFor(coffeeForm.name(), 'name')"
           >
             <input id="name" type="text" class="field-input" [formField]="coffeeForm.name" />
           </app-labeled-field>
@@ -71,7 +133,7 @@ const EMPTY_VALUE: CoffeeFormValue = {
             label="coffees.form.roaster"
             controlId="roasterId"
             icon="flame"
-            [errors]="coffeeForm.roasterId().touched() ? coffeeForm.roasterId().errors() : []"
+            [errors]="errorsFor(coffeeForm.roasterId(), 'roasterId')"
           >
             <select id="roasterId" class="field-input" [formField]="coffeeForm.roasterId">
               <option value="">{{ 'coffees.form.selectRoaster' | transloco }}</option>
@@ -85,6 +147,7 @@ const EMPTY_VALUE: CoffeeFormValue = {
             class="md:col-span-2"
             label="coffees.form.descriptionLabel"
             controlId="description"
+            [errors]="errorsFor(coffeeForm.description(), 'description')"
           >
             <textarea
               id="description"
@@ -94,68 +157,104 @@ const EMPTY_VALUE: CoffeeFormValue = {
             ></textarea>
           </app-labeled-field>
 
-          <app-labeled-field label="coffees.form.origin" controlId="origin" icon="globe">
+          <fieldset class="flex flex-col gap-2 md:col-span-2">
+            <legend class="field-label">{{ 'coffees.form.classification' | transloco }}</legend>
+            <div class="flex flex-wrap gap-2">
+              @for (option of classifications; track option) {
+                <label class="choice">
+                  <input
+                    type="radio"
+                    class="sr-only"
+                    name="classification"
+                    [checked]="coffeeForm.classification().value() === option"
+                    (change)="coffeeForm.classification().value.set(option)"
+                  />
+                  {{ option + '' | optionLabel: 'classification' }}
+                </label>
+              }
+            </div>
+            @for (
+              error of errorsFor(coffeeForm.classification(), 'classification');
+              track error.kind
+            ) {
+              <p class="field-error" role="alert">{{ error.message ?? '' | transloco }}</p>
+            }
+          </fieldset>
+
+          <app-labeled-field
+            label="coffees.form.origin"
+            controlId="origin"
+            icon="globe"
+            [errors]="errorsFor(coffeeForm.origin(), 'origin')"
+          >
             <input id="origin" type="text" class="field-input" [formField]="coffeeForm.origin" />
           </app-labeled-field>
 
-          <app-labeled-field label="coffees.form.variety" controlId="variety" icon="note">
+          <app-labeled-field
+            label="coffees.form.variety"
+            controlId="variety"
+            icon="note"
+            [errors]="errorsFor(coffeeForm.variety(), 'variety')"
+          >
             <input id="variety" type="text" class="field-input" [formField]="coffeeForm.variety" />
           </app-labeled-field>
 
-          <app-choice-group
-            class="md:col-span-2"
-            label="coffees.form.process"
-            optionGroup="process"
-            [options]="processes"
-            [formField]="coffeeForm.process"
-          />
+          <div class="flex flex-col gap-1 md:col-span-2">
+            <app-choice-group
+              label="coffees.form.process"
+              optionGroup="process"
+              [options]="processes"
+              [formField]="coffeeForm.process"
+            />
+            @for (error of errorsFor(coffeeForm.process(), 'process'); track error.kind) {
+              <p class="field-error" role="alert">{{ error.message ?? '' | transloco }}</p>
+            }
+          </div>
 
-          <app-choice-group
+          <div class="flex flex-col gap-1 md:col-span-2">
+            <app-choice-group
+              label="coffees.form.roastLevel"
+              optionGroup="roastLevel"
+              [options]="roastLevels"
+              [formField]="coffeeForm.roastLevel"
+            />
+            @for (error of errorsFor(coffeeForm.roastLevel(), 'roastLevel'); track error.kind) {
+              <p class="field-error" role="alert">{{ error.message ?? '' | transloco }}</p>
+            }
+          </div>
+
+          <app-labeled-field
             class="md:col-span-2"
-            label="coffees.form.roastLevel"
-            optionGroup="roastLevel"
-            [options]="roastLevels"
-            [formField]="coffeeForm.roastLevel"
-          />
+            label="coffees.form.productUrl"
+            controlId="productUrl"
+            icon="link"
+            [errors]="errorsFor(coffeeForm.productUrl(), 'productUrl')"
+          >
+            <input
+              id="productUrl"
+              type="url"
+              class="field-input"
+              [formField]="coffeeForm.productUrl"
+            />
+          </app-labeled-field>
         </div>
       </app-form-section>
 
       <app-form-section
         number="02"
-        title="common.experienceTitle"
-        caption="coffees.form.verdictCaption"
+        title="coffees.form.tastingTitle"
+        caption="coffees.form.tastingCaption"
       >
-        <div class="grid items-center gap-6 rounded-xl bg-container-low p-4 md:grid-cols-2">
-          <div class="flex flex-col gap-1">
-            <app-star-rating [formField]="coffeeForm.rate" />
-            @if (coffeeForm.rate().touched()) {
-              @for (error of coffeeForm.rate().errors(); track error.kind) {
-                <p class="field-error" role="alert">{{ error.message ?? '' | transloco }}</p>
-              }
-            }
-          </div>
-          <app-yes-no-toggle
-            label="common.recommendQuestion"
-            align="end"
-            [formField]="coffeeForm.recommend"
-          />
-        </div>
-
-        <app-labeled-field label="coffees.form.tastingNotes" controlId="tastingNotes">
+        <app-labeled-field
+          label="coffees.form.tastingNotes"
+          controlId="tastingNotes"
+          [errors]="errorsFor(coffeeForm.tastingNotes(), 'tastingNotes')"
+        >
           <textarea
             id="tastingNotes"
-            rows="3"
-            class="field-input"
-            [formField]="coffeeForm.tastingNotes"
-          ></textarea>
-        </app-labeled-field>
-
-        <app-labeled-field label="common.review" controlId="review">
-          <textarea
-            id="review"
             rows="4"
             class="field-input"
-            [formField]="coffeeForm.review"
+            [formField]="coffeeForm.tastingNotes"
           ></textarea>
         </app-labeled-field>
       </app-form-section>
@@ -204,6 +303,7 @@ const EMPTY_VALUE: CoffeeFormValue = {
               class="md:max-w-xs"
               label="coffees.form.price"
               [controlId]="'price-' + row"
+              [errors]="errorsFor(price.price(), 'prices[' + row + '].price')"
             >
               <div
                 class="flex overflow-hidden rounded-lg border border-outline bg-container-low shadow-sm focus-within:bg-surface"
@@ -227,7 +327,16 @@ const EMPTY_VALUE: CoffeeFormValue = {
                 />
               </div>
             </app-labeled-field>
+            @for (
+              error of errorsFor(price.grams(), 'prices[' + row + '].grams');
+              track error.kind
+            ) {
+              <p class="field-error" role="alert">{{ error.message ?? '' | transloco }}</p>
+            }
           </div>
+        }
+        @for (error of priceErrors(); track error) {
+          <p class="field-error" role="alert">{{ error }}</p>
         }
         <button type="button" class="btn btn-ghost gap-2 self-start" (click)="addPrice()">
           <app-icon name="plus" [size]="16" />
@@ -241,6 +350,9 @@ const EMPTY_VALUE: CoffeeFormValue = {
         caption="coffees.form.photosCaption"
       >
         <app-image-uploader [formField]="coffeeForm.imageUrls" />
+        @for (error of errorsFor(coffeeForm.imageUrls(), 'imageUrls'); track error.kind) {
+          <p class="field-error" role="alert">{{ error.message ?? '' | transloco }}</p>
+        }
       </app-form-section>
 
       <div class="flex justify-end">
@@ -254,12 +366,15 @@ const EMPTY_VALUE: CoffeeFormValue = {
 })
 export class CoffeeForm {
   readonly roasters = input.required<Roaster[]>();
-  readonly initialValue = input<CoffeeFormValue>();
+  readonly initialValue = input<CoffeeInput>();
   readonly saving = input(false);
-  readonly submitted = output<CoffeeFormValue>();
+  /** Messages the API returned for the last save, by field name. */
+  readonly serverErrors = input<FieldErrors>({});
+  readonly submitted = output<CoffeeInput>();
 
   protected readonly processes = ['Washed', 'Natural', 'Honey'];
   protected readonly roastLevels = ['Light', 'Medium', 'Dark'];
+  protected readonly classifications = COFFEE_CLASSIFICATIONS;
   protected readonly currencies: readonly { code: Currency; symbol: string }[] = [
     { code: 'BRL', symbol: 'R$' },
     { code: 'USD', symbol: '$' },
@@ -272,29 +387,47 @@ export class CoffeeForm {
       : PRESET_SIZES;
   }
 
-  private readonly data = linkedSignal<CoffeeFormValue>(() => this.initialValue() ?? EMPTY_VALUE);
+  private readonly data = linkedSignal<CoffeeDraft>(() => toDraft(this.initialValue()));
 
   protected readonly coffeeForm = form(
     this.data,
     (path) => {
       required(path.name, { message: 'errors.nameRequired' });
+      maxLength(path.name, 250, { message: 'errors.tooLong' });
       required(path.roasterId, { message: 'errors.roasterRequired' });
-      min(path.rate, 1, { message: 'errors.rateRange' });
-      max(path.rate, 5, { message: 'errors.rateRange' });
+      required(path.description, { message: 'errors.descriptionRequired' });
+      maxLength(path.description, 4000, { message: 'errors.tooLong' });
+      min(path.classification, 1, { message: 'errors.classificationRequired' });
+      required(path.origin, { message: 'errors.originRequired' });
+      required(path.variety, { message: 'errors.varietyRequired' });
+      required(path.process, { message: 'errors.processRequired' });
+      required(path.roastLevel, { message: 'errors.roastLevelRequired' });
+      required(path.tastingNotes, { message: 'errors.tastingNotesRequired' });
+      maxLength(path.tastingNotes, 1000, { message: 'errors.tooLong' });
+      applyEach(path.prices, (row) => {
+        min(row.price, 0.01, { message: 'errors.priceRange' });
+      });
     },
     {
       submission: {
         action: async (field) => {
-          const value = field().value();
-          // Copy price rows to plain objects: Signal Forms tags array items with a tracking symbol.
-          this.submitted.emit({
-            ...value,
-            prices: value.prices.map(({ grams, price, currency }) => ({ grams, price, currency })),
-          });
+          this.submitted.emit(toInput(field().value()));
         },
       },
     },
   );
+
+  protected errorsFor(
+    state: Parameters<typeof fieldErrors>[0],
+    name: string,
+  ): ReturnType<typeof fieldErrors> {
+    return fieldErrors(state, this.serverErrors(), name);
+  }
+
+  /** Messages the API returned for the list as a whole, such as a repeated bag size. */
+  protected priceErrors(): string[] {
+    return this.serverErrors()['prices'] ?? [];
+  }
 
   protected addPrice(): void {
     this.data.update((value) => ({

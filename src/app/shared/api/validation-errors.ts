@@ -17,3 +17,22 @@ export function validationErrors(error: unknown): FieldErrors | null {
   }
   return Object.keys(result).length > 0 ? result : null;
 }
+
+export interface FormError {
+  kind: string;
+  message?: string;
+}
+
+/** Validation messages of a field once it was touched, then the messages the API returned for `name`. */
+export function fieldErrors(
+  state: { touched(): boolean; errors(): readonly FormError[] },
+  server: FieldErrors,
+  name: string,
+): FormError[] {
+  const client = state.touched() ? state.errors() : [];
+  const fromServer = (server[name] ?? []).map((message) => ({
+    kind: `server-${message}`,
+    message,
+  }));
+  return [...client, ...fromServer];
+}

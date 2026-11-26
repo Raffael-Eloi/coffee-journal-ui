@@ -1,11 +1,34 @@
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { RoasterFormValue } from '../../roaster.model';
+import { RoasterInput } from '../../roaster.model';
 import { RoasterForm } from './roaster-form';
 
+/** Portugal is not bundled, so the place fields are plain text inputs and nothing is fetched. */
+const initial: RoasterInput = {
+  name: '',
+  description: null,
+  website: null,
+  instagramUrl: null,
+  phoneNumber: null,
+  hasMembershipOption: false,
+  logoUrl: null,
+  city: 'Lisbon',
+  state: 'Lisboa',
+  country: 'Portugal',
+  address: null,
+  classifications: [],
+  imageUrls: [],
+};
+
 describe('RoasterForm', () => {
-  function setup() {
+  function setup(initialValue?: RoasterInput) {
+    TestBed.configureTestingModule({
+      providers: [provideHttpClient(), provideHttpClientTesting()],
+    });
     const fixture = TestBed.createComponent(RoasterForm);
-    const submitted: RoasterFormValue[] = [];
+    if (initialValue) fixture.componentRef.setInput('initialValue', initialValue);
+    const submitted: RoasterInput[] = [];
     fixture.componentInstance.submitted.subscribe((value) => submitted.push(value));
     return { fixture, submitted, el: fixture.nativeElement as HTMLElement };
   }
@@ -14,7 +37,13 @@ describe('RoasterForm', () => {
     el.querySelector('form')!.dispatchEvent(new Event('submit', { cancelable: true }));
   }
 
-  it('does not emit and shows an error when the name is empty', async () => {
+  function fill(el: HTMLElement, selector: string, value: string) {
+    const control = el.querySelector<HTMLInputElement>(selector)!;
+    control.value = value;
+    control.dispatchEvent(new Event('input'));
+  }
+
+  it('does not emit and shows errors when the required fields are empty', async () => {
     const { fixture, submitted, el } = setup();
     await fixture.whenStable();
 
@@ -26,24 +55,50 @@ describe('RoasterForm', () => {
       .map((a) => a.textContent)
       .join(' ');
     expect(alerts).toContain('Name is required');
-    expect(alerts).toContain('Rate must be between 1 and 5');
+    expect(alerts).toContain('Country is required');
+    expect(alerts).toContain('State is required');
+    expect(alerts).toContain('City is required');
   });
 
-  it('emits the value when the name is filled', async () => {
-    const { fixture, submitted, el } = setup();
+  it('emits null for the optional fields left empty, with the classifications chosen', async () => {
+    const { fixture, submitted, el } = setup(initial);
     await fixture.whenStable();
 
-    const name = el.querySelector<HTMLInputElement>('#name')!;
-    name.value = 'Origin Roasters';
-    name.dispatchEvent(new Event('input'));
-    el.querySelectorAll<HTMLInputElement>('app-star-rating input[type="radio"]')[3].click();
+    fill(el, '#name', 'Origin Roasters');
+    // Classifications: Gourmet (third) and Specialty (fourth).
+    const boxes = el.querySelectorAll<HTMLInputElement>('app-check-group input[type="checkbox"]');
+    boxes[2].click();
+    boxes[3].click();
     await fixture.whenStable();
 
     submit(el);
     await fixture.whenStable();
 
-    expect(submitted.length).toBe(1);
-    expect(submitted[0].name).toBe('Origin Roasters');
-    expect(submitted[0].rate).toBe(4);
+    expect(submitted).toEqual([
+      {
+        name: 'Origin Roasters',
+        description: null,
+        website: null,
+        instagramUrl: null,
+        phoneNumber: null,
+        hasMembershipOption: false,
+        logoUrl: null,
+        city: 'Lisbon',
+        state: 'Lisboa',
+        country: 'Portugal',
+        address: null,
+        classifications: [3, 4],
+        imageUrls: [],
+      },
+    ]);
+  });
+
+  it('shows the messages the API returned next to their field', async () => {
+    const { fixture, el } = setup(initial);
+    fixture.componentRef.setInput('serverErrors', { phoneNumber: ['Phone is too long'] });
+    await fixture.whenStable();
+
+    const field = el.querySelector('#phoneNumber')!.closest('app-labeled-field')!;
+    expect(field.textContent).toContain('Phone is too long');
   });
 });

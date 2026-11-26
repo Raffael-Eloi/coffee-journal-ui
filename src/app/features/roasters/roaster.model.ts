@@ -1,21 +1,23 @@
+import { CoffeeClassification } from '../../shared/models/coffee-classification';
+
 export interface Roaster {
   id: string;
   name: string;
+  description: string | null;
   website: string | null;
-  rate: number;
-  review: string;
-  recommend: boolean;
+  instagramUrl: string | null;
+  phoneNumber: string | null;
   hasMembershipOption: boolean;
   logoUrl: string | null;
+  city: string;
+  state: string;
+  country: string;
+  address: string | null;
+  classifications: CoffeeClassification[];
+  imageUrls: string[];
   createdAt: string;
   updatedAt: string;
 }
 
-/** Payload sent to the API when creating or updating a roaster. */
+/** Payload sent to the API when creating or replacing a roaster. */
 export type RoasterInput = Omit<Roaster, 'id' | 'createdAt' | 'updatedAt'>;
-
-/** Values edited in the form. Text inputs hold `''` where the API uses `null`. */
-export type RoasterFormValue = Omit<RoasterInput, 'website' | 'logoUrl'> & {
-  website: string;
-  logoUrl: string;
-};

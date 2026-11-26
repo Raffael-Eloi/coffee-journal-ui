@@ -9,12 +9,18 @@ const BASE_URL = `${environment.apiUrl}/v1.0/coffee-roasters`;
 
 const input: RoasterInput = {
   name: 'Origin Roasters',
+  description: null,
   website: null,
-  rate: 5,
-  review: 'Great',
-  recommend: true,
+  instagramUrl: null,
+  phoneNumber: null,
   hasMembershipOption: false,
   logoUrl: null,
+  city: 'Campinas',
+  state: 'São Paulo',
+  country: 'Brazil',
+  address: null,
+  classifications: [3, 4],
+  imageUrls: [],
 };
 
 describe('RoastersService', () => {

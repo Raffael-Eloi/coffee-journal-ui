@@ -1,13 +1,12 @@
 import { Component, computed, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { OptionLabelPipe } from '../../../../i18n/option-label.pipe';
 import { Coffee } from '../../coffee.model';
 import { roastBadgeClass } from '../../roast-level';
-import { TranslocoPipe } from '@jsverse/transloco';
-import { OptionLabelPipe } from '../../../../i18n/option-label.pipe';
 
 @Component({
   selector: 'app-coffee-card',
-  imports: [TranslocoPipe, OptionLabelPipe, RouterLink],
+  imports: [OptionLabelPipe, RouterLink],
   template: `
     <article class="card flex h-full flex-col gap-2">
       <h2>
@@ -19,16 +18,11 @@ import { OptionLabelPipe } from '../../../../i18n/option-label.pipe';
         <p class="text-husk">{{ roasterName() }}</p>
       }
       <p class="mt-auto flex flex-wrap items-center gap-2">
-        <span class="badge badge-rating">
-          <span class="star" aria-hidden="true">★</span>
-          <span class="sr-only">{{ 'common.rateLabel' | transloco }}</span>
-          {{ coffee().rate }}
+        <span class="badge badge-light">
+          {{ coffee().classification + '' | optionLabel: 'classification' }}
         </span>
         @if (coffee().roastLevel) {
           <span [class]="roastClass()">{{ coffee().roastLevel | optionLabel: 'roastLevel' }}</span>
-        }
-        @if (coffee().recommend) {
-          <span class="badge badge-light">{{ 'common.recommended' | transloco }}</span>
         }
       </p>
     </article>

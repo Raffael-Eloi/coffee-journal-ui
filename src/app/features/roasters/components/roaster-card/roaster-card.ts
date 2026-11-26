@@ -1,11 +1,12 @@
 import { Component, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { Roaster } from '../../roaster.model';
 import { TranslocoPipe } from '@jsverse/transloco';
+import { OptionLabelPipe } from '../../../../i18n/option-label.pipe';
+import { Roaster } from '../../roaster.model';
 
 @Component({
   selector: 'app-roaster-card',
-  imports: [TranslocoPipe, RouterLink],
+  imports: [TranslocoPipe, OptionLabelPipe, RouterLink],
   template: `
     <article class="card flex h-full flex-col gap-2">
       <h2>
@@ -13,14 +14,14 @@ import { TranslocoPipe } from '@jsverse/transloco';
           {{ roaster().name }}
         </a>
       </h2>
+      <p class="text-husk">
+        {{ roaster().city }}, {{ roaster().country | optionLabel: 'country' }}
+      </p>
       <p class="mt-auto flex flex-wrap items-center gap-2">
-        <span class="badge badge-rating">
-          <span class="star" aria-hidden="true">★</span>
-          <span class="sr-only">{{ 'common.rateLabel' | transloco }}</span>
-          {{ roaster().rate }}
-        </span>
-        @if (roaster().recommend) {
-          <span class="badge badge-light">{{ 'common.recommended' | transloco }}</span>
+        @for (classification of roaster().classifications; track classification) {
+          <span class="badge badge-light">
+            {{ classification + '' | optionLabel: 'classification' }}
+          </span>
         }
         @if (roaster().hasMembershipOption) {
           <span class="badge">{{ 'roasters.card.membership' | transloco }}</span>

@@ -18,8 +18,8 @@ export class CoffeesService {
     return firstValueFrom(this.http.get<Coffee>(`${API_URL}/${id}`));
   }
 
-  create(input: CoffeeInput): Promise<Coffee> {
-    return firstValueFrom(this.http.post<Coffee>(API_URL, input));
+  create(input: CoffeeInput): Promise<{ id: string }> {
+    return firstValueFrom(this.http.post<{ id: string }>(API_URL, input));
   }
 
   async update(id: string, input: CoffeeInput): Promise<void> {

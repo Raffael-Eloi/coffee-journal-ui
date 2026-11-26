@@ -9,15 +9,19 @@ const BASE_URL = `${environment.apiUrl}/v1.0/coffee-shops`;
 
 const input: CoffeeShopInput = {
   name: 'Blue Door',
+  description: null,
   website: 'https://example.com',
-  roasterId: null,
-  rate: 4,
-  review: 'Great',
-  recommend: true,
+  instagramUrl: null,
+  phoneNumber: null,
   city: 'Lisbon',
   state: 'Lisboa',
   country: 'Portugal',
-  location: 'Rua 1',
+  address: 'Rua 1',
+  timeZone: 'Europe/Lisbon',
+  roasterIds: ['r1'],
+  brewingMethods: [1, 2],
+  amenities: [1],
+  openingHours: [{ dayOfWeek: 1, opensAt: '08:00:00', closesAt: '18:00:00' }],
   imageUrls: ['https://cdn.example.com/a.png'],
 };
 

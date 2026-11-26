@@ -36,7 +36,12 @@
     "review": "Personal impressions & notes",
     "website": "Website",
     "recommendQuestion": "Recommend to others?",
-    "grams": "{{grams}} g"
+    "grams": "{{grams}} g",
+    "instagram": "Instagram",
+    "phone": "Phone",
+    "about": "About",
+    "noDescription": "No description yet.",
+    "photoAlt": "Photo {{n}} of {{name}}"
   },
   "errors": {
     "nameRequired": "Name is required",
@@ -50,7 +55,20 @@
     "priceRange": "Price must be between 0.01 and 99,999,999.99",
     "linkInvalid": "Enter a link that starts with http:// or https://",
     "handleRequired": "Handle is required",
-    "handleInvalid": "Use 3 to 30 lowercase letters, numbers or underscores"
+    "handleInvalid": "Use 3 to 30 lowercase letters, numbers or underscores",
+    "countryRequired": "Country is required",
+    "stateRequired": "State is required",
+    "cityRequired": "City is required",
+    "addressRequired": "Address is required",
+    "timeZoneRequired": "Time zone is required",
+    "timeRequired": "Time is required",
+    "descriptionRequired": "Description is required",
+    "originRequired": "Origin is required",
+    "varietyRequired": "Variety is required",
+    "processRequired": "Process is required",
+    "roastLevelRequired": "Roast level is required",
+    "tastingNotesRequired": "Tasting notes are required",
+    "classificationRequired": "Choose a classification"
   },
   "options": {
     "process": {
@@ -84,6 +102,40 @@
       "Mug": "Mug",
       "PaperFilter": "Paper filter",
       "Scale": "Scale"
+    },
+    "classification": {
+      "1": "Traditional",
+      "2": "Superior",
+      "3": "Gourmet",
+      "4": "Specialty"
+    },
+    "brewingMethod": {
+      "1": "V60",
+      "2": "Espresso",
+      "3": "AeroPress",
+      "4": "French press",
+      "5": "Chemex",
+      "6": "Moka pot",
+      "7": "Cold brew",
+      "8": "Siphon"
+    },
+    "amenity": {
+      "1": "Wi-Fi",
+      "2": "Air conditioning",
+      "3": "Pet friendly",
+      "4": "Outdoor seating",
+      "5": "Power outlets",
+      "6": "Vegan options",
+      "7": "Wheelchair accessible"
+    },
+    "dayOfWeek": {
+      "0": "Sunday",
+      "1": "Monday",
+      "2": "Tuesday",
+      "3": "Wednesday",
+      "4": "Thursday",
+      "5": "Friday",
+      "6": "Saturday"
     }
   },
   "images": {
@@ -132,6 +184,9 @@
       "remove": "Remove photo",
       "current": "Current photo",
       "hint": "JPEG, PNG or WebP, up to 5 MB."
+    },
+    "checkGroup": {
+      "empty": "Nothing to choose from yet."
     }
   },
   "coffeeShops": {
@@ -144,8 +199,14 @@
       "loadError": "Could not load this coffee shop.",
       "confirmDelete": "Delete this coffee shop?",
       "deleteError": "Could not delete this coffee shop.",
-      "photoAlt": "Photo {{n}} of {{name}}",
-      "venue": "Venue"
+      "venue": "Venue",
+      "hours": "Opening hours",
+      "noHours": "No opening hours yet.",
+      "closed": "Closed",
+      "roasters": "Roasters served",
+      "brewingMethods": "Brewing methods",
+      "amenities": "Amenities",
+      "timeZone": "Time zone"
     },
     "form": {
       "eyebrow": "Coffee shop",
@@ -158,17 +219,26 @@
       "venueTitle": "The Café",
       "venueCaption": "Venue profile",
       "name": "Shop or venue",
-      "city": "City",
-      "state": "State",
-      "country": "Country",
-      "location": "Location",
-      "verdictCaption": "Atmosphere & flow",
       "photosTitle": "Photos",
       "photosCaption": "The space & the cup",
-      "selectCountry": "Select a country",
-      "selectState": "Search for a state",
-      "selectCity": "Search for a city",
-      "geoError": "Could not load the list of states and cities."
+      "descriptionLabel": "Description",
+      "timeZone": "Time zone",
+      "selectTimeZone": "Search for a time zone",
+      "offerTitle": "What they offer",
+      "offerCaption": "Roasters, methods & comforts",
+      "roasters": "Roasters served",
+      "noRoasters": "No roasters yet.",
+      "brewingMethods": "Brewing methods",
+      "amenities": "Amenities",
+      "hoursTitle": "Opening hours",
+      "hoursCaption": "Week schedule",
+      "hoursHint": "A day can have several windows. A closing time earlier than the opening time means the shop closes after midnight.",
+      "window": "Window {{n}}",
+      "removeWindow": "Remove window {{n}}",
+      "day": "Day",
+      "opensAt": "Opens",
+      "closesAt": "Closes",
+      "addWindow": "Add opening hours"
     }
   },
   "roasters": {
@@ -203,7 +273,12 @@
       "name": "Roaster name",
       "logo": "Logo",
       "membershipOption": "Membership option",
-      "verdictCaption": "Quality & service"
+      "descriptionLabel": "Description",
+      "classifications": "Coffee classifications",
+      "locationTitle": "Location",
+      "locationCaption": "Where to find them",
+      "photosTitle": "Photos",
+      "photosCaption": "The roastery & the beans"
     }
   },
   "coffees": {
@@ -225,8 +300,9 @@
       "tastingNotes": "Tasting notes",
       "prices": "Prices",
       "photoAlt": "Photo of {{name}}",
-      "rate": "Rate",
-      "review": "Review"
+      "classification": "Classification",
+      "productUrl": "Product page",
+      "productLink": "View product"
     },
     "form": {
       "eyebrow": "Coffee",
@@ -246,7 +322,6 @@
       "variety": "Variety",
       "process": "Process",
       "roastLevel": "Roast level",
-      "verdictCaption": "Tasting",
       "tastingNotes": "Tasting notes",
       "pricesTitle": "Prices",
       "pricesCaption": "Retail bags",
@@ -257,7 +332,11 @@
       "currencyFor": "Currency for bag {{n}}",
       "addPrice": "Add price",
       "photosTitle": "Photos",
-      "photosCaption": "The bag & the brew"
+      "photosCaption": "The bag & the brew",
+      "classification": "Classification",
+      "productUrl": "Product link",
+      "tastingTitle": "Tasting",
+      "tastingCaption": "In the cup"
     }
   },
   "equipment": {
@@ -337,5 +416,15 @@
       "submit": "Create profile",
       "saveError": "Could not create your profile."
     }
+  },
+  "place": {
+    "country": "Country",
+    "state": "State",
+    "city": "City",
+    "address": "Address",
+    "selectCountry": "Select a country",
+    "selectState": "Search for a state",
+    "selectCity": "Search for a city",
+    "geoError": "Could not load the list of states and cities."
   }
 }

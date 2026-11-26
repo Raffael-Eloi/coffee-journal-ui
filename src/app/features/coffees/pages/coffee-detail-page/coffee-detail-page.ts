@@ -1,14 +1,15 @@
-import { CurrencyPipe, NgOptimizedImage } from '@angular/common';
+import { CurrencyPipe } from '@angular/common';
 import { Component, inject, input, resource, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { RoastersService } from '../../../roasters/roasters.service';
-import { CoffeesService } from '../../coffees.service';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { OptionLabelPipe } from '../../../../i18n/option-label.pipe';
+import { PhotoGallery } from '../../../../shared/ui/photo-gallery/photo-gallery';
+import { RoastersService } from '../../../roasters/roasters.service';
+import { CoffeesService } from '../../coffees.service';
 
 @Component({
   selector: 'app-coffee-detail-page',
-  imports: [TranslocoPipe, OptionLabelPipe, RouterLink, NgOptimizedImage, CurrencyPipe],
+  imports: [TranslocoPipe, OptionLabelPipe, RouterLink, CurrencyPipe, PhotoGallery],
   template: `
     <a class="link" routerLink="/coffees">{{ 'coffees.detail.back' | transloco }}</a>
 
@@ -24,16 +25,12 @@ import { OptionLabelPipe } from '../../../../i18n/option-label.pipe';
           <a class="link" [routerLink]="['/roasters', r.id]">{{ r.name }}</a>
         </p>
       }
-      <p class="mt-2">{{ c.description }}</p>
+      <p class="mt-2 whitespace-pre-line">{{ c.description }}</p>
 
       <dl class="spec-list mt-6 max-w-3xl">
         <div>
-          <dt class="spec-label">{{ 'coffees.detail.rate' | transloco }}</dt>
-          <dd class="spec-value">{{ c.rate }}</dd>
-        </div>
-        <div>
-          <dt class="spec-label">{{ 'common.recommended' | transloco }}</dt>
-          <dd class="spec-value">{{ (c.recommend ? 'common.yes' : 'common.no') | transloco }}</dd>
+          <dt class="spec-label">{{ 'coffees.detail.classification' | transloco }}</dt>
+          <dd class="spec-value">{{ c.classification + '' | optionLabel: 'classification' }}</dd>
         </div>
         <div>
           <dt class="spec-label">{{ 'coffees.detail.origin' | transloco }}</dt>
@@ -55,10 +52,17 @@ import { OptionLabelPipe } from '../../../../i18n/option-label.pipe';
           <dt class="spec-label">{{ 'coffees.detail.tastingNotes' | transloco }}</dt>
           <dd class="spec-value font-normal">{{ c.tastingNotes }}</dd>
         </div>
-        <div>
-          <dt class="spec-label">{{ 'coffees.detail.review' | transloco }}</dt>
-          <dd class="spec-value font-normal">{{ c.review }}</dd>
-        </div>
+        @if (c.productUrl) {
+          <div>
+            <dt class="spec-label">{{ 'coffees.detail.productUrl' | transloco }}</dt>
+            <dd class="spec-value">
+              <a class="link" [href]="c.productUrl" target="_blank" rel="noopener noreferrer">
+                {{ 'coffees.detail.productLink' | transloco }}
+                <span class="sr-only">{{ 'common.opensInNewTab' | transloco }}</span>
+              </a>
+            </dd>
+          </div>
+        }
       </dl>
 
       @if (c.prices.length > 0) {
@@ -73,21 +77,9 @@ import { OptionLabelPipe } from '../../../../i18n/option-label.pipe';
         </ul>
       }
 
-      @if (c.imageUrls.length > 0) {
-        <ul class="mt-6 flex flex-wrap gap-4">
-          @for (url of c.imageUrls; track $index) {
-            <li>
-              <img
-                class="rounded-lg border border-hairline"
-                [ngSrc]="url"
-                width="240"
-                height="180"
-                [alt]="'coffees.detail.photoAlt' | transloco: { name: c.name }"
-              />
-            </li>
-          }
-        </ul>
-      }
+      <div class="mt-6">
+        <app-photo-gallery [urls]="c.imageUrls" [name]="c.name" />
+      </div>
 
       <div class="mt-6 flex items-center gap-4">
         <a class="btn btn-primary" [routerLink]="['/coffees', c.id, 'edit']">{{

@@ -20,8 +20,11 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withFetch(), withInterceptors([authInterceptor])),
     // Finish a sign-in redirect and load the profile before the first screen.
     provideAppInitializer(async () => {
-      await inject(AuthService).init();
-      await inject(CurrentUserService).load();
+      // inject() only works before the first await, so get both services first.
+      const auth = inject(AuthService);
+      const currentUser = inject(CurrentUserService);
+      await auth.init();
+      await currentUser.load();
     }),
     provideRouter(routes, withComponentInputBinding()),
     provideTransloco({

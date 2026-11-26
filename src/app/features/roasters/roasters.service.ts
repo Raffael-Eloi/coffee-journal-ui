@@ -18,8 +18,8 @@ export class RoastersService {
     return firstValueFrom(this.http.get<Roaster>(`${API_URL}/${id}`));
   }
 
-  create(input: RoasterInput): Promise<Roaster> {
-    return firstValueFrom(this.http.post<Roaster>(API_URL, input));
+  create(input: RoasterInput): Promise<{ id: string }> {
+    return firstValueFrom(this.http.post<{ id: string }>(API_URL, input));
   }
 
   async update(id: string, input: RoasterInput): Promise<void> {

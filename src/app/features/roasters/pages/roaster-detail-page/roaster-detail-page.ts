@@ -1,16 +1,16 @@
 import { NgOptimizedImage } from '@angular/common';
 import { Component, inject, input, resource, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
+import { TranslocoPipe } from '@jsverse/transloco';
+import { OptionLabelPipe } from '../../../../i18n/option-label.pipe';
 import { Icon } from '../../../../shared/ui/icon/icon';
+import { PhotoGallery } from '../../../../shared/ui/photo-gallery/photo-gallery';
 import { Roaster } from '../../roaster.model';
 import { RoastersService } from '../../roasters.service';
-import { TranslocoPipe } from '@jsverse/transloco';
-
-const STARS = [1, 2, 3, 4, 5];
 
 @Component({
   selector: 'app-roaster-detail-page',
-  imports: [TranslocoPipe, RouterLink, NgOptimizedImage, Icon],
+  imports: [TranslocoPipe, OptionLabelPipe, RouterLink, NgOptimizedImage, Icon, PhotoGallery],
   template: `
     @if (roaster.isLoading()) {
       <p class="text-husk" role="status">{{ 'common.loading' | transloco }}</p>
@@ -40,36 +40,56 @@ const STARS = [1, 2, 3, 4, 5];
                 />
               }
               <div class="flex flex-col gap-3">
-                <div class="flex flex-wrap items-center gap-2">
-                  <span class="badge badge-rating">
-                    <span class="star" aria-hidden="true">★</span>
-                    <span class="sr-only">{{ 'common.rateLabel' | transloco }}</span>
-                    {{ 'common.ratingBadge' | transloco: { rate: r.rate } }}
-                  </span>
-                  @if (r.recommend) {
-                    <span class="badge badge-light">{{ 'common.recommended' | transloco }}</span>
-                  }
-                  @if (r.hasMembershipOption) {
-                    <span class="badge badge-medium">{{
-                      'roasters.detail.membership' | transloco
-                    }}</span>
-                  }
-                </div>
+                @if (r.classifications.length > 0 || r.hasMembershipOption) {
+                  <div class="flex flex-wrap items-center gap-2">
+                    @for (classification of r.classifications; track classification) {
+                      <span class="badge badge-light">
+                        {{ classification + '' | optionLabel: 'classification' }}
+                      </span>
+                    }
+                    @if (r.hasMembershipOption) {
+                      <span class="badge badge-medium">{{
+                        'roasters.detail.membership' | transloco
+                      }}</span>
+                    }
+                  </div>
+                }
 
                 <h1 class="text-4xl md:text-5xl">{{ r.name }}</h1>
 
-                @if (r.website) {
-                  <a
-                    class="link inline-flex items-center gap-1 self-start"
-                    [href]="r.website"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <app-icon name="link" [size]="16" />
-                    {{ 'common.websiteLink' | transloco }}
-                    <span class="sr-only">{{ 'common.opensInNewTab' | transloco }}</span>
-                  </a>
-                }
+                <div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-on-surface-variant">
+                  <span class="flex items-center gap-1">
+                    <app-icon name="pin" [size]="16" />
+                    {{ place(r) }}
+                  </span>
+                  @if (r.website) {
+                    <a
+                      class="link inline-flex items-center gap-1"
+                      [href]="r.website"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <app-icon name="link" [size]="16" />
+                      {{ 'common.websiteLink' | transloco }}
+                      <span class="sr-only">{{ 'common.opensInNewTab' | transloco }}</span>
+                    </a>
+                  }
+                  @if (r.instagramUrl) {
+                    <a
+                      class="link inline-flex items-center gap-1"
+                      [href]="r.instagramUrl"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <app-icon name="link" [size]="16" />
+                      {{ 'common.instagram' | transloco }}
+                      <span class="sr-only">{{ 'common.opensInNewTab' | transloco }}</span>
+                    </a>
+                  }
+                  @if (r.phoneNumber) {
+                    <a class="link" [href]="'tel:' + r.phoneNumber">{{ r.phoneNumber }}</a>
+                  }
+                </div>
               </div>
             </div>
 
@@ -98,35 +118,23 @@ const STARS = [1, 2, 3, 4, 5];
           }
         </header>
 
+        <app-photo-gallery [urls]="r.imageUrls" [name]="r.name" />
+
         <div class="grid gap-6 lg:grid-cols-12 lg:items-start">
-          <section class="card flex flex-col gap-6 lg:col-span-8">
-            <div class="flex items-center justify-between">
-              <h2 class="field-label-sm">{{ 'common.fieldNotes' | transloco }}</h2>
-              <p class="flex items-center gap-1 text-terracotta">
-                <span aria-hidden="true">{{ stars(r) }}</span>
-                <span class="sr-only">{{ 'common.ratedOutOf' | transloco: { rate: r.rate } }}</span>
+          <section class="card flex flex-col gap-4 lg:col-span-8">
+            <h2 class="field-label-sm">{{ 'common.about' | transloco }}</h2>
+            @if (r.description) {
+              <p class="text-lg leading-relaxed whitespace-pre-line text-espresso">
+                {{ r.description }}
               </p>
-            </div>
-            @if (r.review) {
-              <blockquote
-                class="font-display text-xl leading-relaxed text-espresso italic md:text-2xl"
-              >
-                “{{ r.review }}”
-              </blockquote>
             } @else {
-              <p class="text-husk">{{ 'common.noReview' | transloco }}</p>
+              <p class="text-husk">{{ 'common.noDescription' | transloco }}</p>
             }
           </section>
 
           <aside class="card flex flex-col gap-4 lg:col-span-4">
             <h2 class="text-xl">{{ 'roasters.detail.title' | transloco }}</h2>
             <dl class="spec-list">
-              <div>
-                <dt class="spec-label">{{ 'common.recommended' | transloco }}</dt>
-                <dd class="spec-value">
-                  {{ (r.recommend ? 'common.yes' : 'common.no') | transloco }}
-                </dd>
-              </div>
               <div>
                 <dt class="spec-label">{{ 'roasters.detail.membership' | transloco }}</dt>
                 <dd class="spec-value">
@@ -138,6 +146,12 @@ const STARS = [1, 2, 3, 4, 5];
                   }}
                 </dd>
               </div>
+              @if (r.address) {
+                <div>
+                  <dt class="spec-label">{{ 'place.address' | transloco }}</dt>
+                  <dd class="spec-value">{{ r.address }}</dd>
+                </div>
+              }
             </dl>
           </aside>
         </div>
@@ -158,8 +172,11 @@ export class RoasterDetailPage {
   protected readonly confirmingDelete = signal(false);
   protected readonly deleteError = signal(false);
 
-  protected stars(roaster: Roaster): string {
-    return STARS.map((n) => (n <= roaster.rate ? '★' : '☆')).join('');
+  /** Short place line for the header: the address when there is one, otherwise city, state and country. */
+  protected place(roaster: Roaster): string {
+    return (
+      roaster.address || [roaster.city, roaster.state, roaster.country].filter(Boolean).join(', ')
+    );
   }
 
   protected async remove(): Promise<void> {

@@ -1,7 +1,7 @@
 {
   "app": {
     "name": "Coffee Journal",
-    "tagline": "Diário de Degustação Especial",
+    "tagline": "Diário do Café Especial",
     "homeLabel": "Coffee Journal, início"
   },
   "nav": {
@@ -36,7 +36,12 @@
     "review": "Impressões e anotações pessoais",
     "website": "Site",
     "recommendQuestion": "Recomenda a outras pessoas?",
-    "grams": "{{grams}} g"
+    "grams": "{{grams}} g",
+    "instagram": "Instagram",
+    "phone": "Telefone",
+    "about": "Sobre",
+    "noDescription": "Ainda sem descrição.",
+    "photoAlt": "Foto {{n}} de {{name}}"
   },
   "errors": {
     "nameRequired": "O nome é obrigatório",
@@ -50,7 +55,20 @@
     "priceRange": "O preço deve estar entre 0,01 e 99.999.999,99",
     "linkInvalid": "Informe um link que comece com http:// ou https://",
     "handleRequired": "O identificador é obrigatório",
-    "handleInvalid": "Use de 3 a 30 letras minúsculas, números ou sublinhados"
+    "handleInvalid": "Use de 3 a 30 letras minúsculas, números ou sublinhados",
+    "countryRequired": "O país é obrigatório",
+    "stateRequired": "O estado é obrigatório",
+    "cityRequired": "A cidade é obrigatória",
+    "addressRequired": "O endereço é obrigatório",
+    "timeZoneRequired": "O fuso horário é obrigatório",
+    "timeRequired": "O horário é obrigatório",
+    "descriptionRequired": "A descrição é obrigatória",
+    "originRequired": "A origem é obrigatória",
+    "varietyRequired": "A variedade é obrigatória",
+    "processRequired": "O processo é obrigatório",
+    "roastLevelRequired": "O nível de torra é obrigatório",
+    "tastingNotesRequired": "As notas de degustação são obrigatórias",
+    "classificationRequired": "Escolha uma classificação"
   },
   "options": {
     "process": {
@@ -84,6 +102,40 @@
       "Mug": "Caneca",
       "PaperFilter": "Filtro de papel",
       "Scale": "Balança"
+    },
+    "classification": {
+      "1": "Tradicional",
+      "2": "Superior",
+      "3": "Gourmet",
+      "4": "Especial"
+    },
+    "brewingMethod": {
+      "1": "V60",
+      "2": "Espresso",
+      "3": "AeroPress",
+      "4": "Prensa francesa",
+      "5": "Chemex",
+      "6": "Moka",
+      "7": "Cold brew",
+      "8": "Sifão"
+    },
+    "amenity": {
+      "1": "Wi-Fi",
+      "2": "Ar-condicionado",
+      "3": "Aceita pets",
+      "4": "Área externa",
+      "5": "Tomadas",
+      "6": "Opções veganas",
+      "7": "Acessível para cadeirantes"
+    },
+    "dayOfWeek": {
+      "0": "Domingo",
+      "1": "Segunda-feira",
+      "2": "Terça-feira",
+      "3": "Quarta-feira",
+      "4": "Quinta-feira",
+      "5": "Sexta-feira",
+      "6": "Sábado"
     }
   },
   "images": {
@@ -132,6 +184,9 @@
       "remove": "Remover foto",
       "current": "Foto atual",
       "hint": "JPEG, PNG ou WebP, até 5 MB."
+    },
+    "checkGroup": {
+      "empty": "Ainda não há nada para escolher."
     }
   },
   "coffeeShops": {
@@ -144,8 +199,14 @@
       "loadError": "Não foi possível carregar esta cafeteria.",
       "confirmDelete": "Excluir esta cafeteria?",
       "deleteError": "Não foi possível excluir esta cafeteria.",
-      "photoAlt": "Foto {{n}} de {{name}}",
-      "venue": "Local"
+      "venue": "Local",
+      "hours": "Horário de funcionamento",
+      "noHours": "Ainda sem horário de funcionamento.",
+      "closed": "Fechado",
+      "roasters": "Torrefadores atendidos",
+      "brewingMethods": "Métodos de preparo",
+      "amenities": "Comodidades",
+      "timeZone": "Fuso horário"
     },
     "form": {
       "eyebrow": "Cafeteria",
@@ -158,17 +219,26 @@
       "venueTitle": "A Cafeteria",
       "venueCaption": "Perfil do local",
       "name": "Cafeteria ou local",
-      "city": "Cidade",
-      "state": "Estado",
-      "country": "País",
-      "location": "Endereço",
-      "verdictCaption": "Ambiente e atendimento",
       "photosTitle": "Fotos",
       "photosCaption": "O espaço e a xícara",
-      "selectCountry": "Selecione um país",
-      "selectState": "Busque um estado",
-      "selectCity": "Busque uma cidade",
-      "geoError": "Não foi possível carregar a lista de estados e cidades."
+      "descriptionLabel": "Descrição",
+      "timeZone": "Fuso horário",
+      "selectTimeZone": "Busque um fuso horário",
+      "offerTitle": "O que oferecem",
+      "offerCaption": "Torrefadores, métodos e comodidades",
+      "roasters": "Torrefadores atendidos",
+      "noRoasters": "Ainda não há torrefadores.",
+      "brewingMethods": "Métodos de preparo",
+      "amenities": "Comodidades",
+      "hoursTitle": "Horário de funcionamento",
+      "hoursCaption": "Agenda da semana",
+      "hoursHint": "Um dia pode ter várias faixas. Um horário de fechamento anterior ao de abertura significa que a cafeteria fecha depois da meia-noite.",
+      "window": "Faixa {{n}}",
+      "removeWindow": "Remover faixa {{n}}",
+      "day": "Dia",
+      "opensAt": "Abre",
+      "closesAt": "Fecha",
+      "addWindow": "Adicionar horário"
     }
   },
   "roasters": {
@@ -203,7 +273,12 @@
       "name": "Nome do torrefador",
       "logo": "Logo",
       "membershipOption": "Opção de assinatura",
-      "verdictCaption": "Qualidade e serviço"
+      "descriptionLabel": "Descrição",
+      "classifications": "Classificações do café",
+      "locationTitle": "Localização",
+      "locationCaption": "Onde encontrar",
+      "photosTitle": "Fotos",
+      "photosCaption": "A torrefação e os grãos"
     }
   },
   "coffees": {
@@ -225,8 +300,9 @@
       "tastingNotes": "Notas de degustação",
       "prices": "Preços",
       "photoAlt": "Foto de {{name}}",
-      "rate": "Nota",
-      "review": "Avaliação"
+      "classification": "Classificação",
+      "productUrl": "Página do produto",
+      "productLink": "Ver produto"
     },
     "form": {
       "eyebrow": "Café",
@@ -246,7 +322,6 @@
       "variety": "Variedade",
       "process": "Processo",
       "roastLevel": "Nível de torra",
-      "verdictCaption": "Degustação",
       "tastingNotes": "Notas de degustação",
       "pricesTitle": "Preços",
       "pricesCaption": "Pacotes à venda",
@@ -257,7 +332,11 @@
       "currencyFor": "Moeda do pacote {{n}}",
       "addPrice": "Adicionar preço",
       "photosTitle": "Fotos",
-      "photosCaption": "O pacote e a bebida"
+      "photosCaption": "O pacote e a bebida",
+      "classification": "Classificação",
+      "productUrl": "Link do produto",
+      "tastingTitle": "Degustação",
+      "tastingCaption": "Na xícara"
     }
   },
   "equipment": {
@@ -337,5 +416,15 @@
       "submit": "Criar perfil",
       "saveError": "Não foi possível criar seu perfil."
     }
+  },
+  "place": {
+    "country": "País",
+    "state": "Estado",
+    "city": "Cidade",
+    "address": "Endereço",
+    "selectCountry": "Selecione um país",
+    "selectState": "Busque um estado",
+    "selectCity": "Busque uma cidade",
+    "geoError": "Não foi possível carregar a lista de estados e cidades."
   }
 }
