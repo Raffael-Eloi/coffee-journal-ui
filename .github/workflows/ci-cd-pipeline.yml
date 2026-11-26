@@ -42,12 +42,11 @@ jobs:
       - name: Set API URL
         env:
           API_URL: ${{ vars.API_URL }}
+        # Only the API URL changes per deployment; the sign-in settings stay as committed.
         run: |
-          cat > src/environments/environment.ts <<EOF
-          export const environment = {
-            apiUrl: '${API_URL}',
-          };
-          EOF
+          sed -i "s|^  apiUrl: .*|  apiUrl: '${API_URL}',|" src/environments/environment.ts
+          grep -q "apiUrl: '${API_URL}'," src/environments/environment.ts
+          grep -q "auth:" src/environments/environment.ts
 
       - name: Build
         run: npm run build -- --configuration production
