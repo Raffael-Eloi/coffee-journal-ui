@@ -12,6 +12,7 @@ import { TranslocoPipe } from '@jsverse/transloco';
 import { OptionLabelPipe } from '../../../../i18n/option-label.pipe';
 import { FieldErrors, fieldErrors } from '../../../../shared/api/validation-errors';
 import {
+  COFFEE_CLASSIFICATION_ICONS,
   COFFEE_CLASSIFICATIONS,
   CoffeeClassification,
 } from '../../../../shared/models/coffee-classification';
@@ -20,6 +21,7 @@ import { FormSection } from '../../../../shared/ui/form-section/form-section';
 import { Icon } from '../../../../shared/ui/icon/icon';
 import { ImageUploader } from '../../../../shared/ui/image-uploader/image-uploader';
 import { LabeledField } from '../../../../shared/ui/labeled-field/labeled-field';
+import { SymbolIcon } from '../../../../shared/ui/symbol/symbol';
 import { Roaster } from '../../../roasters/roaster.model';
 import { CoffeeInput, Currency } from '../../coffee.model';
 
@@ -109,6 +111,7 @@ function toInput(draft: CoffeeDraft): CoffeeInput {
     Icon,
     ImageUploader,
     LabeledField,
+    SymbolIcon,
   ],
   template: `
     <form class="flex flex-col gap-8" [formRoot]="coffeeForm">
@@ -169,6 +172,7 @@ function toInput(draft: CoffeeDraft): CoffeeInput {
                     [checked]="coffeeForm.classification().value() === option"
                     (change)="coffeeForm.classification().value.set(option)"
                   />
+                  <app-symbol [name]="classificationIcons[option]" [size]="18" />
                   {{ option + '' | optionLabel: 'classification' }}
                 </label>
               }
@@ -375,6 +379,7 @@ export class CoffeeForm {
   protected readonly processes = ['Washed', 'Natural', 'Honey'];
   protected readonly roastLevels = ['Light', 'Medium', 'Dark'];
   protected readonly classifications = COFFEE_CLASSIFICATIONS;
+  protected readonly classificationIcons = COFFEE_CLASSIFICATION_ICONS;
   protected readonly currencies: readonly { code: Currency; symbol: string }[] = [
     { code: 'BRL', symbol: 'R$' },
     { code: 'USD', symbol: '$' },

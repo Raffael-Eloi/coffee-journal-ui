@@ -4,7 +4,9 @@ import { Component, inject, input, resource, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { OptionLabelPipe } from '../../../../i18n/option-label.pipe';
+import { COFFEE_CLASSIFICATION_ICONS } from '../../../../shared/models/coffee-classification';
 import { Icon } from '../../../../shared/ui/icon/icon';
+import { SymbolIcon } from '../../../../shared/ui/symbol/symbol';
 import { PhotoGallery } from '../../../../shared/ui/photo-gallery/photo-gallery';
 import { Roaster } from '../../roaster.model';
 import { RoastersService } from '../../roasters.service';
@@ -19,6 +21,7 @@ import { RoastersService } from '../../roasters.service';
     Icon,
     PhotoGallery,
     ReviewsSection,
+    SymbolIcon,
   ],
   template: `
     @if (roaster.isLoading()) {
@@ -52,7 +55,8 @@ import { RoastersService } from '../../roasters.service';
                 @if (r.classifications.length > 0 || r.hasMembershipOption) {
                   <div class="flex flex-wrap items-center gap-2">
                     @for (classification of r.classifications; track classification) {
-                      <span class="badge badge-light">
+                      <span class="badge badge-light gap-1.5">
+                        <app-symbol [name]="classificationIcons[classification]" [size]="16" />
                         {{ classification + '' | optionLabel: 'classification' }}
                       </span>
                     }
@@ -173,6 +177,8 @@ import { RoastersService } from '../../roasters.service';
 export class RoasterDetailPage {
   private readonly service = inject(RoastersService);
   private readonly router = inject(Router);
+
+  protected readonly classificationIcons = COFFEE_CLASSIFICATION_ICONS;
 
   readonly id = input.required<string>();
 

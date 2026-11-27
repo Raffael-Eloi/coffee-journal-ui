@@ -4,13 +4,15 @@ import { Component, inject, input, resource, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { OptionLabelPipe } from '../../../../i18n/option-label.pipe';
+import { COFFEE_CLASSIFICATION_ICONS } from '../../../../shared/models/coffee-classification';
 import { PhotoGallery } from '../../../../shared/ui/photo-gallery/photo-gallery';
+import { SymbolIcon } from '../../../../shared/ui/symbol/symbol';
 import { RoastersService } from '../../../roasters/roasters.service';
 import { CoffeesService } from '../../coffees.service';
 
 @Component({
   selector: 'app-coffee-detail-page',
-  imports: [TranslocoPipe, OptionLabelPipe, RouterLink, CurrencyPipe, PhotoGallery, ReviewsSection],
+  imports: [TranslocoPipe, OptionLabelPipe, RouterLink, CurrencyPipe, PhotoGallery, ReviewsSection, SymbolIcon],
   template: `
     <a class="link" routerLink="/coffees">{{ 'coffees.detail.back' | transloco }}</a>
 
@@ -31,7 +33,10 @@ import { CoffeesService } from '../../coffees.service';
       <dl class="spec-list mt-6 max-w-3xl">
         <div>
           <dt class="spec-label">{{ 'coffees.detail.classification' | transloco }}</dt>
-          <dd class="spec-value">{{ c.classification + '' | optionLabel: 'classification' }}</dd>
+          <dd class="spec-value inline-flex items-center gap-1.5">
+            <app-symbol [name]="classificationIcons[c.classification]" [size]="18" />
+            {{ c.classification + '' | optionLabel: 'classification' }}
+          </dd>
         </div>
         <div>
           <dt class="spec-label">{{ 'coffees.detail.origin' | transloco }}</dt>
@@ -116,6 +121,8 @@ export class CoffeeDetailPage {
   private readonly coffeesService = inject(CoffeesService);
   private readonly roastersService = inject(RoastersService);
   private readonly router = inject(Router);
+
+  protected readonly classificationIcons = COFFEE_CLASSIFICATION_ICONS;
 
   readonly id = input.required<string>();
 

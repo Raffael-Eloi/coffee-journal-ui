@@ -2,11 +2,13 @@ import { Component, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { OptionLabelPipe } from '../../../../i18n/option-label.pipe';
+import { COFFEE_CLASSIFICATION_ICONS } from '../../../../shared/models/coffee-classification';
+import { SymbolIcon } from '../../../../shared/ui/symbol/symbol';
 import { Roaster } from '../../roaster.model';
 
 @Component({
   selector: 'app-roaster-card',
-  imports: [TranslocoPipe, OptionLabelPipe, RouterLink],
+  imports: [TranslocoPipe, OptionLabelPipe, RouterLink, SymbolIcon],
   template: `
     <article class="card flex h-full flex-col gap-2">
       <h2>
@@ -19,7 +21,8 @@ import { Roaster } from '../../roaster.model';
       </p>
       <p class="mt-auto flex flex-wrap items-center gap-2">
         @for (classification of roaster().classifications; track classification) {
-          <span class="badge badge-light">
+          <span class="badge badge-light gap-1.5">
+            <app-symbol [name]="classificationIcons[classification]" [size]="16" />
             {{ classification + '' | optionLabel: 'classification' }}
           </span>
         }
@@ -32,4 +35,6 @@ import { Roaster } from '../../roaster.model';
 })
 export class RoasterCard {
   readonly roaster = input.required<Roaster>();
+
+  protected readonly classificationIcons = COFFEE_CLASSIFICATION_ICONS;
 }
