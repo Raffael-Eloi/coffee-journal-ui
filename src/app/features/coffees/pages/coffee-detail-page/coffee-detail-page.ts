@@ -11,10 +11,12 @@ import { PhotoGallery } from '../../../../shared/ui/photo-gallery/photo-gallery'
 import { SymbolIcon } from '../../../../shared/ui/symbol/symbol';
 import { RoastersService } from '../../../roasters/roasters.service';
 import { CoffeesService } from '../../coffees.service';
+import { BackLink } from '../../../../shared/ui/back-link/back-link';
 
 @Component({
   selector: 'app-coffee-detail-page',
   imports: [
+    BackLink,
     TranslocoPipe,
     OptionLabelPipe,
     RouterLink,
@@ -25,7 +27,7 @@ import { CoffeesService } from '../../coffees.service';
     ContributorNote,
   ],
   template: `
-    <a class="link" routerLink="/coffees">{{ 'coffees.detail.back' | transloco }}</a>
+    <app-back-link to="/coffees" label="coffees.detail.back" />
 
     @if (coffee.isLoading()) {
       <p class="mt-4 text-husk" role="status">{{ 'common.loading' | transloco }}</p>

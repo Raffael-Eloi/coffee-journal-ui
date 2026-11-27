@@ -1,7 +1,12 @@
 import { Routes } from '@angular/router';
 
 export const routes: Routes = [
-  { path: '', pathMatch: 'full', redirectTo: 'coffee-shops' },
+  {
+    path: '',
+    pathMatch: 'full',
+    title: 'Coffee Journal',
+    loadComponent: () => import('./features/home/home-page').then((m) => m.HomePage),
+  },
   {
     path: 'coffee-shops',
     loadChildren: () =>

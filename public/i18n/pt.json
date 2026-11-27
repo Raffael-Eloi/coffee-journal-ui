@@ -1,8 +1,10 @@
 {
   "app": {
     "name": "Coffee Journal",
-    "tagline": "Diário do Café Especial",
-    "homeLabel": "Coffee Journal, início"
+    "tagline": "Jornada do Café Especial",
+    "homeLabel": "Coffee Journal, início",
+    "footerNote": "Feito para quem aprecia uma boa xícara de café.",
+    "copyright": "© Copyright 2026. Todos os direitos reservados."
   },
   "nav": {
     "main": "Principal",
@@ -214,7 +216,7 @@
       "addTitle": "Adicionar cafeteria",
       "editTitle": "Editar cafeteria",
       "description": "Registre uma cafeteria e o que você achou dela.",
-      "back": "← Cafeterias",
+      "back": "Cafeterias",
       "loadError": "Não foi possível carregar esta cafeteria.",
       "saveError": "Não foi possível salvar esta cafeteria.",
       "venueTitle": "A Cafeteria",
@@ -266,7 +268,7 @@
       "addTitle": "Adicionar torrefador",
       "editTitle": "Editar torrefador",
       "description": "Registre um torrefador e o que você achou dele.",
-      "back": "← Torrefadores",
+      "back": "Torrefadores",
       "loadError": "Não foi possível carregar este torrefador.",
       "saveError": "Não foi possível salvar este torrefador.",
       "profileTitle": "O Torrefador",
@@ -289,7 +291,7 @@
       "empty": "Nenhum café ainda."
     },
     "detail": {
-      "back": "← Cafés",
+      "back": "Cafés",
       "loadError": "Não foi possível carregar este café.",
       "confirmDelete": "Excluir este café?",
       "deleteError": "Não foi possível excluir este café.",
@@ -310,7 +312,7 @@
       "addTitle": "Adicionar café",
       "editTitle": "Editar café",
       "description": "Registre um café, seus preços e suas notas de degustação.",
-      "back": "← Cafés",
+      "back": "Cafés",
       "loadError": "Não foi possível carregar os dados deste formulário.",
       "saveError": "Não foi possível salvar este café.",
       "coffeeTitle": "O Café",
@@ -371,7 +373,7 @@
       "addTitle": "Adicionar equipamento",
       "editTitle": "Editar equipamento",
       "description": "Registre um equipamento e o que você acha dele.",
-      "back": "← Equipamentos",
+      "back": "Equipamentos",
       "loadError": "Não foi possível carregar os dados deste formulário.",
       "saveError": "Não foi possível salvar este equipamento.",
       "gearTitle": "O equipamento",
@@ -476,5 +478,54 @@
     "signInForEquipment": "Entre para montar sua lista de equipamentos.",
     "profileForEquipment": "Crie seu perfil para montar sua lista de equipamentos.",
     "createProfile": "Criar perfil"
+  },
+  "home": {
+    "hero": {
+      "badge": "Por que este app existe",
+      "titleHighlight": "Café especial",
+      "titleRest": " não é sobre frescura.",
+      "titleLine2": "É sobre curiosidade e cuidado.",
+      "intro": "Descubra cafés especiais, explore cafeterias, encontre torrefadoras excepcionais e compartilhe o seu jeito de preparar café.",
+      "ctaShops": "Explorar as cafeterias",
+      "ctaStory": "Ler a história"
+    },
+    "goals": {
+      "eyebrow": "O que você pode fazer",
+      "title": "Três motivos simples para se juntar a nós.",
+      "shops": {
+        "title": "Descubra cafeterias especiais",
+        "text": "Descubra novos lugares para aproveitar um café excepcional e compartilhe suas experiências.",
+        "link": "Ver cafeterias"
+      },
+      "roasters": {
+        "title": "Conheça torrefadoras e seus cafés",
+        "text": "Veja de onde vêm os grãos: origem, processo, nível de torra, notas de degustação e o preço de cada pacote.",
+        "link": "Ver torrefadoras"
+      },
+      "gear": {
+        "title": "Compartilhe e explore equipamentos",
+        "text": "Descubra como outras pessoas preparam o café, explore seus equipamentos e compartilhe a sua própria configuração.",
+        "link": "Ver equipamentos"
+      }
+    },
+    "closing": {
+      "title": "Nascido do amor pelo café.",
+      "start": "O Coffee Journal começou com uma simples curiosidade sobre café especial.",
+      "discovery": "Descobrir novas cafeterias, explorar grãos diferentes, aprimorar minhas técnicas de preparo e aprender sobre equipamentos me fez perceber quanto há para experimentar neste mundo.",
+      "wish": "Eu queria um lugar onde os amantes de café pudessem compartilhar essas experiências, descobrir novos favoritos e aprender uns com os outros.",
+      "purpose": "Por isso criei o Coffee Journal: um espaço para explorar, apreciar e compartilhar o mundo do café especial, uma xícara de cada vez.",
+      "ctaSignIn": "Criar sua conta",
+      "ctaBrowse": "Ver cafeterias",
+      "ctaTitle": "Cada xícara é uma nova descoberta.",
+      "ctaText": "Comece sua jornada no café, compartilhe suas experiências e descubra o que outras pessoas estão preparando.",
+      "ctaCurious": "Só curiosidade?",
+      "ctaExplore": "Explore o catálogo sem criar uma conta."
+    },
+    "community": {
+      "title": "Café bom fica ainda melhor quando é compartilhado.",
+      "intro": "O Coffee Journal é um espaço para iniciantes curiosos, baristas de casa e apaixonados por café.",
+      "share": "Compartilhe como você prepara seu café, avalie seus cafés, torrefadoras e cafeterias favoritos e aprenda com a experiência de outras pessoas.",
+      "imageAlt": "Mãos despejando água quente de uma chaleira preta de bico fino sobre um suporte de vidro em uma balança, ao lado de uma caneca e de um pote de grãos de café."
+    }
   }
 }

@@ -1,8 +1,10 @@
 {
   "app": {
     "name": "Coffee Journal",
-    "tagline": "Specialty Tasting Log",
-    "homeLabel": "Coffee Journal, home"
+    "tagline": "Specialty Tasting Journey",
+    "homeLabel": "Coffee Journal, home",
+    "footerNote": "Made for those who appreciate a good cup of coffee.",
+    "copyright": "© Copyright 2026. All Rights Reserved."
   },
   "nav": {
     "main": "Main",
@@ -214,7 +216,7 @@
       "addTitle": "Add coffee shop",
       "editTitle": "Edit coffee shop",
       "description": "Record a café and what you thought of it.",
-      "back": "← Coffee shops",
+      "back": "Coffee shops",
       "loadError": "Could not load this coffee shop.",
       "saveError": "Could not save this coffee shop.",
       "venueTitle": "The Café",
@@ -266,7 +268,7 @@
       "addTitle": "Add roaster",
       "editTitle": "Edit roaster",
       "description": "Record a roaster and what you thought of it.",
-      "back": "← Roasters",
+      "back": "Roasters",
       "loadError": "Could not load this roaster.",
       "saveError": "Could not save this roaster.",
       "profileTitle": "The Roaster",
@@ -289,7 +291,7 @@
       "empty": "No coffees yet."
     },
     "detail": {
-      "back": "← Coffees",
+      "back": "Coffees",
       "loadError": "Could not load this coffee.",
       "confirmDelete": "Delete this coffee?",
       "deleteError": "Could not delete this coffee.",
@@ -310,7 +312,7 @@
       "addTitle": "Add coffee",
       "editTitle": "Edit coffee",
       "description": "Record a coffee, its prices and your tasting notes.",
-      "back": "← Coffees",
+      "back": "Coffees",
       "loadError": "Could not load the data for this form.",
       "saveError": "Could not save this coffee.",
       "coffeeTitle": "The Coffee",
@@ -371,7 +373,7 @@
       "addTitle": "Add equipment",
       "editTitle": "Edit equipment",
       "description": "Record a piece of gear and what you think of it.",
-      "back": "← Equipment",
+      "back": "Equipment",
       "loadError": "Could not load the data for this form.",
       "saveError": "Could not save this equipment.",
       "gearTitle": "The Gear",
@@ -476,5 +478,54 @@
     "signInForEquipment": "Sign in to build your own gear list.",
     "profileForEquipment": "Create your profile to build your own gear list.",
     "createProfile": "Create your profile"
+  },
+  "home": {
+    "hero": {
+      "badge": "Why this app exists",
+      "titleHighlight": "Specialty coffee",
+      "titleRest": " isn’t about snobbery.",
+      "titleLine2": "It’s about curiosity and craft.",
+      "intro": "Discover specialty coffees, explore coffee shops, find exceptional roasters, and share the way you brew.",
+      "ctaShops": "Explore the coffee shops",
+      "ctaStory": "Read the story"
+    },
+    "goals": {
+      "eyebrow": "What you can do",
+      "title": "Three simple reasons to join us.",
+      "shops": {
+        "title": "Discover specialty coffee shops",
+        "text": "Discover new places to enjoy exceptional coffee and share your experiences.",
+        "link": "Browse coffee shops"
+      },
+      "roasters": {
+        "title": "Meet roasters and their coffees",
+        "text": "See where the beans come from: origin, process, roast level, tasting notes and the price of every bag.",
+        "link": "Browse roasters"
+      },
+      "gear": {
+        "title": "Share and explore brew gear",
+        "text": "Discover how others brew their coffee, explore their equipment, and share your own setup.",
+        "link": "Explore gear"
+      }
+    },
+    "closing": {
+      "title": "Born from a love of coffee.",
+      "start": "Coffee Journal started with a simple curiosity about specialty coffee.",
+      "discovery": "Discovering new coffee shops, exploring different beans, improving my brewing techniques, and learning about coffee equipment made me realize how much there is to experience in this world.",
+      "wish": "I wanted a place where coffee lovers could share these experiences, discover new favorites, and learn from one another.",
+      "purpose": "That’s why I created Coffee Journal: a space to explore, appreciate, and share the world of specialty coffee, one cup at a time.",
+      "ctaSignIn": "Create your account",
+      "ctaBrowse": "Browse coffee shops",
+      "ctaTitle": "Every cup is a new discovery.",
+      "ctaText": "Start your coffee journey, share your experiences, and discover what others are brewing.",
+      "ctaCurious": "Just curious?",
+      "ctaExplore": "Explore the catalog without an account."
+    },
+    "community": {
+      "title": "Good coffee is even better when shared.",
+      "intro": "Coffee Journal is a space for curious beginners, home brewers, and passionate coffee enthusiasts.",
+      "share": "Share your brewing setup, review your favorite coffees, roasters, and coffee shops, and learn from the experiences of others.",
+      "imageAlt": "Hands pouring hot water from a black gooseneck kettle over a glass dripper on a scale, next to a mug and a jar of coffee beans."
+    }
   }
 }

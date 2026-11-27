@@ -1,5 +1,5 @@
 import { Component, inject, input, resource, signal } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { FieldErrors, validationErrors } from '../../../../shared/api/validation-errors';
 import { FormPageHeader } from '../../../../shared/ui/form-page-header/form-page-header';
@@ -7,15 +7,14 @@ import { RoastersService } from '../../../roasters/roasters.service';
 import { CoffeeShopForm } from '../../components/coffee-shop-form/coffee-shop-form';
 import { CoffeeShopInput } from '../../coffee-shop.model';
 import { CoffeeShopsService } from '../../coffee-shops.service';
+import { BackLink } from '../../../../shared/ui/back-link/back-link';
 
 @Component({
   selector: 'app-coffee-shop-form-page',
-  imports: [TranslocoPipe, RouterLink, FormPageHeader, CoffeeShopForm],
+  imports: [BackLink, TranslocoPipe, FormPageHeader, CoffeeShopForm],
   template: `
     <div class="mx-auto flex max-w-3xl flex-col gap-8">
-      <a class="link self-start" routerLink="/coffee-shops">{{
-        'coffeeShops.form.back' | transloco
-      }}</a>
+      <app-back-link to="/coffee-shops" label="coffeeShops.form.back" />
       <app-form-page-header
         eyebrow="coffeeShops.form.eyebrow"
         [title]="id() === undefined ? 'coffeeShops.form.addTitle' : 'coffeeShops.form.editTitle'"

@@ -313,9 +313,15 @@ function toInput(draft: ProfileEditDraft): ProfileUpdateInput {
 
           <div class="flex flex-col-reverse items-center justify-between gap-4 sm:flex-row">
             @if (step() > 1) {
-              <button type="button" class="link inline-flex items-center gap-1" (click)="back()">
+              <button
+                type="button"
+                class="link inline-flex items-center gap-1 no-underline"
+                (click)="back()"
+              >
                 <app-symbol name="arrow_back" [size]="16" />
-                {{ 'profile.edit.back' | transloco }}
+                <span class="underline underline-offset-4">{{
+                  'profile.edit.back' | transloco
+                }}</span>
               </button>
             } @else {
               <span></span>

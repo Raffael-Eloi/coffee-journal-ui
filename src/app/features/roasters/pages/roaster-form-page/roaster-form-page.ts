@@ -1,18 +1,19 @@
 import { Component, inject, input, resource, signal } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { FieldErrors, validationErrors } from '../../../../shared/api/validation-errors';
 import { FormPageHeader } from '../../../../shared/ui/form-page-header/form-page-header';
 import { RoasterForm } from '../../components/roaster-form/roaster-form';
 import { RoasterInput } from '../../roaster.model';
 import { RoastersService } from '../../roasters.service';
+import { BackLink } from '../../../../shared/ui/back-link/back-link';
 
 @Component({
   selector: 'app-roaster-form-page',
-  imports: [TranslocoPipe, RouterLink, FormPageHeader, RoasterForm],
+  imports: [BackLink, TranslocoPipe, FormPageHeader, RoasterForm],
   template: `
     <div class="mx-auto flex max-w-3xl flex-col gap-8">
-      <a class="link self-start" routerLink="/roasters">{{ 'roasters.form.back' | transloco }}</a>
+      <app-back-link to="/roasters" label="roasters.form.back" />
       <app-form-page-header
         eyebrow="roasters.form.eyebrow"
         [title]="id() === undefined ? 'roasters.form.addTitle' : 'roasters.form.editTitle'"

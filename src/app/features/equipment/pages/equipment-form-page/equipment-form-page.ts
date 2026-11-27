@@ -1,18 +1,19 @@
 import { Component, inject, input, resource, signal } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { FieldErrors, validationErrors } from '../../../../shared/api/validation-errors';
 import { FormPageHeader } from '../../../../shared/ui/form-page-header/form-page-header';
 import { EquipmentForm } from '../../components/equipment-form/equipment-form';
 import { EquipmentInput } from '../../equipment.model';
 import { EquipmentService } from '../../equipment.service';
+import { BackLink } from '../../../../shared/ui/back-link/back-link';
 
 @Component({
   selector: 'app-equipment-form-page',
-  imports: [TranslocoPipe, RouterLink, FormPageHeader, EquipmentForm],
+  imports: [BackLink, TranslocoPipe, FormPageHeader, EquipmentForm],
   template: `
     <div class="mx-auto flex max-w-3xl flex-col gap-8">
-      <a class="link self-start" routerLink="/equipment">{{ 'equipment.form.back' | transloco }}</a>
+      <app-back-link to="/equipment" label="equipment.form.back" />
       <app-form-page-header
         eyebrow="equipment.form.eyebrow"
         [title]="id() === undefined ? 'equipment.form.addTitle' : 'equipment.form.editTitle'"
