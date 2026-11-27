@@ -3,7 +3,11 @@ import { form, FormField, FormRoot, maxLength, pattern, required } from '@angula
 import { Router } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { AuthService } from '../../../../auth/auth.service';
-import { FieldErrors, fieldErrors, validationErrors } from '../../../../shared/api/validation-errors';
+import {
+  FieldErrors,
+  fieldErrors,
+  validationErrors,
+} from '../../../../shared/api/validation-errors';
 import { FormPageHeader } from '../../../../shared/ui/form-page-header/form-page-header';
 import { Icon } from '../../../../shared/ui/icon/icon';
 import { LabeledField } from '../../../../shared/ui/labeled-field/labeled-field';
@@ -277,7 +281,9 @@ function toInput(draft: ProfileEditDraft): ProfileUpdateInput {
             }
             @case (3) {
               <h2>{{ 'profile.edit.steps.links' | transloco }}</h2>
-              <p class="-mt-4 text-on-surface-variant">{{ 'profile.edit.linksHint' | transloco }}</p>
+              <p class="-mt-4 text-on-surface-variant">
+                {{ 'profile.edit.linksHint' | transloco }}
+              </p>
               <div class="grid gap-4 sm:grid-cols-2">
                 @for (link of links; track link.key) {
                   <app-labeled-field

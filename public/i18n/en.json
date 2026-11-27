@@ -470,5 +470,11 @@
     "form": {
       "text": "Your review"
     }
+  },
+  "access": {
+    "contributorOnly": "Only contributors can add or edit this.",
+    "signInForEquipment": "Sign in to build your own gear list.",
+    "profileForEquipment": "Create your profile to build your own gear list.",
+    "createProfile": "Create your profile"
   }
 }

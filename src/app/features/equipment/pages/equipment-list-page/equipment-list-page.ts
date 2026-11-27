@@ -2,12 +2,14 @@ import { Component, computed, inject, resource, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { OptionLabelPipe } from '../../../../i18n/option-label.pipe';
+import { CurrentUserService } from '../../../profile/current-user.service';
+import { EquipmentNote } from '../../components/equipment-note/equipment-note';
 import { EquipmentCard } from '../../components/equipment-card/equipment-card';
 import { EquipmentService } from '../../equipment.service';
 
 @Component({
   selector: 'app-equipment-list-page',
-  imports: [TranslocoPipe, OptionLabelPipe, RouterLink, EquipmentCard],
+  imports: [TranslocoPipe, OptionLabelPipe, RouterLink, EquipmentCard, EquipmentNote],
   template: `
     <div class="flex flex-col gap-8">
       <header class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
@@ -20,9 +22,13 @@ import { EquipmentService } from '../../equipment.service';
             {{ 'equipment.list.subtitle' | transloco }}
           </p>
         </div>
-        <a class="btn btn-action self-start lg:self-end" routerLink="/equipment/new">
-          {{ 'equipment.list.add' | transloco }}
-        </a>
+        @if (currentUser.hasProfile()) {
+          <a class="btn btn-action self-start lg:self-end" routerLink="/equipment/new">
+            {{ 'equipment.list.add' | transloco }}
+          </a>
+        } @else {
+          <app-equipment-note />
+        }
       </header>
 
       <section class="flex flex-col gap-4 rounded-xl border border-hairline bg-surface p-6 ">
@@ -82,6 +88,7 @@ import { EquipmentService } from '../../equipment.service';
 })
 export class EquipmentListPage {
   private readonly service = inject(EquipmentService);
+  protected readonly currentUser = inject(CurrentUserService);
 
   protected readonly equipment = resource({ loader: () => this.service.list() });
   protected readonly categories = resource({ loader: () => this.service.listCategories() });

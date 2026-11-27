@@ -470,5 +470,11 @@
     "form": {
       "text": "Sua avaliação"
     }
+  },
+  "access": {
+    "contributorOnly": "Só colaboradores podem adicionar ou editar isto.",
+    "signInForEquipment": "Entre para montar sua lista de equipamentos.",
+    "profileForEquipment": "Crie seu perfil para montar sua lista de equipamentos.",
+    "createProfile": "Criar perfil"
   }
 }

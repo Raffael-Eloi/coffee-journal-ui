@@ -2,6 +2,8 @@ import { ReviewsSection } from '../../../../shared/reviews/reviews-section/revie
 import { NgOptimizedImage } from '@angular/common';
 import { Component, inject, input, resource, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
+import { ContributorNote } from '../../../profile/contributor-note/contributor-note';
+import { CurrentUserService } from '../../../profile/current-user.service';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { OptionLabelPipe } from '../../../../i18n/option-label.pipe';
 import { COFFEE_CLASSIFICATION_ICONS } from '../../../../shared/models/coffee-classification';
@@ -22,6 +24,7 @@ import { RoastersService } from '../../roasters.service';
     PhotoGallery,
     ReviewsSection,
     SymbolIcon,
+    ContributorNote,
   ],
   template: `
     @if (roaster.isLoading()) {
@@ -107,10 +110,13 @@ import { RoastersService } from '../../roasters.service';
             </div>
 
             <div class="flex flex-wrap items-center gap-3">
-              <a class="btn btn-primary" [routerLink]="['/roasters', r.id, 'edit']">{{
-                'common.edit' | transloco
-              }}</a>
-              @if (confirmingDelete()) {
+              <app-contributor-note />
+              @if (currentUser.canContribute()) {
+                <a class="btn btn-primary" [routerLink]="['/roasters', r.id, 'edit']">{{
+                  'common.edit' | transloco
+                }}</a>
+              }
+              @if (currentUser.isAdmin() && confirmingDelete()) {
                 <span>{{ 'roasters.detail.confirmDelete' | transloco }}</span>
                 <button type="button" class="btn btn-danger" (click)="remove()">
                   {{ 'common.confirmDelete' | transloco }}
@@ -118,7 +124,7 @@ import { RoastersService } from '../../roasters.service';
                 <button type="button" class="link" (click)="confirmingDelete.set(false)">
                   {{ 'common.cancel' | transloco }}
                 </button>
-              } @else {
+              } @else if (currentUser.isAdmin()) {
                 <button type="button" class="btn btn-ghost" (click)="confirmingDelete.set(true)">
                   {{ 'common.delete' | transloco }}
                 </button>
@@ -177,6 +183,7 @@ import { RoastersService } from '../../roasters.service';
 export class RoasterDetailPage {
   private readonly service = inject(RoastersService);
   private readonly router = inject(Router);
+  protected readonly currentUser = inject(CurrentUserService);
 
   protected readonly classificationIcons = COFFEE_CLASSIFICATION_ICONS;
 

@@ -1,18 +1,25 @@
 import { Component, inject, resource } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { ContributorNote } from '../../../profile/contributor-note/contributor-note';
+import { CurrentUserService } from '../../../profile/current-user.service';
+
 import { CoffeeShopCard } from '../../components/coffee-shop-card/coffee-shop-card';
 import { CoffeeShopsService } from '../../coffee-shops.service';
 import { TranslocoPipe } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-coffee-shop-list-page',
-  imports: [TranslocoPipe, RouterLink, CoffeeShopCard],
+  imports: [TranslocoPipe, RouterLink, CoffeeShopCard, ContributorNote],
   template: `
     <div class="flex items-center justify-between">
       <h1>{{ 'nav.coffeeShops' | transloco }}</h1>
-      <a class="btn btn-action" routerLink="/coffee-shops/new">
-        {{ 'coffeeShops.list.add' | transloco }}
-      </a>
+      @if (currentUser.canContribute()) {
+        <a class="btn btn-action" routerLink="/coffee-shops/new">
+          {{ 'coffeeShops.list.add' | transloco }}
+        </a>
+      } @else {
+        <app-contributor-note />
+      }
     </div>
 
     @if (shops.isLoading()) {
@@ -37,6 +44,7 @@ import { TranslocoPipe } from '@jsverse/transloco';
   `,
 })
 export class CoffeeShopListPage {
+  protected readonly currentUser = inject(CurrentUserService);
   private readonly service = inject(CoffeeShopsService);
 
   protected readonly shops = resource({ loader: () => this.service.list() });

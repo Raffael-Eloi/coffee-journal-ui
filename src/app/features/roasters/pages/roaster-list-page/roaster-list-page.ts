@@ -1,18 +1,25 @@
 import { Component, inject, resource } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { ContributorNote } from '../../../profile/contributor-note/contributor-note';
+import { CurrentUserService } from '../../../profile/current-user.service';
+
 import { RoasterCard } from '../../components/roaster-card/roaster-card';
 import { RoastersService } from '../../roasters.service';
 import { TranslocoPipe } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-roaster-list-page',
-  imports: [TranslocoPipe, RouterLink, RoasterCard],
+  imports: [TranslocoPipe, RouterLink, RoasterCard, ContributorNote],
   template: `
     <div class="flex items-center justify-between">
       <h1>{{ 'nav.roasters' | transloco }}</h1>
-      <a class="btn btn-action" routerLink="/roasters/new">
-        {{ 'roasters.list.add' | transloco }}
-      </a>
+      @if (currentUser.canContribute()) {
+        <a class="btn btn-action" routerLink="/roasters/new">
+          {{ 'roasters.list.add' | transloco }}
+        </a>
+      } @else {
+        <app-contributor-note />
+      }
     </div>
 
     @if (roasters.isLoading()) {
@@ -37,6 +44,7 @@ import { TranslocoPipe } from '@jsverse/transloco';
   `,
 })
 export class RoasterListPage {
+  protected readonly currentUser = inject(CurrentUserService);
   private readonly service = inject(RoastersService);
 
   protected readonly roasters = resource({ loader: () => this.service.list() });

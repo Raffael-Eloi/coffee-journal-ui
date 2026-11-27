@@ -2,6 +2,8 @@ import { ReviewsSection } from '../../../../shared/reviews/reviews-section/revie
 import { CurrencyPipe } from '@angular/common';
 import { Component, inject, input, resource, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
+import { ContributorNote } from '../../../profile/contributor-note/contributor-note';
+import { CurrentUserService } from '../../../profile/current-user.service';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { OptionLabelPipe } from '../../../../i18n/option-label.pipe';
 import { COFFEE_CLASSIFICATION_ICONS } from '../../../../shared/models/coffee-classification';
@@ -12,7 +14,16 @@ import { CoffeesService } from '../../coffees.service';
 
 @Component({
   selector: 'app-coffee-detail-page',
-  imports: [TranslocoPipe, OptionLabelPipe, RouterLink, CurrencyPipe, PhotoGallery, ReviewsSection, SymbolIcon],
+  imports: [
+    TranslocoPipe,
+    OptionLabelPipe,
+    RouterLink,
+    CurrencyPipe,
+    PhotoGallery,
+    ReviewsSection,
+    SymbolIcon,
+    ContributorNote,
+  ],
   template: `
     <a class="link" routerLink="/coffees">{{ 'coffees.detail.back' | transloco }}</a>
 
@@ -88,11 +99,14 @@ import { CoffeesService } from '../../coffees.service';
       </div>
 
       <div class="mt-6 flex items-center gap-4">
-        <a class="btn btn-primary" [routerLink]="['/coffees', c.id, 'edit']">{{
-          'common.edit' | transloco
-        }}</a>
+        <app-contributor-note />
+        @if (currentUser.canContribute()) {
+          <a class="btn btn-primary" [routerLink]="['/coffees', c.id, 'edit']">{{
+            'common.edit' | transloco
+          }}</a>
+        }
 
-        @if (confirmingDelete()) {
+        @if (currentUser.isAdmin() && confirmingDelete()) {
           <span>{{ 'coffees.detail.confirmDelete' | transloco }}</span>
           <button type="button" class="btn btn-danger" (click)="remove()">
             {{ 'common.confirmDelete' | transloco }}
@@ -100,7 +114,7 @@ import { CoffeesService } from '../../coffees.service';
           <button type="button" class="link" (click)="confirmingDelete.set(false)">
             {{ 'common.cancel' | transloco }}
           </button>
-        } @else {
+        } @else if (currentUser.isAdmin()) {
           <button type="button" class="link" (click)="confirmingDelete.set(true)">
             {{ 'common.delete' | transloco }}
           </button>
@@ -121,6 +135,7 @@ export class CoffeeDetailPage {
   private readonly coffeesService = inject(CoffeesService);
   private readonly roastersService = inject(RoastersService);
   private readonly router = inject(Router);
+  protected readonly currentUser = inject(CurrentUserService);
 
   protected readonly classificationIcons = COFFEE_CLASSIFICATION_ICONS;
 

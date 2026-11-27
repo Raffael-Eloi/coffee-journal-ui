@@ -1,6 +1,8 @@
 import { ReviewsSection } from '../../../../shared/reviews/reviews-section/reviews-section';
 import { Component, computed, inject, input, resource, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
+import { ContributorNote } from '../../../profile/contributor-note/contributor-note';
+import { CurrentUserService } from '../../../profile/current-user.service';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { OptionLabelPipe } from '../../../../i18n/option-label.pipe';
 import { Icon } from '../../../../shared/ui/icon/icon';
@@ -29,6 +31,7 @@ const WEEK: readonly DayOfWeek[] = [1, 2, 3, 4, 5, 6, 0];
     PhotoGallery,
     ReviewsSection,
     SymbolIcon,
+    ContributorNote,
   ],
   template: `
     @if (coffeeShop.isLoading()) {
@@ -91,10 +94,13 @@ const WEEK: readonly DayOfWeek[] = [1, 2, 3, 4, 5, 6, 0];
             </div>
 
             <div class="flex flex-wrap items-center gap-3">
-              <a class="btn btn-primary" [routerLink]="['/coffee-shops', shop.id, 'edit']">{{
-                'common.edit' | transloco
-              }}</a>
-              @if (confirmingDelete()) {
+              <app-contributor-note />
+              @if (currentUser.canContribute()) {
+                <a class="btn btn-primary" [routerLink]="['/coffee-shops', shop.id, 'edit']">{{
+                  'common.edit' | transloco
+                }}</a>
+              }
+              @if (currentUser.isAdmin() && confirmingDelete()) {
                 <span>{{ 'coffeeShops.detail.confirmDelete' | transloco }}</span>
                 <button type="button" class="btn btn-danger" (click)="remove()">
                   {{ 'common.confirmDelete' | transloco }}
@@ -102,7 +108,7 @@ const WEEK: readonly DayOfWeek[] = [1, 2, 3, 4, 5, 6, 0];
                 <button type="button" class="link" (click)="confirmingDelete.set(false)">
                   {{ 'common.cancel' | transloco }}
                 </button>
-              } @else {
+              } @else if (currentUser.isAdmin()) {
                 <button type="button" class="btn btn-ghost" (click)="confirmingDelete.set(true)">
                   {{ 'common.delete' | transloco }}
                 </button>
@@ -238,6 +244,7 @@ export class CoffeeShopDetailPage {
   private readonly service = inject(CoffeeShopsService);
   private readonly roastersService = inject(RoastersService);
   private readonly router = inject(Router);
+  protected readonly currentUser = inject(CurrentUserService);
 
   protected readonly brewingMethodIcons = BREWING_METHOD_ICONS;
   protected readonly amenityIcons = AMENITY_ICONS;
