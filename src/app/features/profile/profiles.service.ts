@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Service } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { Profile, ProfileCreateInput } from './profile.model';
+import { Profile, ProfileCreateInput, ProfileUpdateInput } from './profile.model';
 
 const API_URL = `${environment.apiUrl}/v1.0/profiles`;
 
@@ -17,5 +17,10 @@ export class ProfilesService {
 
   create(input: ProfileCreateInput): Promise<{ id: string }> {
     return firstValueFrom(this.http.post<{ id: string }>(`${API_URL}/me`, input));
+  }
+
+  /** Replaces the profile of the signed-in user (204, no body). */
+  update(input: ProfileUpdateInput): Promise<void> {
+    return firstValueFrom(this.http.put<void>(`${API_URL}/me`, input));
   }
 }

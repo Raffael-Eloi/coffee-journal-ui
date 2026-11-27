@@ -27,3 +27,18 @@ export interface ProfileCreateInput {
   languagePref: string;
   email?: string;
 }
+
+/** Body of `PUT /profiles/me`. It replaces the whole profile, so every field is sent; `null` clears an optional one. */
+export interface ProfileUpdateInput {
+  name: string;
+  handle: string;
+  languagePref: string;
+  nickname: string | null;
+  photoUrl: string | null;
+  bio: string | null;
+  instagramUrl: string | null;
+  facebookUrl: string | null;
+  linkedInUrl: string | null;
+  xUrl: string | null;
+  website: string | null;
+}

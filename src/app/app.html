@@ -33,9 +33,15 @@
 
     <div class="flex items-center gap-3">
       @if (auth.isSignedIn()) {
-        <span class="text-sm font-semibold text-espresso">
+        <a
+          class="nav-link text-sm font-semibold"
+          routerLink="/profile/edit"
+          routerLinkActive="active"
+          ariaCurrentWhenActive="page"
+        >
           {{ currentUser.profile()?.name ?? auth.displayName() }}
-        </span>
+          <span class="sr-only">— {{ 'nav.editProfile' | transloco }}</span>
+        </a>
         <button type="button" class="btn btn-ghost" (click)="auth.signOut()">
           {{ 'auth.signOut' | transloco }}
         </button>

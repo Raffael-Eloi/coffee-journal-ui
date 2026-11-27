@@ -25,6 +25,14 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'profile/edit',
+    title: 'Edit profile',
+    loadComponent: () =>
+      import('./features/profile/pages/profile-edit-page/profile-edit-page').then(
+        (m) => m.ProfileEditPage,
+      ),
+  },
+  {
     path: 'equipment',
     loadChildren: () =>
       import('./features/equipment/equipment.routes').then((m) => m.EQUIPMENT_ROUTES),

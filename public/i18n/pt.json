@@ -9,7 +9,8 @@
     "coffeeShops": "Cafeterias",
     "roasters": "Torrefadores",
     "coffees": "Cafés",
-    "equipment": "Equipamentos"
+    "equipment": "Equipamentos",
+    "editProfile": "Editar perfil"
   },
   "common": {
     "loading": "Carregando…",
@@ -415,6 +416,31 @@
       "languageEn": "English (US)",
       "submit": "Criar perfil",
       "saveError": "Não foi possível criar seu perfil."
+    },
+    "edit": {
+      "eyebrow": "Seu perfil",
+      "title": "Edite seu perfil",
+      "description": "Complete seu perfil para que os outros saibam quem está por trás das avaliações.",
+      "signInRequired": "Entre para editar seu perfil.",
+      "stepsLabel": "Etapas do perfil",
+      "stepHasError": "(precisa de atenção)",
+      "steps": {
+        "identity": "Identidade",
+        "persona": "Perfil e bio",
+        "links": "Links"
+      },
+      "nickname": "Apelido",
+      "nicknameHint": "Aparece nas suas avaliações no lugar do nome de usuário.",
+      "bio": "Bio",
+      "bioHint": "Conte quem você é e o que você mais gosta de encontrar numa xícara.",
+      "linksHint": "Adicione suas redes sociais e seu site. Cada link começa com http:// ou https://.",
+      "facebook": "Facebook",
+      "linkedIn": "LinkedIn",
+      "x": "X / Twitter",
+      "back": "Voltar",
+      "next": "Continuar",
+      "save": "Salvar perfil",
+      "saveError": "Não foi possível salvar seu perfil."
     }
   },
   "place": {

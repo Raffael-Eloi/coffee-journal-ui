@@ -9,7 +9,8 @@
     "coffeeShops": "Coffee shops",
     "roasters": "Roasters",
     "coffees": "Coffees",
-    "equipment": "Equipment"
+    "equipment": "Equipment",
+    "editProfile": "Edit profile"
   },
   "common": {
     "loading": "Loading…",
@@ -415,6 +416,31 @@
       "languageEn": "English (US)",
       "submit": "Create profile",
       "saveError": "Could not create your profile."
+    },
+    "edit": {
+      "eyebrow": "Your profile",
+      "title": "Edit your profile",
+      "description": "Complete your profile so others know who is behind the reviews.",
+      "signInRequired": "Sign in to edit your profile.",
+      "stepsLabel": "Profile steps",
+      "stepHasError": "(needs attention)",
+      "steps": {
+        "identity": "Identity",
+        "persona": "Persona & bio",
+        "links": "Links"
+      },
+      "nickname": "Nickname",
+      "nicknameHint": "Shown on your reviews instead of your username.",
+      "bio": "Bio",
+      "bioHint": "Tell us who you are and what you love in a cup.",
+      "linksHint": "Link your social profiles and website. Each link starts with http:// or https://.",
+      "facebook": "Facebook",
+      "linkedIn": "LinkedIn",
+      "x": "X / Twitter",
+      "back": "Back",
+      "next": "Continue",
+      "save": "Save profile",
+      "saveError": "Could not save your profile."
     }
   },
   "place": {
